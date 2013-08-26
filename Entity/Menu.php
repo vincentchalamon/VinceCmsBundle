@@ -59,6 +59,13 @@ class Menu
     private $path;
 
     /**
+     * @var File
+     *
+     * This var is not persisted in database : it is used for file upload.
+     */
+    private $file;
+
+    /**
      * @var \DateTime
      */
     private $startedAt;
@@ -175,8 +182,8 @@ class Menu
      */
     public function isImageValid(ExecutionContext $context)
     {
-        if ($this->isImage && !$this->getPath()) {
-            $context->addViolationAt('path', 'This value should not be blank.');
+        if ($this->isImage && !$this->file) {
+            $context->addViolationAt('file', 'This value should not be blank.');
         }
     }
 
@@ -593,12 +600,25 @@ class Menu
     }
 
     /**
-     * Set path
+     * Set file
      *
-     * @param File $path
+     * @param File $file
      * @return Menu
      */
-    public function setPath(File $path = null)
+    public function setFile(File $file = null)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Set path
+     *
+     * @param string $path
+     * @return Menu
+     */
+    public function setPath($path = null)
     {
         $this->path = $path;
     
@@ -613,5 +633,52 @@ class Menu
     public function getPath()
     {
         return $this->path;
+    }
+
+    /**
+     * Prepare file upload
+     *
+     * @author Vincent CHALAMON <vincentchalamon@gmail.com>
+     */
+    public function preUpload()
+    {
+        if ($this->file) {
+            $this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
+        }
+    }
+
+    /**
+     * Upload file
+     *
+     * @author Vincent CHALAMON <vincentchalamon@gmail.com>
+     */
+    public function upload()
+    {
+        if ($this->file) {
+            $this->file->move(realpath(__DIR__.'/../../../../../../web/uploads'), $this->path);
+            unset($this->file);
+        }
+    }
+
+    /**
+     * Get image web path
+     *
+     * @author Vincent CHALAMON <vincentchalamon@gmail.com>
+     */
+    public function getWebPath()
+    {
+        return $this->path ? 'uploads/'.$this->path : null;
+    }
+
+    /**
+     * Remove file on Menu delete
+     *
+     * @author Vincent CHALAMON <vincentchalamon@gmail.com>
+     */
+    public function remove()
+    {
+        if (is_file($file = realpath(__DIR__.'/../../../../../../web/uploads').'/'.$this->path)) {
+            unlink($file);
+        }
     }
 }
