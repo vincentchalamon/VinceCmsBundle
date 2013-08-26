@@ -1,0 +1,25 @@
+{
+    "name": "vince/cms-bundle",
+    "type": "symfony-bundle",
+    "description": "Basic CMS features for Symfony 2.3",
+    "keywords": ["CMS"],
+    "homepage": "https://github.com/vincentchalamon/VinceCmsBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vincent CHALAMON",
+            "email": "vincentchalamon@gmail.com"
+        }
+    ],
+    "require": {
+        "doctrine/doctrine-fixtures-bundle": "2.1.*@dev",
+        "gedmo/doctrine-extensions": "2.3.5",
+        "liip/functional-test-bundle": "dev-master",
+        "jms/serializer-bundle": "0.13.*@dev"
+    },
+    "autoload": {
+        "psr-0": { "Vince\\Bundle\\CmsBundle": "" }
+    },
+    "target-dir": "Vince/Bundle/CmsBundle",
+    "version": "1.0.0-beta"
+}
