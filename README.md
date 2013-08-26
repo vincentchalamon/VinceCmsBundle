@@ -1,4 +1,4 @@
 VinceCmsBundle
 ==============
 
-Basic features for CMS
+Basic CMS features for Symfony 2.3
