@@ -21,5 +21,5 @@
         "psr-0": { "Vince\\Bundle\\CmsBundle": "" }
     },
     "target-dir": "Vince/Bundle/CmsBundle",
-    "version": "1.0.0-beta"
+    "version": "0.1.0-beta"
 }
