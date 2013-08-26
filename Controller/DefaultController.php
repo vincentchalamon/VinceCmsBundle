@@ -52,7 +52,7 @@ class DefaultController extends Controller
     public function showAction()
     {
         // Retrieve article from its id in Request attributes
-        $article = $this->getDoctrine()->getRepository('VinceCmsBundle:Article')->findOneByIdJoinTemplate($this->getRequest()->attributes->get('_id'));
+        $article = $this->getDoctrine()->getRepository('VinceCmsBundle:Article')->find($this->getRequest()->attributes->get('_id'));
         if (!$article) {
             throw $this->createNotFoundException();
         } elseif (!$article->isPublished() && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {

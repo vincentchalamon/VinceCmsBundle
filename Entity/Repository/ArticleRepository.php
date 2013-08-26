@@ -33,18 +33,6 @@ class ArticleRepository extends EntityRepository
         return $this->createQueryBuilder('a')->getQuery()->iterate();
     }
 
-    public function findOneByIdJoinTemplate($id)
-    {
-        return $this->createQueryBuilder('a')
-                    ->where('a.id = :id')->setParameter('id', $id)
-                    ->innerJoin('a.template', 't')->addSelect('t')
-                    ->leftJoin('t.areas', 'r')->addSelect('r')
-                    ->leftJoin('a.metas', 'm')->addSelect('m')
-                    ->leftJoin('m.meta', 'e')->addSelect('e')
-                    ->leftJoin('a.contents', 'c')->addSelect('c')
-                    ->setMaxResults(1)->getQuery()->getOneOrNullResult();
-    }
-
     /**
      * Get all published Articles with specified Category
      *
