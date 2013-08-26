@@ -12,6 +12,8 @@ namespace Vince\Bundle\CmsBundle\Controller;
 
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Vince\Bundle\CmsBundle\Form\Type\ContactType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
@@ -21,6 +23,32 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class DefaultController extends Controller
 {
 
+    /**
+     * Display feed with all published Articles ordered by start publication date
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     * @return Response
+     */
+    public function feedAction()
+    {
+        $format = $this->getRequest()->getRequestFormat() == 'xml' ? 'rss' : $this->getRequest()->getRequestFormat();
+        $articles = $this->get('doctrine.orm.entity_manager')->getRepository('VinceCmsBundle:Article')->findAllPublishedOrdered();
+
+        return $this->render(sprintf('VinceCmsBundle:Templates:feed.%s.twig', $format), array(
+            'articles' => $articles,
+            'id'       => sha1($this->get('router')->generate('cms_feed', array('_format' => $format), true))
+        ));
+    }
+
+    /**
+     * Show an article
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     * @return JsonResponse|RedirectResponse|Response
+     * @throws AccessDeniedException
+     * @throws NotFoundHttpException
+     * @throws \InvalidArgumentException
+     */
     public function showAction()
     {
         // Retrieve article from its id in Request attributes

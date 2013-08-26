@@ -70,4 +70,26 @@ class ArticleRepository extends EntityRepository
                 )
             )->setParameters(array('now' => new \DateTime(), 'name' => $category))->getQuery()->getResult();
     }
+
+    /**
+     * Get all published Articles ordered by start publication date DESC
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @return array
+     */
+    public function findAllPublishedOrdered()
+    {
+        $builder = $this->createQueryBuilder('a')->orderBy('a.startedAt', 'DESC');
+
+        return $builder->where($builder->expr()->andX(
+                $builder->expr()->isNotNull('a.startedAt'),
+                $builder->expr()->lte('a.startedAt', ':now'),
+                $builder->expr()->orX(
+                    $builder->expr()->isNull('a.endedAt'),
+                    $builder->expr()->gte('a.endedAt', ':now')
+                )
+            )
+        )->setParameters(array('now' => new \DateTime()))->getQuery()->getResult();
+    }
 }

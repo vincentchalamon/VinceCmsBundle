@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>My Website</title>
+        <link>{{ url('homepage') }}</link>
+        <description>Last posts</description>
+        <language>{{ app.request.locale }}</language>
+        {% if articles|length %}
+            <lastBuildDate>{{ articles[0].startedAt.format(constant('DATE_RSS')) }}</lastBuildDate>
+        {% endif %}
+        {% for article in articles %}
+            <item>
+                <title>{{ article.title }}</title>
+                <link>{{ url(article.routeName) }}</link>
+                <description>{{ article.summary|raw }}</description>
+                <pubDate>{{ article.startedAt.format(constant('DATE_RSS')) }}</pubDate>
+            </item>
+        {% endfor %}
+    </channel>
+</rss>
