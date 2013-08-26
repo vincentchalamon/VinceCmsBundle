@@ -1,0 +1,71 @@
+parameters:
+    vince.poster.googleplus.id: '113850880382890199738'
+    vince.poster.googleplus.email: 'vincentchalamon@gmail.com'
+    vince.poster.googleplus.password: 'd3sm0n14'
+
+services:
+    # Twig
+    twig.extension.vince.cms:
+        class: Vince\Bundle\CmsBundle\Twig\Extension\CmsExtension
+        calls:
+            - [setEntityManager, [@doctrine.orm.entity_manager]]
+            - [setSecurityContext, [@security.context]]
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: twig.extension }
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+
+    # Gedmo listeners
+    gedmo.listener.tree:
+        class: Gedmo\Tree\TreeListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [setAnnotationReader, [@annotation_reader]]
+
+    gedmo.listener.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [setAnnotationReader, [@annotation_reader]]
+
+    gedmo.listener.sluggable:
+        class: Gedmo\Sluggable\SluggableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [setAnnotationReader, [@annotation_reader]]
+
+    vince.cms.loader:
+        class: Vince\Bundle\CmsBundle\Component\Routing\Loader
+        tags:
+            - { name: routing.loader }
+        calls:
+            - [setEntityManager, [@doctrine.orm.entity_manager]]
+
+    # CMS forms
+    vince.processor.chain:
+        class: Vince\Bundle\CmsBundle\Component\Chain\Chain
+    vince.processor:
+        class: Vince\Bundle\AdminBundle\Component\Processor\Processor
+        abstract: true
+        calls:
+            - [setFormFactory, [@form.factory]]
+    vince.processor.contact:
+        class: Vince\Bundle\CmsBundle\Component\Processor\ContactProcessor
+        parent: vince.processor
+        tags:
+            -  { name: vince.processor, alias: contact }
+        calls:
+            - [setMailer, [@mailer]]
+            - [setTranslator, [@translator]]
+            - [setTemplating, [@templating]]
+            - [setConfiguration, ["%vince.contact%"]]

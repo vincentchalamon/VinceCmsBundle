@@ -1,0 +1,71 @@
+Vince\Bundle\CmsBundle\Entity\Article:
+    homepage:
+        title: Homepage
+        slug: homepage
+        summary: Welcome
+        template:
+            title: Homepage
+            path: VinceCmsBundle:Default:homepage.html.twig
+            areas:
+                main:
+                    title: Contenu
+                    name: main
+                    type: wysiwyg
+                    required: true
+        metas:
+            title:
+                content: Accueil
+                meta: Vince\Bundle\CmsBundle\Entity\Meta-title
+    page:
+        title: Article de test
+        summary: Ceci est un article de test
+        template:
+            title: Page
+            path: VinceCmsBundle:Default:page.html.twig
+            areas:
+                picture:
+                    title: Aperçu
+                    name: picture
+                    type: image
+                contents:
+                    title: Contenu
+                    name: contents
+                    type: wysiwyg
+                    required: true
+        startedAt: '2013-01-01'
+        metas:
+            title:
+                content: Article de test
+                meta: Vince\Bundle\CmsBundle\Entity\Meta-title
+        contents:
+            contents:
+                area: contents
+                contents: Plop
+    page-with-picture:
+        title: Article de test
+        summary: Ceci est un article de test
+        template: Vince\Bundle\CmsBundle\Entity\Article-page-template
+        startedAt: '2013-01-01'
+        metas:
+            title:
+                content: Article de test avec une image
+                meta: Vince\Bundle\CmsBundle\Entity\Meta-title
+        contents:
+            contents-plop:
+                area: contents
+                contents: Plop
+            picture:
+                area: picture
+                contents: '/uploads/toto.png'
+    contact:
+        title: Contact
+        summary: Contact
+        url: /contact
+        template:
+            title: Contact
+            path: VinceCmsBundle:Default:contact.html.twig
+        startedAt: '2013-01-01'
+        metas:
+            title:
+                content: Contact
+                meta: Vince\Bundle\CmsBundle\Entity\Meta-title

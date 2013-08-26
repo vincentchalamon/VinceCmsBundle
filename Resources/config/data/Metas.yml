@@ -1,0 +1,41 @@
+Vince\Bundle\CmsBundle\Entity\Meta:
+    title:
+        title: Titre
+        name: title
+    description:
+        title: Description
+        name: description
+    keywords:
+        title: keywords
+        name: Mots-clés
+    image:
+        title: Image
+        name: image_src
+    og-title:
+        title: Titre
+        name: og:title
+        group: OpenGraph
+    og-description:
+        title: Description
+        name: og:description
+        group: OpenGraph
+    og-image:
+        title: Image
+        name: og:image
+        group: OpenGraph
+    og-video:
+        title: Vidéo
+        name: og:video
+        group: OpenGraph
+    og-video-width:
+        title: Largeur vidéo
+        name: og:video:width
+        group: OpenGraph
+    og-video-height:
+        title: Hauteur vidéo
+        name: og:video:height
+        group: OpenGraph
+    og-video-type:
+        title: Type vidéo
+        name: og:video:type
+        group: OpenGraph

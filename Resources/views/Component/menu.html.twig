@@ -1,0 +1,17 @@
+<ul>
+    {% for child in menu.children if child.isPublished %}
+        <li>
+            <a href="{% if child.isUrl %}{{ child.url }}{% else %}{{ path(child.article.routeName) }}{% endif %}"
+               title="{{ child }}"{% if child.isUrl %} target="{{ child.target }}"{% endif %}>
+                {% if child.isImage %}
+                    <img src="{{ asset(child.path) }}" alt="{{ child }}" title="{{ child }}" />
+                {% else %}
+                    {{ child }}
+                {% endif %}
+                {% if child.children.count %}
+                    {% include 'VinceCmsBundle:Component:menu.html.twig' with {'menu': child} %}
+                {% endif %}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,24 @@
+{% extends 'VinceCmsBundle::base.html.twig' %}
+
+{% block body %}
+    <div id="fb-root"></div>
+    <h1>{{ block('title') }}</h1>
+
+    <div class="infos">
+        Posté le {{ article.updatedAt|localizeddate('full', 'none') }}
+        {% if article.tags|length %}
+            - Tags :
+            {% for i, tag in article.tags %}
+                <a href="{#{ path('search', {'query': tag}) }#}" title="{{ tag }}" class="tag">{{ tag }}</a>{% if i < article.tags|length-1 %}, {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    {% if article.content('picture') %}
+        <div class="thumbnail">
+            <img src="{{ article.content('picture') }}" alt="{{ article.title }}" title="{{ article.title }}" />
+        </div>
+    {% endif %}
+
+    <div class="contents">{{ article.content('contents')|raw }}</div>
+{% endblock %}

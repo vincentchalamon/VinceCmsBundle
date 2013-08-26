@@ -1,0 +1,78 @@
+Vince\Bundle\CmsBundle\Entity\Menu:
+    root:
+        title: Menu principal
+        slug: root
+        startedAt: '2013-01-01'
+        children:
+            homepage:
+                title: Accueil
+                article: homepage
+                startedAt: '2013-01-01'
+            realisations:
+                title: Réalisations
+                article: realisations
+                startedAt: '2013-01-01'
+            cv:
+                title: Curriculum Vitae
+                startedAt: '2013-01-01'
+                article: cv
+            contact:
+                title: Contact
+                article: contact
+                startedAt: '2013-01-01'
+    about:
+        title: A propos
+        slug: about
+        startedAt: '2013-01-01'
+        children:
+            contact:
+                title: Formulaire de contact
+                article: contact
+                startedAt: '2013-01-01'
+            mailto:
+                title: contact[at]vincent-chalamon.fr
+                url: 'mailto:contact[at]vincent-chalamon.fr'
+                startedAt: '2013-01-01'
+                target: _blank
+            cv:
+                title: Consulter mon CV
+                article: cv
+                startedAt: '2013-01-01'
+            ylly:
+                title: Ylly
+                url: http://www.ylly.fr
+                target: _blank
+                startedAt: '2013-01-01'
+    follow:
+        title: Suivez-moi
+        slug: follow
+        startedAt: '2013-01-01'
+        children:
+            linkedin:
+                title: 'Linked In'
+                path: '/bundles/myblog/img/linkedin.png'
+                isImage: true
+                url: 'http://fr.linkedin.com/in/vincentchalamon'
+                target: _blank
+                startedAt: '2013-01-01'
+            viadeo:
+                title: 'Viadeo'
+                path: '/bundles/myblog/img/viadeo.png'
+                isImage: true
+                url: 'http://fr.viadeo.com/fr/profile/vincent.chalamon1'
+                target: _blank
+                startedAt: '2013-01-01'
+            googleplus:
+                title: 'Google Plus'
+                path: '/bundles/myblog/img/googleplus.png'
+                isImage: true
+                url: 'https://plus.google.com/113850880382890199738'
+                target: _blank
+                startedAt: '2013-01-01'
+            github:
+                title: 'Github'
+                path: '/bundles/myblog/img/github.png'
+                isImage: true
+                url: 'https://github.com/vincentchalamon'
+                target: _blank
+                startedAt: '2013-01-01'

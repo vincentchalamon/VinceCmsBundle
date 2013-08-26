@@ -1,0 +1,39 @@
+Vince\Bundle\CmsBundle\Entity\ArticleMeta:
+    type: entity
+    table: article_meta
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        content:
+            type: text
+        createdAt:
+            type: datetime
+            column: created_at
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            column: updated_at
+            gedmo:
+                timestampable:
+                    on: update
+    manyToOne:
+        article:
+            targetEntity: Vince\Bundle\CmsBundle\Entity\Article
+            inversedBy: metas
+            joinColumn:
+                name: article_id
+                nullable: true
+                referencedColumnName: id
+                nullable: false
+        meta:
+            targetEntity: Vince\Bundle\CmsBundle\Entity\Meta
+            joinColumn:
+                name: meta_id
+                nullable: true
+                referencedColumnName: id
+                nullable: false

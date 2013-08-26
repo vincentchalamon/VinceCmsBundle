@@ -1,0 +1,9 @@
+{% extends 'VinceCmsBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>{{ block('title') }}</h1>
+
+    <div class="contents">
+        {{ render(controller('VinceCmsBundle:Default:contact', {'form': form is defined ? form : null})) }}
+    </div>
+{% endblock %}

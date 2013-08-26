@@ -1,0 +1,19 @@
+vince_admin:
+    articles:
+        prefix: /articles
+        entity: Vince\Bundle\CmsBundle\Entity\Article
+        list:
+            display: [title, url, createdAt, menus]
+        form:
+            display: [title, url, summary, startedAt, endedAt, template]
+        fields:
+            startedAt:
+                type: datepicker
+                options:
+                    required: false
+            endedAt:
+                type: datepicker
+                options:
+                    required: false
+            summary:
+                type: redactor

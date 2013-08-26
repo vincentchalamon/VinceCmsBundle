@@ -1,0 +1,88 @@
+Vince\Bundle\CmsBundle\Entity\Area:
+    properties:
+        title:
+            - NotBlank: ~
+        name:
+            - NotBlank: ~
+        type:
+            - NotBlank: ~
+        template:
+            - NotNull: ~
+
+Vince\Bundle\CmsBundle\Entity\Article:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: url
+            message: This url is already used.
+        - Callback:
+            methods: [isPublicationValid]
+    properties:
+        title:
+            - NotBlank: ~
+        url:
+            - Regex: '/^\/[A-z\d\-_\/]*$/'
+        startedAt:
+            - Date: ~
+        endedAt:
+            - Date: ~
+        template:
+            - NotNull: ~
+
+Vince\Bundle\CmsBundle\Entity\ArticleMeta:
+    properties:
+        content:
+            - NotBlank: ~
+        meta:
+            - NotNull: ~
+        article:
+            - NotNull: ~
+
+Vince\Bundle\CmsBundle\Entity\Category:
+    properties:
+        name:
+            - NotBlank: ~
+
+Vince\Bundle\CmsBundle\Entity\Content:
+    properties:
+        contents:
+            - NotBlank: ~
+        article:
+            - NotNull: ~
+        area:
+            - NotNull: ~
+
+Vince\Bundle\CmsBundle\Entity\Menu:
+    constraints:
+        - Callback:
+            methods: [isTargetValid, isPublicationValid, isImageValid]
+    properties:
+        title:
+            - NotBlank: ~
+        url:
+            - Vince\Bundle\CmsBundle\Validator\Constraints\One:
+                - Regex: '/^\/[A-z\d\-_\/]*$/'
+                - Url: ~
+        target:
+            - Choice:
+                choices: [_blank, _parent, _self, _top]
+                message: This value is not a valid target.
+        path:
+            - Image: ~
+        startedAt:
+            - Date: ~
+        endedAt:
+            - Date: ~
+
+Vince\Bundle\CmsBundle\Entity\Menu:
+    properties:
+        title:
+            - NotBlank: ~
+        name:
+            - NotBlank: ~
+
+Vince\Bundle\CmsBundle\Entity\Template:
+    properties:
+        title:
+            - NotBlank: ~
+        path:
+            - NotBlank: ~

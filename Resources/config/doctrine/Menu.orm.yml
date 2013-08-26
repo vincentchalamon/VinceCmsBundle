@@ -1,0 +1,99 @@
+Vince\Bundle\CmsBundle\Entity\Menu:
+    type: entity
+    table: menu
+    repositoryClass: Vince\Bundle\CmsBundle\Entity\Repository\MenuRepository
+    gedmo:
+        tree:
+            type: nested
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        title:
+            type: string
+            length: 255
+        slug:
+            type: string
+            length: 255
+            unique: true
+            gedmo:
+                slug:
+                    fields: [title]
+        url:
+            type: string
+            length: 255
+            nullable: true
+        target:
+            type: string
+            length: 255
+        path:
+            type: string
+            length: 255
+            nullable: true
+        isImage:
+            type: boolean
+            column: is_image
+        startedAt:
+            type: date
+            nullable: true
+            column: started_at
+        endedAt:
+            type: date
+            nullable: true
+            column: ended_at
+        lft:
+            type: integer
+            gedmo:
+                - treeLeft
+        rgt:
+            type: integer
+            gedmo:
+                - treeRight
+        root:
+            type: integer
+            nullable: true
+            gedmo:
+                - treeRoot
+        lvl:
+            type: integer
+            gedmo:
+                - treeLevel
+        createdAt:
+            type: datetime
+            column: created_at
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            column: updated_at
+            gedmo:
+                timestampable:
+                    on: update
+    manyToOne:
+        parent:
+            targetEntity: Vince\Bundle\CmsBundle\Entity\Menu
+            inversedBy: children
+            joinColumn:
+                name: parent_id
+                referencedColumnName: id
+                onDelete: CASCADE
+            gedmo:
+                - treeParent
+        article:
+            targetEntity: Vince\Bundle\CmsBundle\Entity\Article
+            inversedBy: menus
+            joinColumn:
+                name: article_id
+                referencedColumnName: id
+    oneToMany:
+        children:
+            targetEntity: Vince\Bundle\CmsBundle\Entity\Menu
+            mappedBy: parent
+            orderBy:
+                lft: ASC
+    indexes:
+        search_idx:
+            columns: slug

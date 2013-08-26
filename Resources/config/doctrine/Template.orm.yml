@@ -1,0 +1,19 @@
+Vince\Bundle\CmsBundle\Entity\Template:
+    type: entity
+    table: template
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        title:
+            type: string
+            length: 255
+        path:
+            type: string
+            length: 255
+    oneToMany:
+        areas:
+            targetEntity: Vince\Bundle\CmsBundle\Entity\Area
+            mappedBy: template
