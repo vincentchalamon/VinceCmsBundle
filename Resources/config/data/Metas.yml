@@ -8,6 +8,21 @@ Vince\Bundle\CmsBundle\Entity\Meta:
     keywords:
         title: keywords
         name: Mots-clés
+    robots:
+        title: Robots
+        name: robots
+    author:
+        title: Author
+        name: Auteur
+    language:
+        title: Language
+        name: Langue
+    copyright:
+        title: Copyright
+        name: Copyright
+    publisher:
+        title: Editeur
+        name: Publisher
     image:
         title: Image
         name: image_src

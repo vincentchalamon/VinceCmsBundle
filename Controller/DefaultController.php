@@ -18,7 +18,6 @@ use Vince\Bundle\CmsBundle\Form\Type\ContactType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class DefaultController extends Controller
 {
@@ -45,7 +44,6 @@ class DefaultController extends Controller
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      * @return JsonResponse|RedirectResponse|Response
-     * @throws AccessDeniedException
      * @throws NotFoundHttpException
      * @throws \InvalidArgumentException
      */
@@ -53,13 +51,16 @@ class DefaultController extends Controller
     {
         // Retrieve article from its id in Request attributes
         $article = $this->getDoctrine()->getRepository('VinceCmsBundle:Article')->find($this->getRequest()->attributes->get('_id'));
-        if (!$article) {
+        if (!$article || (!$article->isPublished() && !$this->get('security.context')->isGranted('ROLE_ADMIN'))) {
             throw $this->createNotFoundException();
-        } elseif (!$article->isPublished() && !$this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            throw new AccessDeniedException();
         }
 
         $options = array('article' => $article);
+
+        // Search
+        if ($article->getSlug() == 'search') {
+            $options['results'] = $this->get('ewz_search.lucene')->find($this->getRequest()->get('query'));
+        }
 
         // Form has been sent to the article
         if ($this->getRequest()->isMethod('post')) {

@@ -231,11 +231,10 @@ class YamlFixturesLoader
                 // Column with ClassMetadata
             } else {
                 if ($this->metas[$class]->hasField($column)) {
-                    $type  = \Doctrine\DBAL\Types\Type::getType($this->metas[$class]->getTypeOfField($column));
-                    $value = $type->convertToPHPValue(
-                        $value,
-                        $this->getManager()->getConnection()->getDatabasePlatform()
-                    );
+                    $type = \Doctrine\DBAL\Types\Type::getType($this->metas[$class]->getTypeOfField($column));
+                    if (strtolower($type) != 'array') {
+                        $value = $type->convertToPHPValue($value, $this->getManager()->getConnection()->getDatabasePlatform());
+                    }
                 }
                 if (is_callable(array($record, $this->buildMethod("set", $column)))) {
                     call_user_func(array($record, $this->buildMethod("set", $column)), $value);

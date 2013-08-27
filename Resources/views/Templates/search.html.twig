@@ -1,0 +1,15 @@
+{% extends 'VinceCmsBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>{{ block('title') }}</h1>
+
+    <div class="contents">{{ article.content('contents')|raw }}</div>
+
+    {% if results|length %}
+        {% for result in results %}
+            {{ result }}
+        {% endfor %}
+    {% else %}
+        <p>Votre recherche n'a retourné aucun résultat.</p>
+    {% endif %}
+{% endblock %}
