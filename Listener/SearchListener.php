@@ -25,12 +25,13 @@ class SearchListener
     protected $finder;
 
     protected $request;
+    protected $container;
 
     public function onLoad(CmsEvent $event)
     {
         //$event->addOption('results', $this->finder->search($query));
         $event->addOption('results', array());
-        $event->addOption('query', $this->request->get('query'));
+        $event->addOption('query', $this->container->get('request')->get('query'));
     }
 
     public function setFinder(TransformedFinder $finder)
@@ -41,5 +42,10 @@ class SearchListener
     public function setRequest($request)
     {
         $this->request = $request;
+    }
+
+    public function setContainer($container)
+    {
+        $this->container = $container;
     }
 }

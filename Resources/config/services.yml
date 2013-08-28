@@ -54,14 +54,22 @@ services:
             - [setEntityManager, [@doctrine.orm.entity_manager]]
 
     # CMS loaders
-    vince.cms.load.search.listener:
+    vince.cms.search.load.listener:
         class: Vince\Bundle\CmsBundle\Listener\SearchListener
-        scope: request
+        #scope: request
         tags:
             - { name: kernel.event_listener, event: vince.cms.search.load, method: onLoad }
         calls:
             - [setFinder, [@fos_elastica.finder.website.article]]
-            - [setRequest, [@request]]
+            #- [setRequest, [@request]]
+            - [setContainer, [@service_container]]
+
+    vince.cms.contact.load.listener:
+        class: Vince\Bundle\CmsBundle\Listener\ContactListener
+        tags:
+            - { name: kernel.event_listener, event: vince.cms.contact.load, method: onLoad }
+        calls:
+            - [setFormFactory, [@form.factory]]
 
     # CMS forms
     vince.processor.chain:

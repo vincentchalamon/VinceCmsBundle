@@ -23,10 +23,10 @@ class CmsEvent extends Event
 
     protected $article, $options;
 
-    public function __construct(Article $article)
+    public function __construct(Article $article, array $options = array())
     {
         $this->article = $article;
-        $this->options = array('article' => $article);
+        $this->options = array_merge(array('article' => $article), $options);
     }
 
     public function getArticle()

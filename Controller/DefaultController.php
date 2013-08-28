@@ -56,7 +56,8 @@ class DefaultController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $options = $this->get('event_dispatcher')->dispatch(sprintf('vince.cms.%s.load', $article->getSlug()), new CmsEvent($article))->getOptions();
+        $options = $this->get('event_dispatcher')->dispatch(sprintf('vince.cms.load', $article->getSlug()), new CmsEvent($article))->getOptions();
+        $options = $this->get('event_dispatcher')->dispatch(sprintf('vince.cms.%s.load', $article->getSlug()), new CmsEvent($article, $options))->getOptions();
 
         // Form has been sent to the article
         if ($this->getRequest()->isMethod('post')) {
