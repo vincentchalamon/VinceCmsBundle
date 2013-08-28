@@ -1,56 +1,112 @@
 Vince\Bundle\CmsBundle\Entity\Meta:
+# Global
     title:
         title: Titre
         name: title
     description:
         title: Description
         name: description
+        type: textarea
     keywords:
-        title: keywords
-        name: Mots-clés
+        title: Mots-clés
+        name: keywords
+        type: textarea
     robots:
         title: Robots
         name: robots
     author:
-        title: Author
-        name: Auteur
+        title: Auteur
+        name: author
     language:
-        title: Language
-        name: Langue
+        title: Langue
+        name: language
     copyright:
         title: Copyright
-        name: Copyright
+        name: copyright
     publisher:
         title: Editeur
-        name: Publisher
+        name: publisher
     image:
         title: Image
         name: image_src
+        #validate url
+# Facebook
     og-title:
         title: Titre
         name: og:title
         group: OpenGraph
+    og-type:
+        title: Type
+        name: og:type
+        group: OpenGraph
+    og-url:
+        title: Url
+        name: og:url
+        group: OpenGraph
+        #validate url
     og-description:
         title: Description
         name: og:description
         group: OpenGraph
+        type: textarea
     og-image:
         title: Image
         name: og:image
         group: OpenGraph
+        #validate url
     og-video:
         title: Vidéo
         name: og:video
         group: OpenGraph
+        #validate url
     og-video-width:
         title: Largeur vidéo
         name: og:video:width
         group: OpenGraph
+        #validate integer
     og-video-height:
         title: Hauteur vidéo
         name: og:video:height
         group: OpenGraph
+        #validate integer
     og-video-type:
         title: Type vidéo
         name: og:video:type
         group: OpenGraph
+# Twitter
+    twitter-card:
+        title: Type
+        name: twitter:card
+        group: Twitter
+    twitter-site:
+        title: Site
+        name: twitter:site
+        group: Twitter
+    twitter-creator:
+        title: Auteur
+        name: twitter:creator
+        group: Twitter
+    twitter-description:
+        title: Description
+        name: twitter:description
+        group: Twitter
+        type: textarea
+    twitter-title:
+        title: Titre
+        name: twitter:title
+        group: Twitter
+    twitter-image-src:
+        title: Image
+        name: twitter:image:src
+        group: Twitter
+        #validate url
+    twitter-image-width:
+        title: Largeur image
+        name: twitter:image:width
+        group: Twitter
+        #validate integer
+    twitter-image-height:
+        title: Hauteur image
+        name: twitter:image:height
+        group: Twitter
+        #validate integer

@@ -1,0 +1,23 @@
+{% block meta %}
+{% spaceless %}
+    {% if block('meta_' ~ meta.meta.slug) is not empty %}
+        {{ block('meta_' ~ meta.meta.slug) }}
+    {% elseif meta.meta.name|slice(0, 3) == 'org:' %}
+        {{ block('meta_or') }}
+    {% else %}
+        <meta name="{{ meta.meta.name }}" content="{{ meta.content }}" />
+    {% endif %}
+{% endspaceless %}
+{% endblock %}
+
+{% block meta_image_src %}
+{% spaceless %}
+    <link rel="{{ meta.meta.name }}" href="{{ meta.content }}" />
+{% endspaceless %}
+{% endblock %}
+
+{% block meta_og %}
+{% spaceless %}
+    <meta property="{{ meta.meta.name }}" content="{{ meta.content }}" />
+{% endspaceless %}
+{% endblock %}

@@ -1,3 +1,5 @@
+{% use 'VinceCmsBundle::metas.html.twig' %}
+
 <!DOCTYPE html>
 <html xmlns:fb="https://www.facebook.com/2008/fbml">
     <head>
@@ -5,16 +7,11 @@
         <title>{% block title %}{{ article.meta('title') }}{% endblock %}</title>
         {% block metas %}
             {% for meta in article.metas %}
-                {% if meta.meta.name == 'image_src' %}
-                    <link rel="{{ meta.meta.name }}" href="{{ meta.content }}" />
-                {% elseif meta.meta.name|slice(0, 3) == 'org:' %}
-                    <meta property="{{ meta.meta.name }}" content="{{ meta.content }}" />
-                {% else %}
-                    <meta name="{{ meta.meta.name }}" content="{{ meta.content }}" />
-                {% endif %}
+                {{ block('meta') }}
             {% endfor %}
         {% endblock %}
         {% block stylesheets %}{% endblock %}
+        <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ path('cms_sitemap') }}" />
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>

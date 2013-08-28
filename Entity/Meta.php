@@ -37,6 +37,21 @@ class Meta
     /**
      * @var string
      */
+    private $slug;
+
+    /**
+     * @var string
+     */
+    private $type;
+
+    /**
+     * @var string
+     */
+    private $validator;
+
+    /**
+     * @var string
+     */
     private $group;
 
     /**
@@ -127,5 +142,74 @@ class Meta
     public function getGroup()
     {
         return $this->group;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return Meta
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set validator
+     *
+     * @param string $validator
+     * @return Meta
+     */
+    public function setValidator($validator)
+    {
+        $this->validator = $validator;
+    
+        return $this;
+    }
+
+    /**
+     * Get validator
+     *
+     * @return string 
+     */
+    public function getValidator()
+    {
+        return $this->validator;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Meta
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

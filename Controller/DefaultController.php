@@ -24,6 +24,21 @@ class DefaultController extends Controller
 {
 
     /**
+     * Generate sitemap
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     * @return Response
+     */
+    public function sitemapAction()
+    {
+        $articles = $this->get('doctrine.orm.entity_manager')->getRepository('VinceCmsBundle:Article')->findAllPublishedOrdered();
+
+        return $this->render('VinceCmsBundle:Templates:sitemap.xml.twig', array(
+            'articles' => $articles
+        ));
+    }
+
+    /**
      * Display feed with all published Articles ordered by start publication date
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
