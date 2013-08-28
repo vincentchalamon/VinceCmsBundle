@@ -4,14 +4,6 @@ parameters:
     vince.poster.googleplus.password: 'd3sm0n14'
 
 services:
-    # Search
-    #vince.cms.lucene.listener:
-        #class: Vince\Bundle\CmsBundle\Listener\SearchIndexListener
-        #calls:
-            #- [setLucene, [@ewz_search.lucene]]
-            #- [setRouter, [@router]]
-        #tags:
-            #- { name: doctrine.event_listener, event: postPersist }
     # Twig
     twig.extension.vince.cms:
         class: Vince\Bundle\CmsBundle\Twig\Extension\CmsExtension
@@ -61,6 +53,16 @@ services:
         calls:
             - [setEntityManager, [@doctrine.orm.entity_manager]]
 
+    # CMS loaders
+    vince.cms.load.search.listener:
+        class: Vince\Bundle\CmsBundle\Listener\SearchListener
+        scope: request
+        tags:
+            - { name: kernel.event_listener, event: vince.cms.search.load, method: onLoad }
+        calls:
+            - [setFinder, [@fos_elastica.finder.website.article]]
+            - [setRequest, [@request]]
+
     # CMS forms
     vince.processor.chain:
         class: Vince\Bundle\CmsBundle\Component\Chain\Chain
@@ -80,4 +82,5 @@ services:
             - [setMailer, [@mailer]]
             - [setTranslator, [@translator]]
             - [setTemplating, [@templating]]
+            - [setSession, [@session]]
             - [setConfiguration, ["%vince.contact%"]]

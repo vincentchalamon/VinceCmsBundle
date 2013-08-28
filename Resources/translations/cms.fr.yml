@@ -1,5 +1,0 @@
-message:
-    form:
-        invalid: Le formulaire comporte des erreurs.
-    contact:
-        success: Votre message a bien été envoyé. Nous y répondrons dès que possible.

@@ -8,7 +8,7 @@
         {% if article.tags|length %}
             - Tags :
             {% for i, tag in article.tags %}
-                <a href="{#{ path('search', {'query': tag}) }#}" title="{{ tag }}" class="tag">{{ tag }}</a>{% if i < article.tags|length-1 %}, {% endif %}
+                <a href="{{ path('cms_search', {'query': tag}) }}" title="{{ tag }}" class="tag">{{ tag }}</a>{% if i < article.tags|length-1 %}, {% endif %}
             {% endfor %}
         {% endif %}
     </div>

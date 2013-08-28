@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ContactProcessor extends Processor
 {
 
-    protected $mailer, $templating, $configuration, $translator;
+    protected $mailer, $templating, $configuration, $translator, $session;
 
     public function process(Request $request)
     {
@@ -40,11 +40,17 @@ class ContactProcessor extends Processor
                 )))
             ;
             $this->mailer->send($message);
+            $this->session->getFlashBag()->add('success', $this->translator->trans('message.form.success', array(), 'cms'));
 
             return true;
         }
 
         return $form;
+    }
+
+    public function setSession($session)
+    {
+        $this->session = $session;
     }
 
     public function setMailer($mailer)

@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Vince\Bundle\CmsBundle\Event\CmsEvent;
 use Vince\Bundle\CmsBundle\Form\Type\ContactType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
@@ -55,12 +56,7 @@ class DefaultController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $options = array('article' => $article);
-
-        // Search
-        if ($article->getSlug() == 'search') {
-            $options['results'] = $this->get('ewz_search.lucene')->find($this->getRequest()->get('query'));
-        }
+        $options = $this->get('event_dispatcher')->dispatch(sprintf('vince.cms.%s.load', $article->getSlug()), new CmsEvent($article))->getOptions();
 
         // Form has been sent to the article
         if ($this->getRequest()->isMethod('post')) {
@@ -77,11 +73,9 @@ class DefaultController extends Controller
                     $options['form'] = $return->createView();
                 // Processor returns true, but Request is ajax
                 } elseif ($this->getRequest()->isXmlHttpRequest()) {
-                    return new JsonResponse(array('message' => $this->get('translator')->trans('message.contact.success', array(), 'cms')));
+                    return new JsonResponse();
                 // Processor returns true, Request is not ajax
                 } else {
-                    $this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('message.contact.success', array(), 'cms'));
-
                     return $this->redirect($this->generateUrl($article->getRouteName()));
                 }
             }
@@ -89,10 +83,10 @@ class DefaultController extends Controller
             // Processor finished, Form has errors and Request is ajax
             if ($this->getRequest()->isXmlHttpRequest()) {
                 return new Response($this->get('jms_serializer')->serialize(array_merge(array(
-                    'message' => $this->get('translator')->trans('message.form.invalid', array(), 'cms')
+                    'message' => $this->get('translator')->trans('Form has errors.', array(), 'validators')
                 ), $options), 'json'), 400);
             }
-            $this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('message.form.invalid', array(), 'cms'));
+            $this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('Form has errors.', array(), 'validators'));
 
             return $this->render($article->getTemplate()->getPath(), $options)->setStatusCode(400);
         }

@@ -7,9 +7,29 @@
 
     {% if results|length %}
         {% for result in results %}
-            {{ result }}
+            <div class="block">
+                <h2><a href="{{ path(result.routeName) }}" title="{{ result.title }}">{{ result.title }}</a></h2>
+                <div class="chapo">
+                    {{ result.summary|raw }}
+                    <a href="{{ path(result.routeName) }}" title="Lire la suite" class="linked gradient">Lire la suite</a>
+                </div>
+                <p class="infos">
+                    <span class="date">{{ result.startedAt|localizeddate('long', 'none') }}</span>
+                    {#<a href="{{ path(article.routeName) }}#commentaires" title="{{ "{0} Aucun commentaire|{1} 1 commentaire|]1,Inf] %count% commentaires"|transchoice(article.activecomments.count) }}" class="comments">
+                        {{ "{0} Aucun commentaire|{1} 1 commentaire|]1,Inf] %count% commentaires"|transchoice(post.activecomments.count) }}
+                    </a>#}
+                    {% if result.tags|length %}
+                        <span class="tags">
+                            {% for i, tag in result.tags %}
+                                <a href="{{ path('cms_search', {'query': tag}) }}" title="{{ tag }}" class="tag">{{ tag }}</a>{% if i < result.tags|length-1 %}, {% endif %}
+                            {% endfor %}
+                        </span>
+                    {% endif %}
+                </p>
+                <div class="clear"></div>
+            </div>
         {% endfor %}
     {% else %}
-        <p>Votre recherche n'a retourné aucun résultat.</p>
+        <p class="empty">Votre recherche n'a donné aucun résultat.</p>
     {% endif %}
 {% endblock %}

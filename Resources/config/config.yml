@@ -1,0 +1,33 @@
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        website:
+            client: default
+            types:
+                article:
+                    mappings:
+                        title:     ~
+                        slug:      ~
+                        summary:   ~
+                        tags:      ~
+                        url:       ~
+                        startedAt: ~
+                        endedAt:   ~
+                        contents:
+                            type: 'nested'
+                            properties:
+                                contents: ~
+                        metas:
+                            type: 'nested'
+                            properties:
+                                content: ~
+                        categories:
+                            type: 'nested'
+                            properties:
+                                name: ~
+                    persistence:
+                        driver:   orm
+                        model:    Vince\Bundle\CmsBundle\Entity\Article
+                        provider: ~
+                        finder:   ~
