@@ -15,7 +15,8 @@
         "doctrine/doctrine-fixtures-bundle": "2.1.*@dev",
         "gedmo/doctrine-extensions": "2.3.5",
         "liip/functional-test-bundle": "dev-master",
-        "jms/serializer-bundle": "0.13.*@dev"
+        "jms/serializer-bundle": "0.13.*@dev",
+        "friendsofsymfony/elastica-bundle": "3.0.*@dev"
     },
     "autoload": {
         "psr-0": { "Vince\\Bundle\\CmsBundle": "" }
