@@ -61,7 +61,6 @@ services:
             - { name: kernel.event_listener, event: vince.cms.search.load, method: onLoad }
         calls:
             - [setFinder, [@fos_elastica.finder.website.article]]
-            #- [setRequest, [@request]]
             - [setContainer, [@service_container]]
 
     vince.cms.contact.load.listener:

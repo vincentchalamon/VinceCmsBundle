@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Symfony package.
+ * This file is part of the VinceCmsBundle.
  *
  * (c) Vincent Chalamon <vincentchalamon@gmail.com>
  *
@@ -21,6 +21,19 @@ use Doctrine\ORM\Query\Expr\Join;
  */
 class ArticleRepository extends EntityRepository
 {
+
+    /**
+     * Create builder for indexable articles (non system)
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function createIndexableQueryBuilder()
+    {
+        $builder = $this->createQueryBuilder('a');
+
+        return $builder->where($builder->expr()->notIn('a.slug', array('homepage', 'search')));
+    }
 
     /**
      * Return iterable Articles list

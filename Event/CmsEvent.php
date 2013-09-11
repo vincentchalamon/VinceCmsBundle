@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Symfony package.
+ * This file is part of the VinceCmsBundle.
  *
  * (c) Vincent Chalamon <vincentchalamon@gmail.com>
  *
@@ -44,6 +44,11 @@ class CmsEvent extends Event
         $this->options[$name] = $value;
 
         return $this;
+    }
+
+    public function getOption($name)
+    {
+        return isset($this->options[$name]) ? $this->options[$name] : null;
     }
 
     public function removeOption($name)

@@ -3,31 +3,66 @@ fos_elastica:
         default: { host: localhost, port: 9200 }
     indexes:
         website:
+            settings:
+                index:
+                    analysis:
+                        analyzer:
+                            analyzer_basic:
+                                type:      custom
+                                tokenizer: nGram
+                                filter:    [lowercase, asciifolding, snowball, elision, stopwords]
+                            analyzer_html:
+                                type:        custom
+                                tokenizer:   nGram
+                                char_filter: html_strip
+                                filter:      [lowercase, asciifolding, snowball, elision, stopwords]
+                        tokenizer:
+                            nGram:
+                                type:     nGram
+                                min_gram: 5
+                                max_gram: 20
+                        filter:
+                            snowball:
+                                type:     snowball
+                                language: French
+                            elision:
+                                type:     elision
+                                articles: [l, m, t, qu, n, s, j, d]
+                            stopwords:
+                                type:      stop
+                                stopwords: [_french_]
             client: default
             types:
                 article:
                     mappings:
-                        title:     ~
-                        slug:      ~
-                        summary:   ~
-                        tags:      ~
-                        url:       ~
-                        startedAt: ~
-                        endedAt:   ~
+                        title:
+                            boost:    5
+                            analyzer: analyzer_basic
+                        slug:
+                            boost:    4
+                            analyzer: analyzer_basic
+                        summary:
+                            boost:    3
+                            analyzer: analyzer_html
+                        tags:
+                            boost:    2
+                            analyzer: analyzer_basic
+                        url:
+                            boost:    4
+                            analyzer: analyzer_basic
+                        startedAt:
+                            type: date
+                        endedAt:
+                            type: date
                         contents:
-                            type: 'nested'
+                            type:  nested
                             properties:
-                                contents: ~
-                        metas:
-                            type: 'nested'
-                            properties:
-                                content: ~
-                        categories:
-                            type: 'nested'
-                            properties:
-                                name: ~
+                                contents:
+                                    boost:    3
+                                    analyzer: analyzer_html
                     persistence:
                         driver:   orm
                         model:    Vince\Bundle\CmsBundle\Entity\Article
-                        provider: ~
+                        provider:
+                            query_builder_method: createIndexableQueryBuilder
                         finder:   ~
