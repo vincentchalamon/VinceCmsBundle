@@ -71,7 +71,7 @@ class DefaultController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $options = $this->get('event_dispatcher')->dispatch(sprintf('vince.cms.load', $article->getSlug()), new CmsEvent($article))->getOptions();
+        $options = $this->get('event_dispatcher')->dispatch('vince.cms.load', new CmsEvent($article))->getOptions();
         $options = $this->get('event_dispatcher')->dispatch(sprintf('vince.cms.%s.load', $article->getSlug()), new CmsEvent($article, $options))->getOptions();
 
         // Form has been sent to the article
@@ -80,7 +80,8 @@ class DefaultController extends Controller
             if (!$this->get('vince.processor.chain')->has($parameters[0])) {
                 throw new \InvalidArgumentException(sprintf('You must implement a vince.processor tagged service for form %s.', $parameters[0]));
             } else {
-                $return = $this->get('vince.processor.chain')->get($parameters[0])->process($this->getRequest());
+                $return = $this->get('vince.processor.chain')->get($parameters[0])
+                               ->setOptions($options)->process($this->getRequest());
                 // Processor returns a Response object
                 if (is_object($return) && $return instanceof Response) {
                     return $return;

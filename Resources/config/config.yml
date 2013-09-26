@@ -55,7 +55,7 @@ fos_elastica:
                         endedAt:
                             type: date
                         contents:
-                            type:  nested
+                            type:  'nested'
                             properties:
                                 contents:
                                     boost:    3

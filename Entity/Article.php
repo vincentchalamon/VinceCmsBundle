@@ -582,7 +582,7 @@ class Article
      * @param Category $categories
      * @return Article
      */
-    public function addCategorie(Category $categories)
+    public function addCategory(Category $categories)
     {
         $this->categories[] = $categories;
     
@@ -594,7 +594,7 @@ class Article
      *
      * @param Category $categories
      */
-    public function removeCategorie(Category $categories)
+    public function removeCategory(Category $categories)
     {
         $this->categories->removeElement($categories);
     }

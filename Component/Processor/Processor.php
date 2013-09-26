@@ -21,13 +21,23 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class Processor
 {
 
+    /** @var $factory FormFactory */
     protected $factory;
+
+    protected $options = array();
 
     abstract public function process(Request $request);
 
     public function setFormFactory(FormFactory $formFactory)
     {
         $this->factory = $formFactory;
+    }
+
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
+
+        return $this;
     }
 
     /**

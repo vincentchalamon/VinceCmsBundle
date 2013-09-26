@@ -4,6 +4,10 @@
     <h1>{{ block('title') }}</h1>
 
     <div class="contents">
-        {{ render(controller('VinceCmsBundle:Default:contact', {'form': form})) }}
+        {{ form_start(form, {'method': 'POST'}) }}
+            {{ form_errors(form) }}
+            {{ form_rest(form) }}
+            <input type="submit" value="Envoyez le formulaire" />
+        {{ form_end(form) }}
     </div>
 {% endblock %}

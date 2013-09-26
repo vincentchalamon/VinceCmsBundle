@@ -1,71 +1,156 @@
 Vince\Bundle\CmsBundle\Entity\Article:
     homepage:
-        title: Homepage
+        title: Accueil
         slug: homepage
-        summary: Welcome
+        summary: Vincent Chalamon
+        url: /
         template:
-            title: Homepage
-            path: VinceCmsBundle:Default:homepage.html.twig
-            areas:
-                main:
-                    title: Contenu
-                    name: main
-                    type: wysiwyg
-                    required: true
-        metas:
-            title:
-                content: Accueil
-                meta: Vince\Bundle\CmsBundle\Entity\Meta-title
-    page:
-        title: Article de test
-        summary: Ceci est un article de test
+            title: Accueil
+            path: MyBlogBundle:Templates:homepage.html.twig
+    search:
+        title: Rechercher
+        slug: search
+        summary: Vincent Chalamon
+        url: /rechercher
+        template:
+            title: Rechercher
+            path: MyBlogBundle:Templates:search.html.twig
+    non-publie:
+        title: Non publié
+        summary: Non publié
         template:
             title: Page
-            path: VinceCmsBundle:Default:page.html.twig
+            path: MyBlogBundle:Templates:page.html.twig
             areas:
-                picture:
-                    title: Aperçu
-                    name: picture
-                    type: image
-                contents:
+                non-publie:
                     title: Contenu
                     name: contents
                     type: wysiwyg
                     required: true
-        startedAt: '2013-01-01'
-        metas:
-            title:
-                content: Article de test
-                meta: Vince\Bundle\CmsBundle\Entity\Meta-title
         contents:
-            contents:
-                area: contents
-                contents: Plop
-    page-with-picture:
-        title: Article de test
-        summary: Ceci est un article de test
-        template: Vince\Bundle\CmsBundle\Entity\Article-page-template
-        startedAt: '2013-01-01'
-        metas:
-            title:
-                content: Article de test avec une image
-                meta: Vince\Bundle\CmsBundle\Entity\Meta-title
-        contents:
-            contents-plop:
-                area: contents
-                contents: Plop
-            picture:
-                area: picture
-                contents: '/uploads/toto.png'
-    contact:
-        title: Contact
-        summary: Contact
-        url: /contact
+            non-publie:
+                area: non-publie
+                contents: vincent
+    pre-publie:
+        title: Pré publié
+        summary: Pré publié
+        startedAt: '2013-09-13'
         template:
-            title: Contact
-            path: VinceCmsBundle:Default:contact.html.twig
-        startedAt: '2013-01-01'
-        metas:
-            title:
-                content: Contact
-                meta: Vince\Bundle\CmsBundle\Entity\Meta-title
+            title: Page
+            path: MyBlogBundle:Templates:page.html.twig
+            areas:
+                pre-publie:
+                    title: Contenu
+                    name: contents
+                    type: wysiwyg
+                    required: true
+        contents:
+            pre-publie:
+                area: pre-publie
+                contents: jordan
+    pre-publie-temp:
+        title: Pré publié temporairement
+        summary: Pré publié temporairement
+        startedAt: '2013-09-13'
+        endedAt: '2013-09-15'
+        template:
+            title: Page
+            path: MyBlogBundle:Templates:page.html.twig
+            areas:
+                pre-publie-temp:
+                    title: Contenu
+                    name: contents
+                    type: wysiwyg
+                    required: true
+        contents:
+            pre-publie-temp:
+                area: pre-publie-temp
+                contents: samuel
+    publie:
+        title: Publié
+        summary: Publié
+        startedAt: '2013-09-11'
+        template:
+            title: Page
+            path: MyBlogBundle:Templates:page.html.twig
+            areas:
+                publie:
+                    title: Contenu
+                    name: contents
+                    type: wysiwyg
+                    required: true
+        contents:
+            publie:
+                area: publie
+                contents: yannick
+    publie-today:
+        title: Publié aujourd'hui
+        summary: Publié aujourd'hui
+        startedAt: '2013-09-12'
+        template:
+            title: Page
+            path: MyBlogBundle:Templates:page.html.twig
+            areas:
+                publie-today:
+                    title: Contenu
+                    name: contents
+                    type: wysiwyg
+                    required: true
+        contents:
+            publie-today:
+                area: publie-today
+                contents: benoit
+    publie-until-today:
+        title: Publié jusqu'à aujourd'hui
+        summary: Publié jusqu'à aujourd'hui
+        startedAt: '2013-09-11'
+        endedAt: '2013-09-12'
+        template:
+            title: Page
+            path: MyBlogBundle:Templates:page.html.twig
+            areas:
+                publie-until-today:
+                    title: Contenu
+                    name: contents
+                    type: wysiwyg
+                    required: true
+        contents:
+            publie-until-today:
+                area: publie-until-today
+                contents: gilles
+    publie-temp:
+        title: Publié temporairement
+        summary: Publié temporairement
+        startedAt: '2013-09-12'
+        endedAt: '2013-09-15'
+        template:
+            title: Page
+            path: MyBlogBundle:Templates:page.html.twig
+            areas:
+                publie-temp:
+                    title: Contenu
+                    name: contents
+                    type: wysiwyg
+                    required: true
+        contents:
+            publie-temp:
+                area: publie-temp
+                contents: adrien
+    depublie:
+        title: Dépublié
+        summary: Dépublié
+        startedAt: '2013-09-10'
+        endedAt: '2013-09-11'
+        template:
+            title: Page
+            path: MyBlogBundle:Templates:page.html.twig
+            areas:
+                depublie:
+                    title: Contenu
+                    name: contents
+                    type: wysiwyg
+                    required: true
+        contents:
+            depublie:
+                area: depublie
+                contents: franck
