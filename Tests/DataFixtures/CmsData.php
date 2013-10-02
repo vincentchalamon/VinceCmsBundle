@@ -19,7 +19,7 @@ use Vince\Bundle\CmsBundle\Lib\YamlFixturesLoader as Loader;
  *
  * @author Vincent CHALAMON <vincentchalamon@gmail.com>
  */
-class FixturesData extends AbstractFixture
+class CmsData extends AbstractFixture
 {
     
     /**

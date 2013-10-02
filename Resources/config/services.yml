@@ -56,7 +56,6 @@ services:
     # CMS loaders
     vince.cms.search.load.listener:
         class: Vince\Bundle\CmsBundle\Listener\SearchListener
-        #scope: request
         tags:
             - { name: kernel.event_listener, event: vince.cms.search.load, method: onLoad }
         calls:
