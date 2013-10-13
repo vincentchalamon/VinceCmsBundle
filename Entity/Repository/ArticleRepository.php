@@ -12,7 +12,6 @@ namespace Vince\Bundle\CmsBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
-use Doctrine\ORM\Query\Expr\Join;
 use Vince\Bundle\CmsBundle\Entity\Article;
 use Elastica\Filter\BoolAnd;
 use Elastica\Filter\BoolOr;
@@ -20,7 +19,6 @@ use Elastica\Filter\Missing;
 use Elastica\Filter\Range;
 use Elastica\Query;
 use Elastica\Query\QueryString;
-use Elastica\Query\Nested;
 
 /**
  * This class provides features to find Articles.
@@ -84,7 +82,6 @@ class ArticleRepository extends EntityRepository
     public function find($id)
     {
         return $this->createQueryBuilder('a')
-                    ->leftJoin('a.categories', 'c')->addSelect('c')
                     ->leftJoin('a.metas', 'm')->addSelect('m')
                     ->leftJoin('a.menus', 'me')->addSelect('me')
                     ->leftJoin('a.contents', 'co')->addSelect('co')
@@ -115,34 +112,6 @@ class ArticleRepository extends EntityRepository
     public function findAllIterate()
     {
         return $this->createQueryBuilder('a')->getQuery()->iterate();
-    }
-
-    /**
-     * Get all published Articles with specified Category
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     *
-     * @param string $category Category name
-     *
-     * @return array
-     */
-    public function findPublishedByCategory($category)
-    {
-        $builder = $this->createQueryBuilder('a');
-
-        return $builder->innerJoin('a.categories', 'c', Join::WITH, $builder->expr()->eq('c.name', ':name'))
-            ->addSelect('c')
-            ->andWhere(
-                $builder->expr()->andX(
-                    $builder->expr()->isNotNull('a.startedAt'),
-                    $builder->expr()->lte('a.startedAt', ':now'),
-                    $builder->expr()->orX(
-                        $builder->expr()->isNull('a.endedAt'),
-                        $builder->expr()->gte('a.endedAt', ':now')
-                    )
-                )
-            )->setParameters(array('now' => new \DateTime(), 'name' => $category))
-            ->getQuery()->getResult();
     }
 
     /**

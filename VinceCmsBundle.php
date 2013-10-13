@@ -10,6 +10,7 @@
  */
 namespace Vince\Bundle\CmsBundle;
 
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Vince\Bundle\CmsBundle\Component\CompilerPass\CompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -19,6 +20,8 @@ class VinceCmsBundle extends Bundle
 
     public function build(ContainerBuilder $container)
     {
+        parent::build($container);
+
         $container->addCompilerPass(new CompilerPass('vince.processor'));
     }
 }

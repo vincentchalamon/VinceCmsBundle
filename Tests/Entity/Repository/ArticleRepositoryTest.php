@@ -34,7 +34,7 @@ class ArticleRepositoryTest extends WebTestCase
     {
         $client           = static::createClient();
         $container        = $client->getContainer();
-        $this->repository = $container->get('doctrine.orm.entity_manager')->getRepository('VinceCmsBundle:Article');
+        $this->repository = $container->get('doctrine.orm.entity_manager')->getRepository($container->getParameter('vince.class.article'));
         $this->finder     = $container->get('fos_elastica.finder.website.article');
 
         // Load test fixtures

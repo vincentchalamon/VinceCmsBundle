@@ -31,6 +31,9 @@ class VinceCmsExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
         
         $container->setParameter('vince.contact', $config['contact']);
+        $container->setParameter('vince.class.article', $config['class']['article']);
+        $container->setParameter('vince.class.block', $config['class']['block']);
+        $container->setParameter('vince.class.menu', $config['class']['menu']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

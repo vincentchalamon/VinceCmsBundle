@@ -1,0 +1,6 @@
+Vince\Bundle\CmsBundle\Entity\Meta:
+    properties:
+        title:
+            - NotBlank: ~
+        name:
+            - NotBlank: ~

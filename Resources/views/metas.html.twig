@@ -1,23 +1,23 @@
-{% block meta %}
+{% block render_meta %}
 {% spaceless %}
     {% if block('meta_' ~ meta.meta.slug) is not empty %}
         {{ block('meta_' ~ meta.meta.slug) }}
     {% elseif meta.meta.name|slice(0, 3) == 'org:' %}
-        {{ block('meta_or') }}
+        {{ block('meta_org') }}
     {% else %}
-        <meta name="{{ meta.meta.name }}" content="{{ meta.content }}" />
+        <meta name="{{ meta.meta.name }}" content="{{ meta.contents }}" />
     {% endif %}
 {% endspaceless %}
 {% endblock %}
 
 {% block meta_image_src %}
 {% spaceless %}
-    <link rel="{{ meta.meta.name }}" href="{{ meta.content }}" />
+    <link rel="{{ meta.meta.name }}" href="{{ meta.contents }}" />
 {% endspaceless %}
 {% endblock %}
 
-{% block meta_og %}
+{% block meta_org %}
 {% spaceless %}
-    <meta property="{{ meta.meta.name }}" content="{{ meta.content }}" />
+    <meta property="{{ meta.meta.name }}" content="{{ meta.contents }}" />
 {% endspaceless %}
 {% endblock %}

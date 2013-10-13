@@ -21,104 +21,104 @@ use Symfony\Component\Validator\ExecutionContext;
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
-class Menu
+abstract class Menu
 {
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string
      */
-    private $slug;
+    protected $slug;
 
     /**
      * @var string
      */
-    private $url;
+    protected $url;
 
     /**
      * @var string
      */
-    private $target = '_self';
+    protected $target = '_self';
 
     /**
      * @var boolean
      */
-    private $isImage = false;
+    protected $isImage = false;
 
     /**
      * @var string
      */
-    private $path;
+    protected $path;
 
     /**
      * @var File
      *
      * This var is not persisted in database : it is used for file upload.
      */
-    private $file;
+    protected $file;
 
     /**
      * @var \DateTime
      */
-    private $startedAt;
+    protected $startedAt;
 
     /**
      * @var \DateTime
      */
-    private $endedAt;
+    protected $endedAt;
 
     /**
      * @var integer
      */
-    private $lft;
+    protected $lft;
 
     /**
      * @var integer
      */
-    private $rgt;
+    protected $rgt;
 
     /**
      * @var integer
      */
-    private $root;
+    protected $root;
 
     /**
      * @var integer
      */
-    private $lvl;
+    protected $lvl;
 
     /**
      * @var \DateTime
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @var Collection
      */
-    private $children;
+    protected $children;
 
     /**
      * @var Menu
      */
-    private $parent;
+    protected $parent;
 
     /**
      * @var Article
      */
-    private $article;
+    protected $article;
 
     /**
      * Build Menu

@@ -26,11 +26,34 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('vince_cms')->children()
-                                ->arrayNode('contact')->isRequired()->children()
-                                    ->scalarNode('noreply')->isRequired()->end()
-                                    ->scalarNode('recipient')->isRequired()->end()
-                                ->end();
+        $rootNode = $treeBuilder->root('vince_cms')
+            ->children()
+                ->arrayNode('class')
+                    ->isRequired()
+                    ->children()
+                        ->scalarNode('article')
+                            ->isRequired()
+                        ->end()
+                        ->scalarNode('block')
+                            ->isRequired()
+                        ->end()
+                        ->scalarNode('menu')
+                            ->isRequired()
+                        ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('contact')
+                    ->isRequired()
+                    ->children()
+                        ->scalarNode('noreply')
+                            ->isRequired()
+                        ->end()
+                        ->scalarNode('recipient')
+                            ->isRequired()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
 
         return $treeBuilder;
     }

@@ -1,12 +1,6 @@
 Vince\Bundle\CmsBundle\Entity\Content:
-    type: entity
-    table: content
+    type: mappedSuperclass
     fields:
-        id:
-            type: integer
-            id: true
-            generator:
-                strategy: AUTO
         contents:
             type: text
         createdAt:
@@ -21,15 +15,3 @@ Vince\Bundle\CmsBundle\Entity\Content:
             gedmo:
                 timestampable:
                     on: update
-    manyToOne:
-        article:
-            targetEntity: Vince\Bundle\CmsBundle\Entity\Article
-            inversedBy: contents
-            joinColumn:
-                name: article_id
-                referencedColumnName: id
-        area:
-            targetEntity: Vince\Bundle\CmsBundle\Entity\Area
-            joinColumn:
-                name: area_id
-                referencedColumnName: id

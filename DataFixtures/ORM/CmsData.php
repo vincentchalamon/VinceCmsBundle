@@ -13,7 +13,7 @@ namespace Vince\Bundle\CmsBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Vince\Bundle\CmsBundle\Lib\YamlFixturesLoader as Loader;
+use Vince\Bundle\CmsBundle\Component\YamlFixturesLoader as Loader;
 
 /**
  * Load fixtures from yml

@@ -17,37 +17,37 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
-class Content
+abstract class Content
 {
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $contents;
+    protected $contents;
 
     /**
      * @var \DateTime
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @var Article
      */
-    private $article;
+    protected $article;
 
     /**
      * @var Area
      */
-    private $area;
+    protected $area;
 
     /**
      * Get contents

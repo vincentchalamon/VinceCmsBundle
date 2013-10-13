@@ -1,0 +1,6 @@
+Vince\Bundle\CmsBundle\Entity\Template:
+    properties:
+        title:
+            - NotBlank: ~
+        path:
+            - NotBlank: ~

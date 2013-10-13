@@ -23,32 +23,32 @@ class Area
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $type;
+    protected $type;
 
     /**
      * @var boolean
      */
-    private $required = false;
+    protected $required = false;
 
     /**
      * @var Template
      */
-    private $template;
+    protected $template;
     
     /**
      * Render title

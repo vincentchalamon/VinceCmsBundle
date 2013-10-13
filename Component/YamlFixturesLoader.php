@@ -8,12 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Vince\Bundle\CmsBundle\Lib;
+namespace Vince\Bundle\CmsBundle\Component;
 
 use Doctrine\Common\Inflector\Inflector;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Finder\Finder;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 
@@ -28,7 +30,7 @@ class YamlFixturesLoader
     protected $files = array(), $entities = array(), $referencer, $manager, $metas = array();
 
     /**
-     * Add yaml fixtures file to load
+     * Add yml fixtures file to load
      *
      * <code>
      * $loader->addFile(__DIR__.'/../../Resources/data/fixtures.yml');
@@ -36,19 +38,21 @@ class YamlFixturesLoader
      *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
      *
-     * @param string $filename Yaml filename
+     * @param string $filename Yml filename
      *
      * @return YamlFixturesLoader Loader
-     * @throws \Exception Directory doesn't exist
+     * @throws FileNotFoundException File doesn't exist
+     * @throws \InvalidArgumentException File isn't yml extension
      */
     public function addFile($filename)
     {
         if (!is_file($filename)) {
-            throw new \Exception(sprintf("File '%s' not found.", $filename));
+            throw new FileNotFoundException(sprintf("File '%s' not found.", $filename));
         }
         if (pathinfo($filename, PATHINFO_EXTENSION) != "yml") {
-            throw new \Exception(sprintf("Invalid extension for file '%s'.", $filename));
+            throw new \InvalidArgumentException(sprintf("Invalid extension for file '%s'.", $filename));
         }
+
         if (!in_array($filename, $this->files)) {
             $this->files[] = $filename;
         }
@@ -57,7 +61,7 @@ class YamlFixturesLoader
     }
 
     /**
-     * Add directory with yaml files to load
+     * Add directory with yml files to load
      *
      * <code>
      * $loader->addDirectory(__DIR__.'/../../Resources/data');
@@ -66,15 +70,20 @@ class YamlFixturesLoader
      *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
      *
-     * @param string  $pathname  Path name with yaml files
+     * @param string  $path      Path name with yml files
      * @param boolean $recursive Read path recursively
      *
      * @return YamlFixturesLoader Loader
+     * @throws FileNotFoundException File doesn't exist
      */
-    public function addDirectory($pathname, $recursive = true)
+    public function addDirectory($path, $recursive = true)
     {
+        if (realpath($path) === false || !is_dir(realpath($path))) {
+            throw new FileNotFoundException(sprintf("Directory '%s' not found.", $path));
+        }
+
         $finder = new Finder();
-        $finder->files()->name('*.yml')->depth($recursive ? '>= 0' : '== 0')->in($pathname)->sortByName();
+        $finder->files()->name('*.yml')->depth($recursive ? '>= 0' : '== 0')->in($path)->sortByName();
         foreach ($finder as $file) {
             $this->addFile($file->getRealpath());
         }
@@ -110,6 +119,8 @@ class YamlFixturesLoader
         if ($referencer) {
             $this->referencer = $referencer;
         }
+
+        // Parse each file
         foreach ($this->files as $file) {
             $models = Yaml::parse($file);
             if ($models) {
@@ -126,6 +137,7 @@ class YamlFixturesLoader
                 throw new \InvalidArgumentException(sprintf('File "%s" has no fixtures.', $file));
             }
         }
+
         // Callback by entity
         if ($callback) {
             foreach ($this->entities as $name => $entity) {
@@ -133,6 +145,7 @@ class YamlFixturesLoader
             }
         }
         $this->getManager()->flush();
+
         // Add references
         if ($this->hasReferencer()) {
             foreach ($this->entities as $class => $entities) {
@@ -160,6 +173,8 @@ class YamlFixturesLoader
         if (!isset($this->metas[$class])) {
             $this->metas[$class] = $this->getManager()->getClassMetadata($class);
         }
+
+        // Build new object
         $record = new $class();
         foreach ((array)$values as $column => $value) {
             // Relation with ClassMetadata
@@ -169,12 +184,14 @@ class YamlFixturesLoader
                 if (!isset($this->metas[$objectClass])) {
                     $this->metas[$objectClass] = $this->getManager()->getClassMetadata($objectClass);
                 }
+
                 // Multiple relation
                 if ($this->metas[$class]->isCollectionValuedAssociation($column)) {
                     // Values must be an array
                     if (!is_array($value)) {
                         throw new \Exception(sprintf("You must specify an array for relation '%s'.", $column));
                     }
+
                     // Create or retrieve entities
                     foreach ($value as $objectKey => $objectValue) {
                         // Is entity already created ?
@@ -183,12 +200,14 @@ class YamlFixturesLoader
                         } else {
                             $object = $this->buildEntity($objectKey, $objectClass, $objectValue);
                         }
+
                         // Set object value
                         if (is_callable(array($record, $this->buildMethod("add", $this->metas[$objectClass]->getReflectionClass()->getShortName())))) {
                             call_user_func(array($record, $this->buildMethod("add", $this->metas[$objectClass]->getReflectionClass()->getShortName())), $object);
                         } else {
                             $this->metas[$class]->getReflectionProperty($column)->getValue($record)->add($object);
                         }
+
                         // Set target object inversed relation value if needed
                         if (isset($mapping['mappedBy'])) {
                             if (is_callable(array($object, $this->buildMethod("set", $mapping['mappedBy'])))) {
@@ -205,12 +224,14 @@ class YamlFixturesLoader
                     } else {
                         $object = $this->buildEntity("$name-$column", $objectClass, $value);
                     }
+
                     // Set object value
                     if (is_callable(array($record, $this->buildMethod("set", $column)))) {
                         call_user_func(array($record, $this->buildMethod("set", $column)), $object);
                     } else {
                         $this->metas[$class]->getReflectionProperty($column)->setValue($record, $object);
                     }
+
                     // Set target object inversed relation value if needed
                     if (isset($mapping['inversedBy'])) {
                         if ($this->metas[$objectClass]->isSingleValuedAssociation($mapping['inversedBy'])) {
@@ -231,7 +252,7 @@ class YamlFixturesLoader
                 // Column with ClassMetadata
             } else {
                 if ($this->metas[$class]->hasField($column)) {
-                    $type = \Doctrine\DBAL\Types\Type::getType($this->metas[$class]->getTypeOfField($column));
+                    $type = Type::getType($this->metas[$class]->getTypeOfField($column));
                     if (strtolower($type) != 'array') {
                         $value = $type->convertToPHPValue($value, $this->getManager()->getConnection()->getDatabasePlatform());
                     }

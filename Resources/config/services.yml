@@ -1,8 +1,3 @@
-parameters:
-    vince.poster.googleplus.id: '113850880382890199738'
-    vince.poster.googleplus.email: 'vincentchalamon@gmail.com'
-    vince.poster.googleplus.password: 'd3sm0n14'
-
 services:
     # Twig
     twig.extension.vince.cms:
@@ -51,6 +46,7 @@ services:
         tags:
             - { name: routing.loader }
         calls:
+            - [setArticleClass, [%vince.class.article%]]
             - [setEntityManager, [@doctrine.orm.entity_manager]]
 
     # CMS loaders
@@ -74,7 +70,7 @@ services:
         class: Vince\Bundle\CmsBundle\Component\Chain\Chain
 
     vince.processor:
-        class: Vince\Bundle\AdminBundle\Component\Processor\Processor
+        class: Vince\Bundle\CmsBundle\Component\Processor\Processor
         abstract: true
         calls:
             - [setFormFactory, [@form.factory]]

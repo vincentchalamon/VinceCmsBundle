@@ -11,7 +11,7 @@
                 <h2><a href="{{ path(result.routeName) }}" title="{{ result.title }}">{{ result.title }}</a></h2>
                 <div class="chapo">
                     {{ result.summary|raw }}
-                    <a href="{{ path(result.routeName) }}" title="Lire la suite" class="linked gradient">Lire la suite</a>
+                    <a href="{{ path(result.routeName) }}" title="{{ 'More'|trans }}" class="linked gradient">{{ 'More'|trans }}</a>
                 </div>
                 <p class="infos">
                     <span class="date">{{ result.startedAt|localizeddate('long', 'none') }}</span>
@@ -30,6 +30,6 @@
             </div>
         {% endfor %}
     {% else %}
-        <p class="empty">Votre recherche n'a donné aucun résultat.</p>
+        <p class="empty">{{ 'Your search did not return any results.'|trans }}</p>
     {% endif %}
 {% endblock %}

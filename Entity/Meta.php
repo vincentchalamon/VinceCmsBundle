@@ -22,37 +22,37 @@ class Meta
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $slug;
+    protected $slug;
 
     /**
      * @var string
      */
-    private $type;
+    protected $type;
 
     /**
      * @var string
      */
-    private $validator;
+    protected $validator;
 
     /**
      * @var string
      */
-    private $group;
+    protected $group;
 
     /**
      * Render title

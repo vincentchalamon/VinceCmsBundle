@@ -11,7 +11,7 @@
             {% endfor %}
         {% endblock %}
         {% block stylesheets %}{% endblock %}
-        <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ path('cms_sitemap') }}" />
+        <link rel="sitemap" type="application/xml" title="{{ 'Sitemap'|trans }}" href="{{ path('cms_sitemap') }}" />
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>

@@ -12,7 +12,7 @@ namespace Vince\Bundle\CmsBundle\Tests\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Vince\Bundle\CmsBundle\Lib\YamlFixturesLoader as Loader;
+use Vince\Bundle\CmsBundle\Component\YamlFixturesLoader as Loader;
 
 /**
  * Load fixtures from yml for tests

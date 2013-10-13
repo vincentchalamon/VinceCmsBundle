@@ -31,7 +31,7 @@ class DefaultController extends Controller
      */
     public function sitemapAction()
     {
-        $articles = $this->get('doctrine.orm.entity_manager')->getRepository('VinceCmsBundle:Article')->findAllPublishedOrdered();
+        $articles = $this->get('doctrine.orm.entity_manager')->getRepository($this->container->getParameter('vince.class.article'))->findAllPublishedOrdered();
 
         return $this->render('VinceCmsBundle:Templates:sitemap.xml.twig', array(
             'articles' => $articles
@@ -47,7 +47,7 @@ class DefaultController extends Controller
     public function feedAction()
     {
         $format = $this->getRequest()->getRequestFormat() == 'xml' ? 'rss' : $this->getRequest()->getRequestFormat();
-        $articles = $this->get('doctrine.orm.entity_manager')->getRepository('VinceCmsBundle:Article')->findAllPublishedOrdered();
+        $articles = $this->get('doctrine.orm.entity_manager')->getRepository($this->container->getParameter('vince.class.article'))->findAllPublishedOrdered();
 
         return $this->render(sprintf('VinceCmsBundle:Templates:feed.%s.twig', $format), array(
             'articles' => $articles,
@@ -66,7 +66,7 @@ class DefaultController extends Controller
     public function showAction()
     {
         // Retrieve article from its id in Request attributes
-        $article = $this->getDoctrine()->getRepository('VinceCmsBundle:Article')->find($this->getRequest()->attributes->get('_id'));
+        $article = $this->getDoctrine()->getRepository($this->container->getParameter('vince.class.article'))->find($this->getRequest()->attributes->get('_id'));
         if (!$article || (!$article->isPublished() && !$this->get('security.context')->isGranted('ROLE_ADMIN'))) {
             throw $this->createNotFoundException();
         }
@@ -109,24 +109,5 @@ class DefaultController extends Controller
         }
 
         return $this->render($article->getTemplate()->getPath(), $options);
-    }
-
-    /**
-     * Display contact form
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     *
-     * @param FormView $form Form view
-     *
-     * @return Response
-     */
-    public function contactAction($form = null)
-    {
-        if (!$form) {
-            $form = $this->createForm(new ContactType());
-            $form = $form->createView();
-        }
-
-        return $this->render('VinceCmsBundle:Component:contact.html.twig', array('form' => $form));
     }
 }

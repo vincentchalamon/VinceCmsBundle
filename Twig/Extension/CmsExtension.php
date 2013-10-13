@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Vince\Bundle\CmsBundle\Entity\Block;
 
 class CmsExtension extends \Twig_Extension
 {
@@ -37,7 +38,8 @@ class CmsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('menu', array($this, 'renderMenu'), array('is_safe' => array('html')))
+            'render_menu'  => new \Twig_Function_Method($this, 'renderMenu', array('is_safe' => array('html'))),
+            'render_block' => new \Twig_Function_Method($this, 'renderBlock', array('is_safe' => array('html')))
         );
     }
 
@@ -50,16 +52,36 @@ class CmsExtension extends \Twig_Extension
      * @param string $view       View path
      * @param array  $parameters View parameters
      *
-     * @return null|string
+     * @return void|string
      */
     public function renderMenu($slug, $view = 'VinceCmsBundle:Component:menu.html.twig', array $parameters = array())
     {
-        $menu = $this->manager->getRepository('VinceCmsBundle:Menu')->findOneBy(array('slug' => $slug, 'lvl' => 0));
+        $menu = $this->manager->getRepository($this->container->getParameter('vince.class.menu'))->findOneBy(array('slug' => $slug, 'lvl' => 0));
         if (!$menu || !$menu->getChildren()->count() || (!$menu->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
-            return null;
+            return;
         }
 
         return $this->container->get('templating')->render($view, array_merge(array('menu' => $menu), $parameters));
+    }
+
+    /**
+     * Render a Block
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param string $name Block name
+     *
+     * @return void|string
+     */
+    public function renderBlock($name)
+    {
+        /** @var $block Block */
+        $block = $this->manager->getRepository($this->container->getParameter('vince.class.block'))->findOneBy(array('name' => $name));
+        if (!$block || (!$block->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
+            return;
+        }
+
+        return $block->getContents();
     }
 
     /**

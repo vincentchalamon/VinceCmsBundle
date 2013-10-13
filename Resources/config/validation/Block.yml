@@ -1,0 +1,13 @@
+Vince\Bundle\CmsBundle\Entity\Block:
+    constraints:
+        - Callback:
+            methods: [isPublicationValid]
+    properties:
+        name:
+            - NotBlank: ~
+        contents:
+            - NotBlank: ~
+        startedAt:
+            - Date: ~
+        endedAt:
+            - Date: ~

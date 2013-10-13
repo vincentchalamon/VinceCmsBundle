@@ -1,13 +1,7 @@
 Vince\Bundle\CmsBundle\Entity\ArticleMeta:
-    type: entity
-    table: article_meta
+    type: mappedSuperclass
     fields:
-        id:
-            type: integer
-            id: true
-            generator:
-                strategy: AUTO
-        content:
+        contents:
             type: text
         createdAt:
             type: datetime
@@ -21,19 +15,3 @@ Vince\Bundle\CmsBundle\Entity\ArticleMeta:
             gedmo:
                 timestampable:
                     on: update
-    manyToOne:
-        article:
-            targetEntity: Vince\Bundle\CmsBundle\Entity\Article
-            inversedBy: metas
-            joinColumn:
-                name: article_id
-                nullable: true
-                referencedColumnName: id
-                nullable: false
-        meta:
-            targetEntity: Vince\Bundle\CmsBundle\Entity\Meta
-            joinColumn:
-                name: meta_id
-                nullable: true
-                referencedColumnName: id
-                nullable: false

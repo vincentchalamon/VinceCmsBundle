@@ -1,0 +1,10 @@
+Vince\Bundle\CmsBundle\Entity\Area:
+    properties:
+        title:
+            - NotBlank: ~
+        name:
+            - NotBlank: ~
+        type:
+            - NotBlank: ~
+        template:
+            - NotNull: ~

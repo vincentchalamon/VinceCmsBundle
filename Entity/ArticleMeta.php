@@ -17,37 +17,37 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
-class ArticleMeta
+abstract class ArticleMeta
 {
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $content;
+    protected $contents;
 
     /**
      * @var \DateTime
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @var Article
      */
-    private $article;
+    protected $article;
 
     /**
      * @var Meta
      */
-    private $meta;
+    protected $meta;
 
     /**
      * Get contents
@@ -57,7 +57,7 @@ class ArticleMeta
      */
     public function __toString()
     {
-        return $this->getContent();
+        return $this->getContents();
     }
 
     /**
@@ -71,26 +71,26 @@ class ArticleMeta
     }
 
     /**
-     * Set content
+     * Set contents
      *
-     * @param string $content
+     * @param string $contents
      * @return ArticleMeta
      */
-    public function setContent($content)
+    public function setContents($contents)
     {
-        $this->content = $content;
+        $this->contents = $contents;
     
         return $this;
     }
 
     /**
-     * Get content
+     * Get contents
      *
      * @return string 
      */
-    public function getContent()
+    public function getContents()
     {
-        return $this->content;
+        return $this->contents;
     }
 
     /**

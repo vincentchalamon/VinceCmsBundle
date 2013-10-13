@@ -11,6 +11,7 @@
 namespace Vince\Bundle\CmsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -24,22 +25,22 @@ class Template
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string
      */
-    private $path;
+    protected $path;
 
     /**
      * @var Collection
      */
-    private $areas;
+    protected $areas;
 
     /**
      * Build Template

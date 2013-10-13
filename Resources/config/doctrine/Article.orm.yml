@@ -1,13 +1,7 @@
 Vince\Bundle\CmsBundle\Entity\Article:
-    type: entity
-    table: article
+    type: mappedSuperclass
     repositoryClass: Vince\Bundle\CmsBundle\Entity\Repository\ArticleRepository
     fields:
-        id:
-            type: integer
-            id: true
-            generator:
-                strategy: AUTO
         title:
             type: string
             length: 255
@@ -47,16 +41,6 @@ Vince\Bundle\CmsBundle\Entity\Article:
             type: date
             nullable: true
             column: ended_at
-    oneToMany:
-        metas:
-            targetEntity: Vince\Bundle\CmsBundle\Entity\ArticleMeta
-            mappedBy: article
-        contents:
-            targetEntity: Vince\Bundle\CmsBundle\Entity\Content
-            mappedBy: article
-        menus:
-            targetEntity: Vince\Bundle\CmsBundle\Entity\Menu
-            mappedBy: article
     manyToOne:
         template:
             targetEntity: Vince\Bundle\CmsBundle\Entity\Template
@@ -64,20 +48,7 @@ Vince\Bundle\CmsBundle\Entity\Article:
                 name: template_id
                 referencedColumnName: id
                 nullable: false
-    manyToMany:
-        categories:
-            targetEntity: Vince\Bundle\CmsBundle\Entity\Category
-            joinTable:
-                name: article_category
-                joinColumns:
-                    article_id:
-                        referencedColumnName: id
-                inverseJoinColumns:
-                    category_id:
-                        referencedColumnName: id
-            uniqueConstraints:
-                event_user_idx:
-                    columns: article_id, category_id
+                onDelete: CASCADE
     indexes:
         search_idx:
             columns: slug

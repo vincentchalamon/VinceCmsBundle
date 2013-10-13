@@ -1,0 +1,21 @@
+Vince\Bundle\CmsBundle\Entity\Menu:
+    constraints:
+        - Callback:
+            methods: [isTargetValid, isPublicationValid, isImageValid]
+    properties:
+        title:
+            - NotBlank: ~
+        url:
+            - Vince\Bundle\CmsBundle\Validator\Constraints\One:
+                - Regex: '/^\/[A-z\d\-_\/]*$/'
+                - Url: ~
+        target:
+            - Choice:
+                choices: [_blank, _parent, _self, _top]
+                message: This value is not a valid target.
+        file:
+            - Image: ~
+        startedAt:
+            - Date: ~
+        endedAt:
+            - Date: ~

@@ -1,16 +1,10 @@
 Vince\Bundle\CmsBundle\Entity\Menu:
-    type: entity
-    table: menu
+    type: mappedSuperclass
     repositoryClass: Vince\Bundle\CmsBundle\Entity\Repository\MenuRepository
     gedmo:
         tree:
             type: nested
     fields:
-        id:
-            type: integer
-            id: true
-            generator:
-                strategy: AUTO
         title:
             type: string
             length: 255
@@ -72,28 +66,6 @@ Vince\Bundle\CmsBundle\Entity\Menu:
             gedmo:
                 timestampable:
                     on: update
-    manyToOne:
-        parent:
-            targetEntity: Vince\Bundle\CmsBundle\Entity\Menu
-            inversedBy: children
-            joinColumn:
-                name: parent_id
-                referencedColumnName: id
-                onDelete: CASCADE
-            gedmo:
-                - treeParent
-        article:
-            targetEntity: Vince\Bundle\CmsBundle\Entity\Article
-            inversedBy: menus
-            joinColumn:
-                name: article_id
-                referencedColumnName: id
-    oneToMany:
-        children:
-            targetEntity: Vince\Bundle\CmsBundle\Entity\Menu
-            mappedBy: parent
-            orderBy:
-                lft: ASC
     indexes:
         search_idx:
             columns: slug

@@ -1,0 +1,8 @@
+Vince\Bundle\CmsBundle\Entity\Content:
+    properties:
+        contents:
+            - NotBlank: ~
+        article:
+            - NotNull: ~
+        area:
+            - NotNull: ~

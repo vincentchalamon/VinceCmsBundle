@@ -10,8 +10,6 @@
  */
 namespace Vince\Bundle\CmsBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Vince\Bundle\CmsBundle\Entity\Menu;
 

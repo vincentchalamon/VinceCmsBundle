@@ -3,7 +3,6 @@ VinceCmsBundle
 
 Basic CMS features for Symfony 2.3
 
-
 Search
 ======
 
@@ -18,3 +17,22 @@ Search
     * Publié aujourd'hui : benoit
     * Publié jusqu'à aujourd'hui : gilles
     * Publié temporairement : adrien
+
+Todo
+====
+
+* Documentation:
+    * Installation:
+        * Install bundle with composer
+        * Update AppKernel.php
+    * Configuration:
+        * Gedmo
+        * Create entities:
+            * Associations
+            * Primary key
+            * Adding association (example: author)
+            * Declare class in vince_cms config : Article, Menu, Block
+        * Contact: noreply, recipient
+        * Search:
+            * Install elasticsearch with composer
+            * Launch elasticsearch

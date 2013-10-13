@@ -1,0 +1,18 @@
+Vince\Bundle\CmsBundle\Entity\Article:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: url
+            message: This url is already used.
+        - Callback:
+            methods: [isPublicationValid]
+    properties:
+        title:
+            - NotBlank: ~
+        url:
+            - Regex: '/^\/[A-z\d\-_\/]*$/'
+        startedAt:
+            - Date: ~
+        endedAt:
+            - Date: ~
+        template:
+            - NotNull: ~

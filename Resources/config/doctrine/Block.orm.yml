@@ -1,0 +1,32 @@
+Vince\Bundle\CmsBundle\Entity\Block:
+    type: mappedSuperclass
+    fields:
+        name:
+            type: string
+            length: 255
+            unique: true
+        contents:
+            type: text
+        startedAt:
+            type: datetime
+            nullable: true
+            column: started_at
+        endedAt:
+            type: datetime
+            nullable: true
+            column: ended_at
+        createdAt:
+            type: datetime
+            column: created_at
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            column: updated_at
+            gedmo:
+                timestampable:
+                    on: create
+    indexes:
+        search_idx:
+            columns: name

@@ -26,3 +26,4 @@ Vince\Bundle\CmsBundle\Entity\Area:
                 name: template_id
                 referencedColumnName: id
                 nullable: false
+                onDelete: CASCADE

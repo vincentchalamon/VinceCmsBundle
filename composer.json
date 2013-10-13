@@ -11,26 +11,11 @@
             "email": "vincentchalamon@gmail.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "elasticsearch/binaries",
-                "version": "dev-master",
-                "source": {
-                    "url": "git@github.com:elasticsearch/elasticsearch.git",
-                    "type": "git",
-                    "reference": "master"
-                }
-            }
-        }
-    ],
     "require": {
         "doctrine/doctrine-fixtures-bundle": "2.1.*@dev",
         "gedmo/doctrine-extensions": "2.3.5",
         "liip/functional-test-bundle": "dev-master",
         "jms/serializer-bundle": "0.13.*@dev",
-        "elasticsearch/binaries": "*",
         "friendsofsymfony/elastica-bundle": "3.0.*@dev",
         "knplabs/knp-paginator-bundle": "dev-master"
     },

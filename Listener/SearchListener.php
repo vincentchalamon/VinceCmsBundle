@@ -11,7 +11,7 @@
 namespace Vince\Bundle\CmsBundle\Listener;
 
 use FOS\ElasticaBundle\Finder\TransformedFinder;
-use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vince\Bundle\CmsBundle\Event\CmsEvent;
 
 /**
@@ -41,7 +41,7 @@ class SearchListener
         }
 
         // Prepare Query
-        $repository = $this->container->get('doctrine.orm.entity_manager')->getRepository('VinceCmsBundle:Article');
+        $repository = $this->container->get('doctrine.orm.entity_manager')->getRepository($this->container->getParameter('vince.class.article'));
         $query      = $repository->createSearchQuery($event->getOption('query'));
 
         // Send results to controller
@@ -53,7 +53,7 @@ class SearchListener
         $this->finder = $finder;
     }
 
-    public function setContainer(Container $container)
+    public function setContainer(ContainerInterface $container)
     {
         $this->container = $container;
     }

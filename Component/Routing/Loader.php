@@ -24,7 +24,7 @@ use Symfony\Component\Routing\RouteCollection;
 class Loader implements LoaderInterface
 {
 
-    private $loaded = false, $em;
+    private $loaded = false, $em, $class;
 
     /**
      * Loads a resource
@@ -43,7 +43,7 @@ class Loader implements LoaderInterface
             throw new \RuntimeException('Do not add this loader twice');
         }
         $routing  = new RouteCollection();
-        $articles = $this->em->getRepository('VinceCmsBundle:Article')->findAllIterate();
+        $articles = $this->em->getRepository($this->class)->findAllIterate();
         while (false !== ($row = $articles->next())) {
             $routing->add($row[0]->getRouteName(), new Route($row[0]->getRoutePattern(), array(
                         '_controller' => 'VinceCmsBundle:Default:show',
@@ -67,6 +67,18 @@ class Loader implements LoaderInterface
     public function setEntityManager(EntityManager $em)
     {
         $this->em = $em;
+    }
+
+    /**
+     * Set Article class
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param string $class
+     */
+    public function setArticleClass($class)
+    {
+        $this->class = $class;
     }
 
     /**

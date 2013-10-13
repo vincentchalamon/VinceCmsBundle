@@ -22,83 +22,78 @@ use Symfony\Component\Validator\ExecutionContext;
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
-class Article
+abstract class Article
 {
 
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string
      */
-    private $slug;
+    protected $slug;
 
     /**
      * @var \DateTime
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @var string
      */
-    private $summary;
+    protected $summary;
 
     /**
      * @var array
      */
-    private $tags = array();
+    protected $tags = array();
 
     /**
      * @var string
      */
-    private $url;
+    protected $url;
 
     /**
      * @var \DateTime
      */
-    private $startedAt;
+    protected $startedAt;
 
     /**
      * @var \DateTime
      */
-    private $endedAt;
+    protected $endedAt;
 
     /**
      * @var Collection
      */
-    private $metas;
+    protected $metas;
 
     /**
      * @var Collection
      */
-    private $contents;
+    protected $contents;
 
     /**
      * @var Collection
      */
-    private $menus;
-
-    /**
-     * @var Collection
-     */
-    private $categories;
+    protected $menus;
 
     /**
      * @var Template
      */
-    private $template;
+    protected $template;
 
     /**
      * Build Article
@@ -107,10 +102,9 @@ class Article
      */
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
-        $this->menus      = new ArrayCollection();
-        $this->metas      = new ArrayCollection();
-        $this->contents   = new ArrayCollection();
+        $this->menus    = new ArrayCollection();
+        $this->metas    = new ArrayCollection();
+        $this->contents = new ArrayCollection();
     }
 
     /**
@@ -135,7 +129,7 @@ class Article
      */
     public function getMeta($name)
     {
-        return $this->getMetas()->filter(function ($meta) use ($name) {
+        return $this->getMetas()->filter(function (ArticleMeta $meta) use ($name) {
             return $meta->getMeta()->getName() == $name;
         })->first();
     }
@@ -151,7 +145,7 @@ class Article
      */
     public function getContent($name)
     {
-        return $this->getContents()->filter(function ($content) use ($name) {
+        return $this->getContents()->filter(function (Content $content) use ($name) {
             return $content->getArea()->getName() == $name;
         })->first();
     }
@@ -574,38 +568,5 @@ class Article
     public function getTemplate()
     {
         return $this->template;
-    }
-
-    /**
-     * Add categories
-     *
-     * @param Category $categories
-     * @return Article
-     */
-    public function addCategory(Category $categories)
-    {
-        $this->categories[] = $categories;
-    
-        return $this;
-    }
-
-    /**
-     * Remove categories
-     *
-     * @param Category $categories
-     */
-    public function removeCategory(Category $categories)
-    {
-        $this->categories->removeElement($categories);
-    }
-
-    /**
-     * Get categories
-     *
-     * @return Collection
-     */
-    public function getCategories()
-    {
-        return $this->categories;
     }
 }
