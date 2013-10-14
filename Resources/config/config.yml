@@ -1,5 +1,5 @@
 parameters:
-    vince.class.article: My\Bundle\BlogBundle\Entity\Article
+    vince.class.article: My\Bundle\CmsBundle\Entity\Article
 
 fos_elastica:
     clients:
