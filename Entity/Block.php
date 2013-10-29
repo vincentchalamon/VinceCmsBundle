@@ -27,6 +27,11 @@ abstract class Block
     protected $contents;
 
     /**
+     * @var string
+     */
+    protected $type;
+
+    /**
      * @var \DateTime
      */
     protected $startedAt;
@@ -139,6 +144,29 @@ abstract class Block
     public function getContents()
     {
         return $this->contents;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return Block
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
