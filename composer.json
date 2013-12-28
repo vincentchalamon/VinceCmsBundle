@@ -18,6 +18,10 @@
         "jms/serializer-bundle": "0.13.*@dev",
         "knplabs/knp-paginator-bundle": "dev-master"
     },
+    "suggest": {
+        "vince/cms-sonata-admin-bundle": "to manage VinceCms with Sonata Admin",
+        "friendsofsymfony/elastica-bundle": "to use elastisearch"
+    },
     "autoload": {
         "psr-0": { "Vince\\Bundle\\CmsBundle": "" }
     },
