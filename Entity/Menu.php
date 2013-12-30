@@ -169,7 +169,7 @@ abstract class Menu
     public function isTargetValid(ExecutionContext $context)
     {
         // Menu is not root and has no url or Article linked
-        if (!$this->getParent() && !$this->getUrl() && !$this->getArticle()) {
+        if ($this->getParent() && !$this->getUrl() && !$this->getArticle()) {
             $context->addViolationAt('url', 'This value should not be blank.');
         }
     }
@@ -219,7 +219,7 @@ abstract class Menu
      */
     public function getRoute()
     {
-        return $this->isUrl() ? $this->getUrl() : $this->getArticle()->getRoutePattern();
+        return $this->getArticle() ? $this->getArticle()->getRoutePattern() : $this->getUrl();
     }
     
     /**

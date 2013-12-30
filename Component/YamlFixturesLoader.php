@@ -18,6 +18,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Symfony\Component\Validator\Validator;
+use Symfony\Component\Validator\ConstraintViolation;
 
 /**
  * Helps you to load your fixtures from yaml files
@@ -27,7 +29,47 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 class YamlFixturesLoader
 {
 
-    protected $files = array(), $entities = array(), $referencer, $manager, $metas = array();
+    /**
+     * Files to load
+     *
+     * @var array
+     */
+    protected $files = array();
+
+    /**
+     * Loaded entities
+     *
+     * @var array
+     */
+    protected $entities = array();
+
+    /**
+     * Metadata objects
+     *
+     * @var array
+     */
+    protected $metas = array();
+
+    /**
+     * Referencer
+     *
+     * @var AbstractFixture
+     */
+    protected $referencer;
+
+    /**
+     * Manager
+     *
+     * @var ObjectManager
+     */
+    protected $manager;
+
+    /**
+     * Validator
+     *
+     * @var Validator
+     */
+    protected $validator;
 
     /**
      * Add yml fixtures file to load
@@ -97,25 +139,32 @@ class YamlFixturesLoader
      *
      * <code>
      * $loader->load($manager);
-     * $loader->load($manager, function($name, $entity){
+     * $loader->load($manager, function ($name, $entity){
      *     $entity->myFunction();
      * });
-     * $loader->load($manager, function($name, $entity){
+     * $loader->load($manager, function ($name, $entity){
      *     $entity->myFunction();
      * }, $this);
+     * $loader->load($manager, function ($name, $entity){
+     *     $entity->myFunction();
+     * }, $this, $this->container->get('validator'));
      * </code>
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      *
-     * @param ObjectManager   $manager Manager
-     * @param callable        $callback Callback
+     * @param ObjectManager   $manager    Manager
+     * @param callable        $callback   Callback
      * @param AbstractFixture $referencer Fixtures class for referencing entities
+     * @param Validator       $validator  Validator service to validate entities
      *
      * @throws \InvalidArgumentException Invalid class name
      */
-    public function load(ObjectManager $manager, \Closure $callback = null, AbstractFixture $referencer = null)
+    public function load(ObjectManager $manager, \Closure $callback = null, AbstractFixture $referencer = null, Validator $validator = null)
     {
         $this->manager = $manager;
+        if ($validator) {
+            $this->validator = $validator;
+        }
         if ($referencer) {
             $this->referencer = $referencer;
         }
@@ -264,6 +313,20 @@ class YamlFixturesLoader
                 } else {
                     throw new \InvalidArgumentException(sprintf("Unknown method '%s' on '%s' object (%s).", $this->buildMethod("set", $column), $name, $class));
                 }
+            }
+        }
+        if ($this->validator) {
+            $errors = $this->validator->validate($record);
+            foreach ($errors as $error) {
+                /** @var ConstraintViolation $error */
+                throw new \InvalidArgumentException(sprintf(<<<EOF
+Fail to validate field "%s" on entity "%s" for class "%s":
+%s
+EOF
+                    , $error->getPropertyPath()
+                    , $name
+                    , $class
+                    , $error->getMessage()));
             }
         }
         $this->getManager()->persist($record);
