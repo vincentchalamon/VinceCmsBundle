@@ -210,6 +210,17 @@ abstract class Menu
     {
         return $this->getUrl() ? true : false;
     }
+
+    /**
+     * Get Menu route (url or Article url)
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @return string
+     */
+    public function getRoute()
+    {
+        return $this->isUrl() ? $this->getUrl() : $this->getArticle()->getRoutePattern();
+    }
     
     /**
      * Get id
