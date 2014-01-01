@@ -81,12 +81,21 @@ class ArticleRepository extends EntityRepository
      */
     public function find($id)
     {
+        // Retrieve identifier & id
+        if (is_array($id)) {
+            $keys       = array_keys($id);
+            $identifier = $keys[0];
+            $id         = $id[$identifier];
+        } else {
+            $identifier = $this->_em->getMetadataFactory()->getMetadataFor(ltrim($this->_entityName, '\\'))->identifier[0];
+        }
+
         return $this->createQueryBuilder('a')
                     ->leftJoin('a.metas', 'm')->addSelect('m')
                     ->leftJoin('a.menus', 'me')->addSelect('me')
                     ->leftJoin('a.contents', 'co')->addSelect('co')
                     ->leftJoin('a.template', 't')->addSelect('t')
-                    ->where('a.id = :id')->setParameter('id', $id)
+                    ->where(sprintf('a.%s = :id', $identifier))->setParameter('id', $id)
                     ->getQuery()->getOneOrNullResult();
     }
 
