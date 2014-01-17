@@ -88,7 +88,7 @@ class CmsExtension extends \Twig_Extension
      */
     public function renderBlock($name)
     {
-        /** @var $block Block */
+        /** @var Block $block */
         $block = $this->manager->getRepository($this->container->getParameter('vince.class.block'))->findOneBy(array('name' => $name));
         if (!$block || (!$block->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
             return null;

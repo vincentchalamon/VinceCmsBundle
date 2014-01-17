@@ -38,7 +38,7 @@ class OneValidator extends ConstraintValidator
         $group = $this->context->getGroup();
 
         foreach ($constraint->constraints as $constr) {
-            /** @var $constr Regex|Url */
+            /** @var Regex|Url $constr */
             $this->context->validateValue($value, $constr, '', $group);
         }
 

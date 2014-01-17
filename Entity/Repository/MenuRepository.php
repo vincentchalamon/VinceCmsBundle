@@ -37,7 +37,7 @@ class MenuRepository extends NestedTreeRepository
                         ->where('m.slug = :slug')->setParameter('slug', $slug)
                         ->andWhere('m.lvl = 0')
                         ->setMaxResults(1);
-        /** @var $menu Menu */
+        /** @var Menu $menu */
         $menu = $builder->andWhere($builder->expr()->andX(
             $builder->expr()->isNotNull('m.startedAt'),
             $builder->expr()->lte('m.startedAt', ':now'),
