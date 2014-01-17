@@ -50,6 +50,6 @@ abstract class CommandTestCase extends WebTestCase
         }
         fclose($fp);
 
-        return $output;
+        return trim($output);
     }
 }

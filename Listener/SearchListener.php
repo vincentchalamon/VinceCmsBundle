@@ -12,10 +12,11 @@ namespace Vince\Bundle\CmsBundle\Listener;
 
 use FOS\ElasticaBundle\Finder\TransformedFinder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Vince\Bundle\CmsBundle\Entity\Repository\ArticleRepository;
 use Vince\Bundle\CmsBundle\Event\CmsEvent;
 
 /**
- * Listen to load CMS article `searchù`
+ * Listen to load CMS article `search`
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
@@ -56,6 +57,7 @@ class SearchListener
         }
 
         // Prepare Query
+        /** @var ArticleRepository $repository */
         $repository = $this->container->get('doctrine.orm.entity_manager')->getRepository($this->container->getParameter('vince.class.article'));
         $query      = $repository->createSearchQuery($event->getOption('query'));
 
