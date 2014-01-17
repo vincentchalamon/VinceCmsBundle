@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the VinceCmsBundle.
+ * This file is part of the VinceCms bundle.
  *
  * (c) Vincent Chalamon <vincentchalamon@gmail.com>
  *
@@ -140,6 +140,27 @@ abstract class Menu
     {
         return $this->getTitle();
     }
+
+    /**
+     * Get publication state
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     * @return string
+     */
+    public function getPublication()
+    {
+        if (is_null($this->getStartedAt()) && is_null($this->getEndedAt())) {
+            return 'Never published';
+        } elseif (!is_null($this->getStartedAt()) && $this->getStartedAt()->getTimestamp() <= time() && is_null($this->getEndedAt())) {
+            return 'Published';
+        } elseif (!is_null($this->getStartedAt()) && $this->getStartedAt()->getTimestamp() > time()) {
+            return 'Pre-published';
+        } elseif (!is_null($this->getStartedAt()) && $this->getStartedAt()->getTimestamp() < time() && !is_null($this->getEndedAt()) && $this->getEndedAt()->getTimestamp() < time()) {
+            return 'Post-published';
+        } elseif (!is_null($this->getStartedAt()) && $this->getStartedAt()->getTimestamp() <= time() && !is_null($this->getEndedAt()) && $this->getEndedAt()->getTimestamp() >= time()) {
+            return 'Published temp';
+        }
+    }
     
     /**
      * Check if Publication is correct
@@ -214,7 +235,7 @@ abstract class Menu
     /**
      * Get Menu route (url or Article url)
      *
-     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
      * @return string
      */
     public function getRoute()
@@ -573,6 +594,7 @@ abstract class Menu
     public function setArticle(Article $article = null)
     {
         $this->article = $article;
+        $this->url = null;
     
         return $this;
     }

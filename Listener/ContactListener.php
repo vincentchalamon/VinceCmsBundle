@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the VinceCmsBundle.
+ * This file is part of the VinceCms bundle.
  *
  * (c) Vincent Chalamon <vincentchalamon@gmail.com>
  *
@@ -15,21 +15,39 @@ use Vince\Bundle\CmsBundle\Event\CmsEvent;
 use Vince\Bundle\CmsBundle\Form\Type\ContactType;
 
 /**
- * Description of SearchListener
+ * Listen to load CMS article `contact`
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
 class ContactListener
 {
 
-    /** @var $factory FormFactory */
+    /**
+     * Factory
+     *
+     * @var $factory FormFactory
+     */
     protected $factory;
 
+    /**
+     * On load article
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param CmsEvent $event
+     */
     public function onLoad(CmsEvent $event)
     {
         $event->addOption('form', $this->factory->create(new ContactType())->createView());
     }
 
+    /**
+     * Set FormFactory
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param FormFactory $formFactory
+     */
     public function setFormFactory(FormFactory $formFactory)
     {
         $this->factory = $formFactory;

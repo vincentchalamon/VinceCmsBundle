@@ -57,6 +57,27 @@ abstract class Block
     }
 
     /**
+     * Get publication state
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     * @return string
+     */
+    public function getPublication()
+    {
+        if (is_null($this->getStartedAt()) && is_null($this->getEndedAt())) {
+            return 'Never published';
+        } elseif (!is_null($this->getStartedAt()) && $this->getStartedAt()->getTimestamp() <= time() && is_null($this->getEndedAt())) {
+            return 'Published';
+        } elseif (!is_null($this->getStartedAt()) && $this->getStartedAt()->getTimestamp() > time()) {
+            return 'Pre-published';
+        } elseif (!is_null($this->getStartedAt()) && $this->getStartedAt()->getTimestamp() < time() && !is_null($this->getEndedAt()) && $this->getEndedAt()->getTimestamp() < time()) {
+            return 'Post-published';
+        } elseif (!is_null($this->getStartedAt()) && $this->getStartedAt()->getTimestamp() <= time() && !is_null($this->getEndedAt()) && $this->getEndedAt()->getTimestamp() >= time()) {
+            return 'Published temp';
+        }
+    }
+
+    /**
      * Check if publication is correct
      *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>

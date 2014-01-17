@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the VinceCmsBundle package.
+ * This file is part of the VinceCms bundle.
  *
  * (c) Vincent Chalamon <vincentchalamon@gmail.com>
  *
@@ -27,16 +27,16 @@ class ValidationPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasParameter('validator.mapping.loader.xml_files_loader.mapping_files')) {
+        if (!$container->hasParameter('validator.mapping.loader.yaml_files_loader.mapping_files')) {
             return;
         }
 
-        $files = $container->getParameter('validator.mapping.loader.xml_files_loader.mapping_files');
+        $files = $container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files');
         foreach (Finder::create()->files()->name('*.yml')->in(__DIR__ . '/../../Resources/config/validation/') as $file) {
             $files[] = realpath($file);
             $container->addResource(new FileResource($file));
         }
 
-        $container->setParameter('validator.mapping.loader.xml_files_loader.mapping_files', $files);
+        $container->setParameter('validator.mapping.loader.yaml_files_loader.mapping_files', $files);
     }
 }

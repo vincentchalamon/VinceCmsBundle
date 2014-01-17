@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the VinceCmsBundle package.
+ * This file is part of the VinceCms bundle.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -35,7 +35,7 @@ class JavascriptsInstallCommand extends DoctrineCommand
              ->setDescription('This command install JavaScripts files from vendor to public directory')
              ->addArgument('target', InputArgument::REQUIRED, 'Public directory')
              ->addArgument('javascripts', InputArgument::IS_ARRAY, 'JavaScripts relative path (i.e.: `vendor/jquery/jquery/jquery-1.10.2.min.js`')
-             ->addOption('symlink', null, InputOption::VALUE_OPTIONAL, 'Symlinks the JavaScripts instead of copying it', false)
+             ->addOption('symlink', null, InputOption::VALUE_NONE, 'Symlinks the JavaScripts instead of copying it')
         ;
     }
 
@@ -47,16 +47,19 @@ class JavascriptsInstallCommand extends DoctrineCommand
         $filesystem = new Filesystem();
         $origin     = rtrim(realpath($this->getContainer()->getParameter('kernel.root_dir').'/../'), '/');
         $public     = rtrim($input->getArgument('target'), '/');
-        $target     = $public.'/js/';
-        $filesystem->mkdir($target, 0777);
+        $target     = $public.'/js';
+        if (!is_dir($target)) {
+            $filesystem->mkdir($target, 0777);
+        }
+        $filesystem->chmod($target, 0777);
 
-        $output->writeln(sprintf("Installing JavaScripts using the <comment>%s</comment> option.", $input->getOption('symlink') ? 'symlink' : 'hard copy'));
+        $output->writeln(sprintf('Installing JavaScripts using the <comment>%s</comment> option.', $input->getOption('symlink') ? 'symlink' : 'hard copy'));
 
         foreach ($input->getArgument('javascripts') as $javascript) {
             $filename    = pathinfo($javascript, PATHINFO_BASENAME);
             $source      = $origin.'/'.$javascript;
-            $destination = $target.$filename;
-            $output->writeln(sprintf('Installing <comment>%s</comment> JavaScript file into <comment>%s</comment>', $filename, $target));
+            $destination = $target.'/'.$filename;
+            $output->writeln(sprintf('Installing <comment>%s</comment> JavaScript file into <comment>%s</comment>.', $filename, $target));
 
             // Remove existing file
             if (is_file($destination)) {

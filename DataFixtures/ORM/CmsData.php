@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the VinceCmsBundle.
+ * This file is part of the VinceCms bundle.
  *
  * (c) Vincent Chalamon <vincentchalamon@gmail.com>
  *
@@ -16,7 +16,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Vince\Bundle\CmsBundle\Component\YamlFixturesLoader as Loader;
 
 /**
- * Load fixtures from yml
+ * Load CMS default fixtures from yml
  * 
  * @author Vincent CHALAMON <vincentchalamon@gmail.com>
  */

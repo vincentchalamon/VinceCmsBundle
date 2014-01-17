@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the VinceCmsBundle.
+ * This file is part of the VinceCms bundle.
  *
  * (c) Vincent Chalamon <vincentchalamon@gmail.com>
  *
@@ -20,6 +20,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Default controller for CMS
+ *
+ * @author Vincent Chalamon <vincentchalamon@gmail.com>
+ */
 class DefaultController extends Controller
 {
 

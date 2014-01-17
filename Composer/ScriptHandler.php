@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the VinceCmsBundle package.
+ * This file is part of the VinceCms bundle.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,7 @@ use Symfony\Component\Process\PhpExecutableFinder;
 use Composer\Script\CommandEvent;
 
 /**
- * ScriptHandler
+ * Install JavaScripts files from vendor to public directory
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  *

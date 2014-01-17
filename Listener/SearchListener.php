@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the VinceCmsBundle.
+ * This file is part of the VinceCms bundle.
  *
  * (c) Vincent Chalamon <vincentchalamon@gmail.com>
  *
@@ -15,19 +15,34 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Vince\Bundle\CmsBundle\Event\CmsEvent;
 
 /**
- * Description of SearchListener
+ * Listen to load CMS article `searchù`
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
 class SearchListener
 {
 
-    /** @var $finder TransformedFinder */
+    /**
+     * Finder
+     *
+     * @var $finder TransformedFinder
+     */
     protected $finder;
 
-    /** @var $container Container */
+    /**
+     * Container
+     *
+     * @var $container ContainerInterface
+     */
     protected $container;
 
+    /**
+     * On load article
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param CmsEvent $event
+     */
     public function onLoad(CmsEvent $event)
     {
         // Retrieve search query from Request
@@ -48,11 +63,25 @@ class SearchListener
         $event->addOption('results', $this->finder->find($query));
     }
 
+    /**
+     * Set Finder
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param TransformedFinder $finder
+     */
     public function setFinder(TransformedFinder $finder)
     {
         $this->finder = $finder;
     }
 
+    /**
+     * Set Container
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param ContainerInterface $container
+     */
     public function setContainer(ContainerInterface $container)
     {
         $this->container = $container;

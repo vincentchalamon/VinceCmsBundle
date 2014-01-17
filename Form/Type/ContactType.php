@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the VinceCmsBundle.
+ * This file is part of the VinceCms bundle.
  *
  * (c) Vincent Chalamon <vincentchalamon@gmail.com>
  *
@@ -12,6 +12,7 @@ namespace Vince\Bundle\CmsBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -28,18 +29,21 @@ class ContactType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', null, array(
-                    'constraints' => new NotBlank()
-                ))
-                ->add('email', 'email', array(
-                    'constraints' => array(
-                        new NotBlank(),
-                        new Email()
-                    )
-                ))
-                ->add('message', 'textarea', array(
-                    'constraints' => new NotBlank()
-                ));
+        $builder
+            ->add('name')
+            ->add('email', 'email')
+            ->add('message', 'textarea');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+                'data_class' => 'Vince\Bundle\CmsBundle\Form\Data\Contact',
+                'intention'  => 'contact'
+            ));
     }
 
     /**
@@ -49,5 +53,4 @@ class ContactType extends AbstractType
     {
         return 'contact';
     }
-
 }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the VinceCmsBundle.
+ * This file is part of the VinceCms bundle.
  *
  * (c) Vincent Chalamon <vincentchalamon@gmail.com>
  *
@@ -10,20 +10,58 @@
  */
 namespace Vince\Bundle\CmsBundle\Component\Processor;
 
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Vince\Bundle\CmsBundle\Form\Type\ContactType;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Description of ContactProcessor.php
+ * Process Contact form
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
 class ContactProcessor extends Processor
 {
 
-    protected $mailer, $templating, $configuration, $translator, $session;
+    /**
+     * Mailer
+     *
+     * @var \Swift_Mailer
+     */
+    protected $mailer;
 
+    /**
+     * Templating
+     *
+     * @var EngineInterface
+     */
+    protected $templating;
+
+    /**
+     * Configuration
+     *
+     * @var array
+     */
+    protected $configuration;
+
+    /**
+     * Translator
+     *
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
+     * Session
+     *
+     * @var Session
+     */
+    protected $session;
+
+    /**
+     * {@inheritdoc}
+     */
     public function process(Request $request)
     {
         $form = $this->createForm(new ContactType());
@@ -48,26 +86,61 @@ class ContactProcessor extends Processor
         return $form;
     }
 
-    public function setSession($session)
+    /**
+     * Set Session
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param Session $session
+     */
+    public function setSession(Session $session)
     {
         $this->session = $session;
     }
 
-    public function setMailer($mailer)
+    /**
+     * Set Mailer
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param \Swift_Mailer $mailer
+     */
+    public function setMailer(\Swift_Mailer $mailer)
     {
         $this->mailer = $mailer;
     }
 
-    public function setTemplating($templating)
+    /**
+     * Set Templating
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param EngineInterface $templating
+     */
+    public function setTemplating(EngineInterface $templating)
     {
         $this->templating = $templating;
     }
 
-    public function setConfiguration($configuration)
+    /**
+     * Set Configuration
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param array $configuration
+     */
+    public function setConfiguration(array $configuration)
     {
         $this->configuration = $configuration;
     }
 
+    /**
+     * Set Translator
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param TranslatorInterface $translator
+     */
     public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;

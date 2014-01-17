@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the VinceCmsBundle.
+ * This file is part of the VinceCms bundle.
  *
  * (c) Vincent Chalamon <vincentchalamon@gmail.com>
  *
@@ -125,7 +125,7 @@ abstract class Article
      *
      * @param string $name
      *
-     * @return ArticleMeta
+     * @return bool|ArticleMeta
      */
     public function getMeta($name)
     {
@@ -162,7 +162,7 @@ abstract class Article
      *
      * @param string $name Area name
      *
-     * @return string
+     * @return bool|Content
      */
     public function getContent($name)
     {
@@ -424,7 +424,7 @@ abstract class Article
      *
      * @return Article
      */
-    public function setStartedAt($startedAt)
+    public function setStartedAt(\DateTime $startedAt)
     {
         $this->startedAt = $startedAt;
 
@@ -448,7 +448,7 @@ abstract class Article
      *
      * @return Article
      */
-    public function setEndedAt($endedAt)
+    public function setEndedAt(\DateTime $endedAt)
     {
         $this->endedAt = $endedAt;
 

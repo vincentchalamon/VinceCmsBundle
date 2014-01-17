@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the VinceCmsBundle.
+ * This file is part of the VinceCms bundle.
  *
  * (c) Vincent Chalamon <vincentchalamon@gmail.com>
  *
@@ -10,29 +10,65 @@
  */
 namespace Vince\Bundle\CmsBundle\Component\Processor;
 
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Description of Processor.php
+ * Base class for forms
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
 abstract class Processor
 {
 
-    /** @var $factory FormFactory */
+    /**
+     * Factory
+     *
+     * @var $factory FormFactory
+     */
     protected $factory;
 
+    /**
+     * Options
+     *
+     * @var array
+     */
     protected $options = array();
 
+    /**
+     * Process form
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param Request $request
+     *
+     * @return bool|Form
+     */
     abstract public function process(Request $request);
 
+    /**
+     * Set FormFactory
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param FormFactory $formFactory
+     */
     public function setFormFactory(FormFactory $formFactory)
     {
         $this->factory = $formFactory;
     }
 
+    /**
+     * Set options
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
     public function setOptions(array $options)
     {
         $this->options = $options;
@@ -41,7 +77,15 @@ abstract class Processor
     }
 
     /**
-     * @return \Symfony\Component\Form\Form
+     * Create Form
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param string $type
+     * @param null   $data
+     * @param array  $options
+     *
+     * @return Form|FormInterface
      */
     protected function createForm($type, $data = null, array $options = array())
     {

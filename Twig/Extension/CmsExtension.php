@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the VinceCmsBundle.
+ * This file is part of the VinceCms bundle.
  *
  * (c) Vincent Chalamon <vincentchalamon@gmail.com>
  *
@@ -16,24 +16,37 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Vince\Bundle\CmsBundle\Entity\Block;
 
+/**
+ * Twig extension for CMS
+ *
+ * @author Vincent Chalamon <vincentchalamon@gmail.com>
+ */
 class CmsExtension extends \Twig_Extension
 {
 
-    /** @var $manager EntityManager */
+    /**
+     * EntityManager
+     *
+     * @var $manager EntityManager
+     */
     protected $manager;
 
-    /** @var $security SecurityContextInterface */
+    /**
+     * SecurityContextInterface
+     *
+     * @var $security SecurityContextInterface
+     */
     protected $security;
 
-    /** @var $container ContainerInterface */
+    /**
+     * Container
+     *
+     * @var $container ContainerInterface
+     */
     protected $container;
 
     /**
-     * Declare functions for twig
-     *
-     * @author Vincent CHALAMON <vincentchalamon@gmail.com>
-     *
-     * @return array Functions
+     * {@inheritdoc}
      */
     public function getFunctions()
     {
@@ -52,13 +65,13 @@ class CmsExtension extends \Twig_Extension
      * @param string $view       View path
      * @param array  $parameters View parameters
      *
-     * @return void|string
+     * @return null|string
      */
     public function renderMenu($slug, $view = 'VinceCmsBundle:Component:menu.html.twig', array $parameters = array())
     {
         $menu = $this->manager->getRepository($this->container->getParameter('vince.class.menu'))->findOneBy(array('slug' => $slug, 'lvl' => 0));
         if (!$menu || !$menu->getChildren()->count() || (!$menu->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
-            return;
+            return null;
         }
 
         return $this->container->get('templating')->render($view, array_merge(array('menu' => $menu), $parameters));
@@ -71,14 +84,14 @@ class CmsExtension extends \Twig_Extension
      *
      * @param string $name Block name
      *
-     * @return void|string
+     * @return null|string
      */
     public function renderBlock($name)
     {
         /** @var $block Block */
         $block = $this->manager->getRepository($this->container->getParameter('vince.class.block'))->findOneBy(array('name' => $name));
         if (!$block || (!$block->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
-            return;
+            return null;
         }
 
         return $block->getContents();
@@ -121,11 +134,7 @@ class CmsExtension extends \Twig_Extension
     }
 
     /**
-     * Get twig extension name
-     *
-     * @author Vincent CHALAMON <vincentchalamon@gmail.com>
-     *
-     * @return string Twig extension name
+     * {@inheritdoc}
      */
     public function getName()
     {
