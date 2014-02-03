@@ -1,8 +1,0 @@
-Vince\Bundle\CmsBundle\Entity\ArticleMeta:
-    properties:
-        contents:
-            - NotBlank: ~
-        meta:
-            - NotNull: ~
-        article:
-            - NotNull: ~
