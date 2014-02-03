@@ -12,11 +12,11 @@
         }
     ],
     "require": {
-        "doctrine/doctrine-fixtures-bundle": "2.1.*",
-        "gedmo/doctrine-extensions": "2.3.5",
-        "liip/functional-test-bundle": "1.0.*",
-        "jms/serializer-bundle": "0.13.*",
-        "knplabs/knp-paginator-bundle": "2.4.*"
+        "doctrine/doctrine-fixtures-bundle": "2.2.*@dev",
+        "gedmo/doctrine-extensions": "2.3.*@dev",
+        "liip/functional-test-bundle": "1.0.*@dev",
+        "jms/serializer-bundle": "0.13.*@dev",
+        "knplabs/knp-paginator-bundle": "2.4.*@dev"
     },
     "suggest": {
         "vince/cms-sonata-admin-bundle": "to manage VinceCms with Sonata Admin",
