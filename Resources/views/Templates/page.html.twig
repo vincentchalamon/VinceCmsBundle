@@ -4,9 +4,9 @@
     <h1>{{ block('title') }}</h1>
 
     <div class="infos">
-        {{ 'Posted on %date%'|trans({'%date%': article.updatedAt|localizeddate('full', 'none')}) }}
+        {{ 'Posted on %date%'|trans({'%date%': article.updatedAt|localizeddate('full', 'none')}, 'VinceCms') }}
         {% if article.tags|length %}
-            - {{ 'Tags' }}:
+            - {{ 'Tags'|trans({}, 'VinceCms') }}:
             {% for i, tag in article.tags %}
                 <a href="{{ path('cms_search', {'query': tag}) }}" title="{{ tag }}" class="tag">{{ tag }}</a>{% if i < article.tags|length-1 %}, {% endif %}
             {% endfor %}

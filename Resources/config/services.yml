@@ -5,7 +5,9 @@ services:
         calls:
             - [setEntityManager, [@doctrine.orm.entity_manager]]
             - [setSecurityContext, [@security.context]]
-            - [setContainer, [@service_container]]
+            - [setTemplating, [@templating]]
+            - [setMenuClass, [%vince.class.menu%]]
+            - [setBlockClass, [%vince.class.block%]]
         tags:
             - { name: twig.extension }
 
@@ -52,11 +54,14 @@ services:
     # CMS loaders
     vince.cms.search.load.listener:
         class: Vince\Bundle\CmsBundle\Listener\SearchListener
+        scope: request
         tags:
             - { name: kernel.event_listener, event: vince.cms.search.load, method: onLoad }
         calls:
+            - [setRequest, [@request]]
             - [setFinder, [@fos_elastica.finder.website.article]]
-            - [setContainer, [@service_container]]
+            - [setEntityManager, [@doctrine.orm.entity_manager]]
+            - [setArticleClass, [%vince.class.article%]]
 
     vince.cms.contact.load.listener:
         class: Vince\Bundle\CmsBundle\Listener\ContactListener

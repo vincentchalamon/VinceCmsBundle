@@ -75,7 +75,7 @@ class YamlFixturesLoader
      * Add yml fixtures file to load
      *
      * <code>
-     * $loader->addFile(__DIR__.'/../../Resources/data/fixtures.yml');
+     * $loader->addFile('/path/to/fixtures.yml');
      * </code>
      *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
@@ -106,8 +106,8 @@ class YamlFixturesLoader
      * Add directory with yml files to load
      *
      * <code>
-     * $loader->addDirectory(__DIR__.'/../../Resources/data');
-     * $loader->addDirectory(__DIR__.'/../../Resources/data', false);
+     * $loader->addFile('/path/to/fixtures.yml');
+     * $loader->addDirectory('/path/to/fixtures', false);
      * </code>
      *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
@@ -210,14 +210,15 @@ class YamlFixturesLoader
      *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
      *
-     * @param string $name   Entity name for fixtures relations
-     * @param string $class  Entity class name
-     * @param array  $values Entity values indexed by columns name
+     * @param string   $name     Entity name for fixtures relations
+     * @param string   $class    Entity class name
+     * @param array    $values   Entity values indexed by columns name
+     * @param \Closure $callback Callback before validation
      *
      * @return object Entity
      * @throws \Exception Invalid type for relation multiple
      */
-    protected function buildEntity($name, $class, array $values)
+    protected function buildEntity($name, $class, array $values, \Closure $callback = null)
     {
         if (!isset($this->metas[$class])) {
             $this->metas[$class] = $this->getManager()->getClassMetadata($class);
@@ -247,7 +248,29 @@ class YamlFixturesLoader
                         if (is_string($objectValue)) {
                             $object = $this->getEntity($objectClass, $objectValue);
                         } else {
-                            $object = $this->buildEntity($objectKey, $objectClass, $objectValue);
+                            $callback = null;
+                            if (isset($mapping['mappedBy'])) {
+                                $setter   = $this->buildMethod("set", $mapping['mappedBy']);
+                                $meta     = $this->metas[$objectClass];
+                                $callback = function ($object) use ($setter, $record, $meta, $mapping) {
+                                    if (is_callable(array($object, $setter))) {
+                                        call_user_func(array($object, $setter), $record);
+                                    } else {
+                                        $meta->getReflectionProperty($mapping['mappedBy'])->setValue($object, $record);
+                                    }
+                                };
+                            }
+                            $object = $this->buildEntity($objectKey, $objectClass, $objectValue, $callback, function ($object) use ($mapping, $record) {
+                                    // Set target object inversed relation value if needed, before validation
+                                    if (isset($mapping['mappedBy'])) {
+                                        if (is_callable(array($object, $setter))) {
+                                            call_user_func(array($object, $setter), $record);
+                                        } else {
+                                            $this->metas[$objectClass]->getReflectionProperty($mapping['mappedBy'])->setValue($object, $record);
+                                        }
+                                    }
+                                }
+                            );
                         }
 
                         // Set object value
@@ -255,15 +278,6 @@ class YamlFixturesLoader
                             call_user_func(array($record, $this->buildMethod("add", $this->metas[$objectClass]->getReflectionClass()->getShortName())), $object);
                         } else {
                             $this->metas[$class]->getReflectionProperty($column)->getValue($record)->add($object);
-                        }
-
-                        // Set target object inversed relation value if needed
-                        if (isset($mapping['mappedBy'])) {
-                            if (is_callable(array($object, $this->buildMethod("set", $mapping['mappedBy'])))) {
-                                call_user_func(array($object, $this->buildMethod("set", $mapping['mappedBy'])), $record);
-                            } else {
-                                $this->metas[$objectClass]->getReflectionProperty($mapping['mappedBy'])->setValue($object, $record);
-                            }
                         }
                     }
                 } else {
@@ -315,6 +329,11 @@ class YamlFixturesLoader
                 }
             }
         }
+
+        if ($callback) {
+            $callback($record);
+        }
+
         if ($this->validator) {
             $errors = $this->validator->validate($record);
             foreach ($errors as $error) {

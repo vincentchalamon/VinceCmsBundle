@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Vince\Bundle\CmsBundle\Entity\Article;
 use Vince\Bundle\CmsBundle\Event\CmsEvent;
 use Vince\Bundle\CmsBundle\Form\Type\ContactType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -71,6 +72,7 @@ class DefaultController extends Controller
     public function showAction()
     {
         // Retrieve article from its id in Request attributes
+        /** @var Article $article */
         $article = $this->getDoctrine()->getRepository($this->container->getParameter('vince.class.article'))->find($this->getRequest()->attributes->get('_id'));
         if (!$article || (!$article->isPublished() && !$this->get('security.context')->isGranted('ROLE_ADMIN'))) {
             throw $this->createNotFoundException();

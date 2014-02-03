@@ -4,7 +4,7 @@
             <a href="{% if child.isUrl %}{{ child.url }}{% else %}{{ path(child.article.routeName) }}{% endif %}"
                title="{{ child }}"{% if child.isUrl %} target="{{ child.target }}"{% endif %}>
                 {% if child.isImage %}
-                    <img src="{{ asset(child.webPath) }}" alt="{{ child }}" title="{{ child }}" />
+                    <img src="{{ asset(child.path) }}" alt="{{ child }}" title="{{ child }}" />
                 {% else %}
                     {{ child }}
                 {% endif %}

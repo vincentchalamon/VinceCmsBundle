@@ -11,9 +11,9 @@
 namespace Vince\Bundle\CmsBundle\Twig\Extension;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Vince\Bundle\CmsBundle\Entity\Menu;
 use Vince\Bundle\CmsBundle\Entity\Block;
 
 /**
@@ -39,11 +39,25 @@ class CmsExtension extends \Twig_Extension
     protected $security;
 
     /**
-     * Container
+     * EngineInterface
      *
-     * @var $container ContainerInterface
+     * @var $templating EngineInterface
      */
-    protected $container;
+    protected $templating;
+
+    /**
+     * Menu class
+     *
+     * @var $menuClass string
+     */
+    protected $menuClass;
+
+    /**
+     * Block class
+     *
+     * @var $blockClass string
+     */
+    protected $blockClass;
 
     /**
      * {@inheritdoc}
@@ -69,12 +83,13 @@ class CmsExtension extends \Twig_Extension
      */
     public function renderMenu($slug, $view = 'VinceCmsBundle:Component:menu.html.twig', array $parameters = array())
     {
-        $menu = $this->manager->getRepository($this->container->getParameter('vince.class.menu'))->findOneBy(array('slug' => $slug, 'lvl' => 0));
+        /** @var Menu $menu */
+        $menu = $this->manager->getRepository($this->menuClass)->findOneBy(array('slug' => $slug, 'lvl' => 0));
         if (!$menu || !$menu->getChildren()->count() || (!$menu->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
             return null;
         }
 
-        return $this->container->get('templating')->render($view, array_merge(array('menu' => $menu), $parameters));
+        return $this->templating->render($view, array_merge(array('menu' => $menu), $parameters));
     }
 
     /**
@@ -89,7 +104,7 @@ class CmsExtension extends \Twig_Extension
     public function renderBlock($name)
     {
         /** @var Block $block */
-        $block = $this->manager->getRepository($this->container->getParameter('vince.class.block'))->findOneBy(array('name' => $name));
+        $block = $this->manager->getRepository($this->blockClass)->findOneBy(array('name' => $name));
         if (!$block || (!$block->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
             return null;
         }
@@ -122,15 +137,39 @@ class CmsExtension extends \Twig_Extension
     }
 
     /**
-     * Set container
+     * Set templating
      *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
      *
-     * @param ContainerInterface $container
+     * @param EngineInterface $templating
      */
-    public function setContainer(ContainerInterface $container)
+    public function setTemplating(EngineInterface $templating)
     {
-        $this->container = $container;
+        $this->templating = $templating;
+    }
+
+    /**
+     * Set Menu class
+     *
+     * @author Vincent CHALAMON <vincentchalamon@gmail.com>
+     *
+     * @param string $menuClass
+     */
+    public function setMenuClass($menuClass)
+    {
+        $this->menuClass = $menuClass;
+    }
+
+    /**
+     * Set Block class
+     *
+     * @author Vincent CHALAMON <vincentchalamon@gmail.com>
+     *
+     * @param string $blockClass
+     */
+    public function setBlockClass($blockClass)
+    {
+        $this->blockClass = $blockClass;
     }
 
     /**

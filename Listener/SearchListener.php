@@ -10,8 +10,9 @@
  */
 namespace Vince\Bundle\CmsBundle\Listener;
 
+use Doctrine\ORM\EntityManager;
 use FOS\ElasticaBundle\Finder\TransformedFinder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Vince\Bundle\CmsBundle\Entity\Repository\ArticleRepository;
 use Vince\Bundle\CmsBundle\Event\CmsEvent;
 
@@ -31,11 +32,25 @@ class SearchListener
     protected $finder;
 
     /**
-     * Container
+     * Article class
      *
-     * @var $container ContainerInterface
+     * @var $articleClass string
      */
-    protected $container;
+    protected $articleClass;
+
+    /**
+     * EntityManager
+     *
+     * @var $em EntityManager
+     */
+    protected $em;
+
+    /**
+     * Request
+     *
+     * @var $request Request
+     */
+    protected $request;
 
     /**
      * On load article
@@ -47,7 +62,7 @@ class SearchListener
     public function onLoad(CmsEvent $event)
     {
         // Retrieve search query from Request
-        $event->addOption('query', trim(str_ireplace('/', '', $this->container->get('request')->get('query'))));
+        $event->addOption('query', trim(str_ireplace('/', '', $this->request->get('query'))));
 
         // No search query
         if (!$event->getOption('query')) {
@@ -58,7 +73,7 @@ class SearchListener
 
         // Prepare Query
         /** @var ArticleRepository $repository */
-        $repository = $this->container->get('doctrine.orm.entity_manager')->getRepository($this->container->getParameter('vince.class.article'));
+        $repository = $this->em->getRepository($this->articleClass);
         $query      = $repository->createSearchQuery($event->getOption('query'));
 
         // Send results to controller
@@ -78,14 +93,38 @@ class SearchListener
     }
 
     /**
-     * Set Container
+     * Set EntityManager
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      *
-     * @param ContainerInterface $container
+     * @param EntityManager $em
      */
-    public function setContainer(ContainerInterface $container)
+    public function setEntityManager(EntityManager $em)
     {
-        $this->container = $container;
+        $this->em = $em;
+    }
+
+    /**
+     * Set Article class
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param string $articleClass
+     */
+    public function setArticleClass($articleClass)
+    {
+        $this->articleClass = $articleClass;
+    }
+
+    /**
+     * Set Request
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param Request $request
+     */
+    public function setRequest($request)
+    {
+        $this->request = $request;
     }
 }
