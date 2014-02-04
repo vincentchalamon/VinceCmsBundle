@@ -69,7 +69,3 @@ Vince\Bundle\CmsBundle\Entity\Menu:
     indexes:
         search_idx:
             columns: slug
-    lifecycleCallbacks:
-        prePersist: [preUpload]
-        preUpdate: [preUpload]
-        postRemove: [remove]

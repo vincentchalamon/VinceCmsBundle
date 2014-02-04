@@ -14,9 +14,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\ConstraintViolation;
 
 /**
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
@@ -43,14 +40,9 @@ class OneValidator extends ConstraintValidator
         }
 
         // One constraint at least is valid
-        if ($this->context->getViolations()->count() < count($constraint->constraints)) {
-            for ($i = 0; $i < $this->context->getViolations()->count(); $i++) {
-                $this->context->getViolations()->remove($i);
-            }
-        } else {
-            for ($i = 1; $i < $this->context->getViolations()->count(); $i++) {
-                $this->context->getViolations()->remove($i);
-            }
+        $count = $this->context->getViolations()->count();
+        for ($i = $count < count($constraint->constraints) ? 0 : 1; $i < $count; $i++) {
+            $this->context->getViolations()->remove($i);
         }
     }
 }

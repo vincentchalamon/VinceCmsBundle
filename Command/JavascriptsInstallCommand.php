@@ -15,7 +15,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\Bundle\DoctrineBundle\Command\DoctrineCommand;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 
 /**

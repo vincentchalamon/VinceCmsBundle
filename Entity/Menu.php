@@ -12,7 +12,6 @@ namespace Vince\Bundle\CmsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\ExecutionContext;
 
 /**
@@ -182,7 +181,7 @@ abstract class Menu
     public function isTargetValid(ExecutionContext $context)
     {
         // Menu is not root and has no url or Article linked
-        if ($this->getParent() && !$this->getUrl() && !$this->getArticle()) {
+        if ($this->getParent() != $this && !$this->getUrl() && !$this->getArticle()) {
             $context->addViolationAt('url', 'This value should not be blank.');
         }
     }
@@ -196,7 +195,7 @@ abstract class Menu
     public function isImageValid(ExecutionContext $context)
     {
         if ($this->isImage && !$this->path) {
-            $context->addViolationAt('file', 'This value should not be blank.');
+            $context->addViolationAt('path', 'This value should not be blank.');
         }
     }
 
@@ -325,6 +324,16 @@ abstract class Menu
         $this->isImage = $isImage;
     
         return $this;
+    }
+
+    /**
+     * isImage
+     *
+     * @return boolean
+     */
+    public function isImage()
+    {
+        return $this->getIsImage();
     }
 
     /**

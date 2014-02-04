@@ -74,6 +74,16 @@ services:
     vince.processor.chain:
         class: Vince\Bundle\CmsBundle\Component\Chain\Chain
 
+    vince.cms.form.handler:
+        class: Vince\Bundle\CmsBundle\Form\Handler\CmsFormHandler
+        calls:
+            - [setChain, [@vince.processor.chain]]
+            - [setRouter, [@router]]
+            - [setSerializer, [@jms_serializer]]
+            - [setTranslator, [@translator]]
+            - [setSession, [@session]]
+            - [setTemplating, [@templating]]
+
     vince.processor:
         class: Vince\Bundle\CmsBundle\Component\Processor\Processor
         abstract: true

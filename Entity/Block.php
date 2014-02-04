@@ -1,12 +1,21 @@
 <?php
 
+/*
+ * This file is part of the VinceCms bundle.
+ *
+ * (c) Vincent Chalamon <vincentchalamon@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace Vince\Bundle\CmsBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\ExecutionContext;
 
 /**
- * Block
+ * This entity provides features to manage blocks
+ *
+ * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
 abstract class Block
 {

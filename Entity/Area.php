@@ -10,8 +10,6 @@
  */
 namespace Vince\Bundle\CmsBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * This entity provides features to manage an Area.
  * An Area is a part of a Template, and can be recognized by its name.

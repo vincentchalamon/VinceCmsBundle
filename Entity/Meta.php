@@ -10,8 +10,6 @@
  */
 namespace Vince\Bundle\CmsBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * This entity provides features to manage a Meta.
  *
