@@ -12,7 +12,6 @@ namespace Vince\Bundle\CmsBundle\Listener;
 
 use Doctrine\ORM\EntityManager;
 use FOS\ElasticaBundle\Finder\TransformedFinder;
-use Symfony\Component\HttpFoundation\Request;
 use Vince\Bundle\CmsBundle\Entity\Repository\ArticleRepository;
 use Vince\Bundle\CmsBundle\Event\CmsEvent;
 

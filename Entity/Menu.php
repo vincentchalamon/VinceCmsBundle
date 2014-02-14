@@ -49,7 +49,7 @@ abstract class Menu
     /**
      * @var boolean
      */
-    protected $isImage = false;
+    protected $image = false;
 
     /**
      * @var string
@@ -314,36 +314,26 @@ abstract class Menu
     }
 
     /**
-     * Set isImage
+     * Set image
      *
-     * @param boolean $isImage
+     * @param boolean $image
      * @return Menu
      */
-    public function setIsImage($isImage)
+    public function setImage($image)
     {
-        $this->isImage = $isImage;
+        $this->image = $image;
     
         return $this;
     }
 
     /**
-     * isImage
+     * Is image
      *
      * @return boolean
      */
     public function isImage()
     {
-        return $this->getIsImage();
-    }
-
-    /**
-     * Get isImage
-     *
-     * @return boolean 
-     */
-    public function getIsImage()
-    {
-        return $this->isImage;
+        return $this->image;
     }
 
     /**

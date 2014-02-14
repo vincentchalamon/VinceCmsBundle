@@ -10,7 +10,6 @@
  */
 namespace Vince\Bundle\CmsBundle\Controller;
 
-use JMS\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
