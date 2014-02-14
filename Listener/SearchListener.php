@@ -46,13 +46,6 @@ class SearchListener
     protected $em;
 
     /**
-     * Request
-     *
-     * @var $request Request
-     */
-    protected $request;
-
-    /**
      * On load article
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
@@ -62,7 +55,7 @@ class SearchListener
     public function onLoad(CmsEvent $event)
     {
         // Retrieve search query from Request
-        $event->addOption('query', trim(str_ireplace('/', '', $this->request->get('query'))));
+        $event->addOption('query', trim(str_ireplace('/', '', $event->getOption('request')->get('query'))));
 
         // No search query
         if (!$event->getOption('query')) {
@@ -114,17 +107,5 @@ class SearchListener
     public function setArticleClass($articleClass)
     {
         $this->articleClass = $articleClass;
-    }
-
-    /**
-     * Set Request
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     *
-     * @param Request $request
-     */
-    public function setRequest($request)
-    {
-        $this->request = $request;
     }
 }

@@ -11,10 +11,11 @@
                 <h2><a href="{{ path(result.routeName) }}" title="{{ result.title }}">{{ result.title }}</a></h2>
                 <div class="chapo">
                     {{ result.summary|raw }}
-                    <a href="{{ path(result.routeName) }}" title="{{ 'More'|trans({}, 'VinceCms') }}" class="linked gradient">{{ 'More'|trans({}, 'VinceCms') }}</a>
+                    <a href="{{ path(result.routeName) }}" title="{{ 'text.more'|trans({}, 'VinceCms') }}" class="linked gradient">{{ 'text.more'|trans({}, 'VinceCms') }}</a>
                 </div>
                 <p class="infos">
                     <span class="date">{{ result.startedAt|localizeddate('long', 'none') }}</span>
+                    {# todo-vince Comments #}
                     {#<a href="{{ path(article.routeName) }}#commentaires" title="{{ "{0} Aucun commentaire|{1} 1 commentaire|]1,Inf] %count% commentaires"|transchoice(article.activecomments.count) }}" class="comments">
                         {{ "{0} Aucun commentaire|{1} 1 commentaire|]1,Inf] %count% commentaires"|transchoice(post.activecomments.count) }}
                     </a>#}
@@ -30,6 +31,6 @@
             </div>
         {% endfor %}
     {% else %}
-        <p class="empty">{{ 'Your search did not return any results.'|trans({}, 'VinceCms') }}</p>
+        <p class="empty">{{ 'text.search'|trans({}, 'VinceCms') }}</p>
     {% endif %}
 {% endblock %}

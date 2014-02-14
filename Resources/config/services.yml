@@ -1,11 +1,16 @@
 services:
+    vince.cms.form.handler:
+        class: Vince\Bundle\CmsBundle\Form\Handler\CmsFormHandler
+        calls:
+            - [setChain, [@vince.processor.chain]]
+            - [setRouter, [@router]]
+
     # Twig
     twig.extension.vince.cms:
         class: Vince\Bundle\CmsBundle\Twig\Extension\CmsExtension
         calls:
-            - [setEntityManager, [@doctrine.orm.entity_manager]]
+            - [setEntityManager, [@doctrine.orm.default_entity_manager]]
             - [setSecurityContext, [@security.context]]
-            - [setTemplating, [@templating]]
             - [setMenuClass, [%vince.class.menu%]]
             - [setBlockClass, [%vince.class.block%]]
         tags:
@@ -49,18 +54,16 @@ services:
             - { name: routing.loader }
         calls:
             - [setArticleClass, [%vince.class.article%]]
-            - [setEntityManager, [@doctrine.orm.entity_manager]]
+            - [setEntityManager, [@doctrine.orm.default_entity_manager]]
 
     # CMS loaders
     vince.cms.search.load.listener:
         class: Vince\Bundle\CmsBundle\Listener\SearchListener
-        scope: request
         tags:
             - { name: kernel.event_listener, event: vince.cms.search.load, method: onLoad }
         calls:
-            - [setRequest, [@request]]
             - [setFinder, [@fos_elastica.finder.website.article]]
-            - [setEntityManager, [@doctrine.orm.entity_manager]]
+            - [setEntityManager, [@doctrine.orm.default_entity_manager]]
             - [setArticleClass, [%vince.class.article%]]
 
     vince.cms.contact.load.listener:
@@ -73,16 +76,6 @@ services:
     # CMS forms
     vince.processor.chain:
         class: Vince\Bundle\CmsBundle\Component\Chain\Chain
-
-    vince.cms.form.handler:
-        class: Vince\Bundle\CmsBundle\Form\Handler\CmsFormHandler
-        calls:
-            - [setChain, [@vince.processor.chain]]
-            - [setRouter, [@router]]
-            - [setSerializer, [@jms_serializer]]
-            - [setTranslator, [@translator]]
-            - [setSession, [@session]]
-            - [setTemplating, [@templating]]
 
     vince.processor:
         class: Vince\Bundle\CmsBundle\Component\Processor\Processor

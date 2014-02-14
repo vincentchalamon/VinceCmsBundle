@@ -23,13 +23,6 @@ class CmsEvent extends Event
 {
 
     /**
-     * Article
-     *
-     * @var Article
-     */
-    protected $article;
-
-    /**
      * Options
      *
      * @var array
@@ -42,7 +35,6 @@ class CmsEvent extends Event
      */
     public function __construct(Article $article, array $options = array())
     {
-        $this->article = $article;
         $this->options = array_merge(array('article' => $article), $options);
     }
 
@@ -54,7 +46,7 @@ class CmsEvent extends Event
      */
     public function getArticle()
     {
-        return $this->article;
+        return $this->options['article'];
     }
 
     /**
@@ -107,9 +99,13 @@ class CmsEvent extends Event
      * @param mixed $name Option name
      *
      * @return CmsEvent
+     * @throws \InvalidArgumentException
      */
     public function removeOption($name)
     {
+        if ($name == 'article') {
+            throw new \InvalidArgumentException('You cannot remote `article` option.');
+        }
         unset($this->options[$name]);
 
         return $this;

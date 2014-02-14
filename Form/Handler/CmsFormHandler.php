@@ -8,18 +8,14 @@
  */
 namespace Vince\Bundle\CmsBundle\Form\Handler;
 
-use JMS\Serializer\Serializer;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Vince\Bundle\CmsBundle\Component\Chain\Chain;
 use Vince\Bundle\CmsBundle\Entity\Article;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 /**
  * Cms form handler
@@ -44,34 +40,6 @@ class CmsFormHandler
     protected $router;
 
     /**
-     * Serializer
-     *
-     * @var Serializer
-     */
-    protected $serializer;
-
-    /**
-     * Translator
-     *
-     * @var Translator
-     */
-    protected $translator;
-
-    /**
-     * Session
-     *
-     * @var Session
-     */
-    protected $session;
-
-    /**
-     * Templating
-     *
-     * @var EngineInterface
-     */
-    protected $templating;
-
-    /**
      * Process form
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
@@ -79,11 +47,16 @@ class CmsFormHandler
      * @param Request $request Request
      * @param array   $options Options
      *
-     * @return JsonResponse|RedirectResponse|Response
+     * @return bool|Response
      * @throws \InvalidArgumentException
+     * @throws NotFoundHttpException
      */
     public function process(Request $request, array &$options = array())
     {
+        if (!isset($options['article']) || !$options['article'] || !$options['article'] instanceof Article) {
+            throw new NotFoundHttpException('Cannot retrieve article.');
+        }
+
         /** @var Article $article */
         $article = $options['article'];
         if ($request->isMethod('post')) {
@@ -97,29 +70,28 @@ class CmsFormHandler
                 if (is_object($return) && $return instanceof Response) {
                     return $return;
 
-                // Processor returns Form object containing errors
+                // Processor returns Form object
                 } elseif (is_object($return) && $return instanceof Form) {
-                    $options['form'] = $return->createView();
+                    $options['form'] = $return;
 
-                // Processor returns true, but Request is ajax
-                } elseif ($request->isXmlHttpRequest()) {
-                    return new JsonResponse();
+                    // Response is build in controller
+                    return false;
 
-                // Processor returns true, Request is not ajax
-                } else {
-                    return new RedirectResponse($this->router->generate($article->getRouteName()), 302);
+                // Processor returns array
+                } elseif (is_array($return)) {
+                    $options = array_merge($return, $options);
+
+                    // Response is build in controller
+                    return false;
+
+                // Processor returns boolean
+                } elseif (is_bool($return)) {
+                    return !$return ?: new RedirectResponse($this->router->generate($article->getRouteName()), 302);
                 }
             }
-
-            if ($request->isXmlHttpRequest()) {
-                return new Response($this->serializer->serialize(array_merge(array(
-                            'message' => $this->translator->trans('Form has errors.', array(), 'validators')
-                        ), $return), 'json'), 400);
-            }
-            $this->session->getFlashBag()->add('error', $this->translator->trans('Form has errors.', array(), 'validators'));
-
-            //return $this->templating->renderResponse($article->getTemplate()->getPath(), $options)->setStatusCode(400);
         }
+
+        return false;
     }
 
     /**
@@ -150,70 +122,6 @@ class CmsFormHandler
     public function setRouter($router)
     {
         $this->router = $router;
-
-        return $this;
-    }
-
-    /**
-     * Set Serializer
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     *
-     * @param Serializer $serializer
-     *
-     * @return CmsFormHandler
-     */
-    public function setSerializer($serializer)
-    {
-        $this->serializer = $serializer;
-
-        return $this;
-    }
-
-    /**
-     * Set Session
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     *
-     * @param Session $session
-     *
-     * @return CmsFormHandler
-     */
-    public function setSession($session)
-    {
-        $this->session = $session;
-
-        return $this;
-    }
-
-    /**
-     * Set Templating
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     *
-     * @param EngineInterface $templating
-     *
-     * @return CmsFormHandler
-     */
-    public function setTemplating($templating)
-    {
-        $this->templating = $templating;
-
-        return $this;
-    }
-
-    /**
-     * Set Translator
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     *
-     * @param Translator $translator
-     *
-     * @return CmsFormHandler
-     */
-    public function setTranslator($translator)
-    {
-        $this->translator = $translator;
 
         return $this;
     }

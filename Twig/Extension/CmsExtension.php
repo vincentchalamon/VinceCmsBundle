@@ -12,7 +12,6 @@ namespace Vince\Bundle\CmsBundle\Twig\Extension;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Vince\Bundle\CmsBundle\Entity\Menu;
 use Vince\Bundle\CmsBundle\Entity\Block;
 
@@ -39,13 +38,6 @@ class CmsExtension extends \Twig_Extension
     protected $security;
 
     /**
-     * EngineInterface
-     *
-     * @var $templating EngineInterface
-     */
-    protected $templating;
-
-    /**
      * Menu class
      *
      * @var $menuClass string
@@ -58,6 +50,13 @@ class CmsExtension extends \Twig_Extension
      * @var $blockClass string
      */
     protected $blockClass;
+
+    /**
+     * Environment
+     *
+     * @var $environment \Twig_Environment
+     */
+    protected $environment;
 
     /**
      * {@inheritdoc}
@@ -89,7 +88,7 @@ class CmsExtension extends \Twig_Extension
             return null;
         }
 
-        return $this->templating->render($view, array_merge(array('menu' => $menu), $parameters));
+        return $this->environment->render($view, array_merge(array('menu' => $menu), $parameters));
     }
 
     /**
@@ -110,6 +109,14 @@ class CmsExtension extends \Twig_Extension
         }
 
         return $block->getContents();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initRuntime(\Twig_Environment $environment)
+    {
+        $this->environment = $environment;
     }
 
     /**
@@ -134,18 +141,6 @@ class CmsExtension extends \Twig_Extension
     public function setSecurityContext(SecurityContextInterface $security)
     {
         $this->security = $security;
-    }
-
-    /**
-     * Set templating
-     *
-     * @author Vincent CHALAMON <vincentchalamon@gmail.com>
-     *
-     * @param EngineInterface $templating
-     */
-    public function setTemplating(EngineInterface $templating)
-    {
-        $this->templating = $templating;
     }
 
     /**

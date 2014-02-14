@@ -68,17 +68,19 @@ class ContactProcessor extends Processor
         $form->submit($request);
         if ($form->isValid()) {
             $message = \Swift_Message::newInstance()
-                ->setSubject($this->translator->trans('Nouveau message de contact'))
-                ->setFrom($this->configuration['noreply'])
-                ->setReplyTo($form->get('email')->getData(), $form->get('name')->getData())
-                ->setTo($this->configuration['recipient'])
-                ->setBody($this->templating->render('VinceCmsBundle::mail.html.twig', array(
-                    'message' => $form->get('message')->getData(),
-                    'title' => $this->translator->trans('Nouveau message de contact')
-                )))
+                        ->setSubject($this->translator->trans('contact.subject', array(), 'VinceCms'))
+                        ->setFrom($this->configuration['noreply'])
+                        ->setReplyTo($form->get('email')->getData(), $form->get('name')->getData())
+                        ->setTo($this->configuration['recipient'])
+                        ->setBody($this->templating->render('VinceCmsBundle::mail.html.twig', array(
+                            'message' => $form->get('message')->getData(),
+                            'title' => $this->translator->trans('contact.subject', array(), 'VinceCms')
+                        )
+                    )
+                )
             ;
             $this->mailer->send($message);
-            $this->session->getFlashBag()->add('success', $this->translator->trans('message.form.success', array(), 'cms'));
+            $this->session->getFlashBag()->add('success', $this->translator->trans('contact.confirmation', array(), 'VinceCms'));
 
             return true;
         }
