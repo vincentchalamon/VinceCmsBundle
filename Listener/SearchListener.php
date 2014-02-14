@@ -10,7 +10,6 @@
  */
 namespace Vince\Bundle\CmsBundle\Listener;
 
-use Doctrine\ORM\EntityManager;
 use FOS\ElasticaBundle\Finder\TransformedFinder;
 use Vince\Bundle\CmsBundle\Entity\Repository\ArticleRepository;
 use Vince\Bundle\CmsBundle\Event\CmsEvent;
@@ -31,18 +30,11 @@ class SearchListener
     protected $finder;
 
     /**
-     * Article class
+     * ArticleRepository
      *
-     * @var $articleClass string
+     * @var $ar ArticleRepository
      */
-    protected $articleClass;
-
-    /**
-     * EntityManager
-     *
-     * @var $em EntityManager
-     */
-    protected $em;
+    protected $ar;
 
     /**
      * On load article
@@ -64,9 +56,7 @@ class SearchListener
         }
 
         // Prepare Query
-        /** @var ArticleRepository $repository */
-        $repository = $this->em->getRepository($this->articleClass);
-        $query      = $repository->createSearchQuery($event->getOption('query'));
+        $query = $this->ar->createSearchQuery($event->getOption('query'));
 
         // Send results to controller
         $event->addOption('results', $this->finder->find($query));
@@ -85,26 +75,14 @@ class SearchListener
     }
 
     /**
-     * Set EntityManager
+     * Set ArticleRepository
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      *
-     * @param EntityManager $em
+     * @param ArticleRepository $ar
      */
-    public function setEntityManager(EntityManager $em)
+    public function setArticleRepository(ArticleRepository $ar)
     {
-        $this->em = $em;
-    }
-
-    /**
-     * Set Article class
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     *
-     * @param string $articleClass
-     */
-    public function setArticleClass($articleClass)
-    {
-        $this->articleClass = $articleClass;
+        $this->ar = $ar;
     }
 }

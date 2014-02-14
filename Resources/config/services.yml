@@ -62,9 +62,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: vince.cms.search.load, method: onLoad }
         calls:
-            - [setFinder, [@fos_elastica.finder.website.article]]
-            - [setEntityManager, [@doctrine.orm.default_entity_manager]]
-            - [setArticleClass, [%vince.class.article%]]
+            - [setArticleRepository, [@vince.repository.article]]
 
     vince.cms.contact.load.listener:
         class: Vince\Bundle\CmsBundle\Listener\ContactListener
