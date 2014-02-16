@@ -9,6 +9,7 @@
 namespace Vince\Bundle\CmsBundle\Tests\Listener;
 
 use Symfony\Component\Form\Test\TypeTestCase;
+use Vince\Bundle\CmsBundle\Entity\Article;
 use Vince\Bundle\CmsBundle\Event\CmsEvent;
 use Vince\Bundle\CmsBundle\Form\Type\ContactType;
 use Vince\Bundle\CmsBundle\Listener\ContactListener;
@@ -28,6 +29,7 @@ class ContactListenerTest extends TypeTestCase
      */
     public function testOnLoad()
     {
+        /** @var Article $article */
         $article  = $this->getMock('\Vince\Bundle\CmsBundle\Entity\Article');
         $listener = new ContactListener();
         $event    = new CmsEvent($article);
