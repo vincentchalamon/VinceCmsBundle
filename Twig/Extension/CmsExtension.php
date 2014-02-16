@@ -10,7 +10,7 @@
  */
 namespace Vince\Bundle\CmsBundle\Twig\Extension;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Vince\Bundle\CmsBundle\Entity\Menu;
 use Vince\Bundle\CmsBundle\Entity\Block;
@@ -24,37 +24,23 @@ class CmsExtension extends \Twig_Extension
 {
 
     /**
-     * EntityManager
+     * Repositories
      *
-     * @var $manager EntityManager
+     * @var array
      */
-    protected $manager;
+    protected $repositories;
 
     /**
      * SecurityContextInterface
      *
-     * @var $security SecurityContextInterface
+     * @var SecurityContextInterface
      */
     protected $security;
 
     /**
-     * Menu class
-     *
-     * @var $menuClass string
-     */
-    protected $menuClass;
-
-    /**
-     * Block class
-     *
-     * @var $blockClass string
-     */
-    protected $blockClass;
-
-    /**
      * Environment
      *
-     * @var $environment \Twig_Environment
+     * @var \Twig_Environment
      */
     protected $environment;
 
@@ -83,7 +69,7 @@ class CmsExtension extends \Twig_Extension
     public function renderMenu($slug, $view = 'VinceCmsBundle:Component:menu.html.twig', array $parameters = array())
     {
         /** @var Menu $menu */
-        $menu = $this->manager->getRepository($this->menuClass)->findOneBy(array('slug' => $slug, 'lvl' => 0));
+        $menu = $this->repositories['menu']->findOneBy(array('slug' => $slug, 'lvl' => 0));
         if (!$menu || !$menu->getChildren()->count() || (!$menu->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
             return null;
         }
@@ -103,7 +89,7 @@ class CmsExtension extends \Twig_Extension
     public function renderBlock($name)
     {
         /** @var Block $block */
-        $block = $this->manager->getRepository($this->blockClass)->findOneBy(array('name' => $name));
+        $block = $this->repositories['menu']->findOneBy(array('name' => $name));
         if (!$block || (!$block->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
             return null;
         }
@@ -120,15 +106,16 @@ class CmsExtension extends \Twig_Extension
     }
 
     /**
-     * Set entity manager
+     * Add repository
      *
-     * @author Vincent CHALAMON <vincentchalamon@gmail.com>
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
      *
-     * @param EntityManager $manager Entity manager
+     * @param string           $name       Name
+     * @param EntityRepository $repository Repository
      */
-    public function setEntityManager(EntityManager $manager)
+    public function addRepository($name, EntityRepository $repository)
     {
-        $this->manager = $manager;
+        $this->repositories[$name] = $repository;
     }
 
     /**
@@ -141,30 +128,6 @@ class CmsExtension extends \Twig_Extension
     public function setSecurityContext(SecurityContextInterface $security)
     {
         $this->security = $security;
-    }
-
-    /**
-     * Set Menu class
-     *
-     * @author Vincent CHALAMON <vincentchalamon@gmail.com>
-     *
-     * @param string $menuClass
-     */
-    public function setMenuClass($menuClass)
-    {
-        $this->menuClass = $menuClass;
-    }
-
-    /**
-     * Set Block class
-     *
-     * @author Vincent CHALAMON <vincentchalamon@gmail.com>
-     *
-     * @param string $blockClass
-     */
-    public function setBlockClass($blockClass)
-    {
-        $this->blockClass = $blockClass;
     }
 
     /**

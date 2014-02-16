@@ -9,10 +9,9 @@ services:
     twig.extension.vince.cms:
         class: Vince\Bundle\CmsBundle\Twig\Extension\CmsExtension
         calls:
-            - [setEntityManager, [@doctrine.orm.default_entity_manager]]
             - [setSecurityContext, [@security.context]]
-            - [setMenuClass, [%vince.class.menu%]]
-            - [setBlockClass, [%vince.class.block%]]
+            - [addRepository, ['menu', @vince.repository.menu]]
+            - [addRepository, ['block', @vince.repository.block]]
         tags:
             - { name: twig.extension }
 
@@ -53,8 +52,7 @@ services:
         tags:
             - { name: routing.loader }
         calls:
-            - [setArticleClass, [%vince.class.article%]]
-            - [setEntityManager, [@doctrine.orm.default_entity_manager]]
+            - [setArticleRepository, [@vince.repository.article]]
 
     # CMS loaders
     vince.cms.search.load.listener:

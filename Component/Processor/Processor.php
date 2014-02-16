@@ -26,7 +26,7 @@ abstract class Processor
     /**
      * Factory
      *
-     * @var $factory FormFactory
+     * @var FormFactory
      */
     protected $factory;
 

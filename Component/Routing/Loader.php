@@ -10,11 +10,12 @@
  */
 namespace Vince\Bundle\CmsBundle\Component\Routing;
 
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Vince\Bundle\CmsBundle\Entity\Article;
+use Vince\Bundle\CmsBundle\Entity\Repository\ArticleRepository;
 
 /**
  * Load routing
@@ -24,18 +25,22 @@ use Symfony\Component\Routing\RouteCollection;
 class Loader implements LoaderInterface
 {
 
-    private $loaded = false, $em, $class;
+    /**
+     * Is loader loaded
+     *
+     * @var bool
+     */
+    protected $loaded = false;
 
     /**
-     * Loads a resource
+     * Article repository
      *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     *
-     * @param mixed  $resource
-     * @param string $type
-     *
-     * @return RouteCollection
-     * @throws \RuntimeException
+     * @var ArticleRepository
+     */
+    protected $repository;
+
+    /**
+     * {@inheritdoc}
      */
     public function load($resource, $type = null)
     {
@@ -43,30 +48,20 @@ class Loader implements LoaderInterface
             throw new \RuntimeException('Do not add this loader twice');
         }
         $routing  = new RouteCollection();
-        $articles = $this->em->getRepository($this->class)->findAllIterate();
+        $articles = $this->repository->findAllIterate();
         while (false !== ($row = $articles->next())) {
-            $routing->add($row[0]->getRouteName(), new Route($row[0]->getRoutePattern(), array(
+            /** @var Article $article */
+            $article = $row[0];
+            $routing->add($article->getRouteName(), new Route($article->getRoutePattern(), array(
                         '_controller' => 'VinceCmsBundle:Default:show',
-                        '_id' => $row[0]->getId()
+                        '_id' => $article->getId()
                     )
                 )
             );
-            $this->em->detach($row[0]);
+            $this->repository->detach($article);
         }
 
         return $routing;
-    }
-
-    /**
-     * Set entity manager
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     *
-     * @param EntityManager $em
-     */
-    public function setEntityManager(EntityManager $em)
-    {
-        $this->em = $em;
     }
 
     /**
@@ -74,22 +69,15 @@ class Loader implements LoaderInterface
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      *
-     * @param string $class
+     * @param ArticleRepository $repository
      */
-    public function setArticleClass($class)
+    public function setArticleRepository(ArticleRepository $repository)
     {
-        $this->class = $class;
+        $this->repository = $repository;
     }
 
     /**
-     * Returns true if this class supports the given resource
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     *
-     * @param mixed  $resource
-     * @param string $type
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function supports($resource, $type = null)
     {
@@ -97,21 +85,14 @@ class Loader implements LoaderInterface
     }
 
     /**
-     * Gets the loader resolver
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     * @return LoaderResolverInterface|void
+     * {@inheritdoc}
      */
     public function getResolver()
     {
     }
 
     /**
-     * Sets the loader resolver
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     *
-     * @param LoaderResolverInterface $resolver
+     * {@inheritdoc}
      */
     public function setResolver(LoaderResolverInterface $resolver)
     {

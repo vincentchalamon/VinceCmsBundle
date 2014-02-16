@@ -25,7 +25,7 @@ class ContactListener
     /**
      * Factory
      *
-     * @var $factory FormFactory
+     * @var FormFactory
      */
     protected $factory;
 

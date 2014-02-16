@@ -124,6 +124,18 @@ class ArticleRepository extends EntityRepository
     }
 
     /**
+     * Detach entity from iterator
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param object $entity The entity to detach
+     */
+    public function detach($entity)
+    {
+        $this->_em->detach($entity);
+    }
+
+    /**
      * Get all published Articles ordered by start publication date DESC
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>

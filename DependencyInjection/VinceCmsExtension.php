@@ -32,14 +32,16 @@ class VinceCmsExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
         
         $container->setParameter('vince.contact', $config['contact']);
-        $container->setParameter('vince.class.article', $config['article']['class']);
-        $container->setParameter('vince.class.block', $config['block']);
-        $container->setParameter('vince.class.menu', $config['menu']);
 
-        $repository = new Definition($config['article']['repository'], array($config['article']['class']));
-        $repository->setFactoryService('doctrine.orm.default_entity_manager');
-        $repository->setFactoryMethod('getRepository');
-        $container->setDefinition('vince.repository.article', $repository);
+        foreach (array('article', 'block', 'menu') as $name) {
+            $container->setParameter(sprintf('vince.class.%s', $name), $config[$name]['class']);
+
+            // Build repository as service
+            $repository = new Definition($config[$name]['repository'], array($config[$name]['class']));
+            $repository->setFactoryService('doctrine.orm.default_entity_manager');
+            $repository->setFactoryMethod('getRepository');
+            $container->setDefinition(sprintf('vince.repository.%s', $name), $repository);
+        }
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

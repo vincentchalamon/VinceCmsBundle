@@ -25,14 +25,14 @@ class SearchListener
     /**
      * Finder
      *
-     * @var $finder TransformedFinder
+     * @var TransformedFinder
      */
     protected $finder;
 
     /**
      * ArticleRepository
      *
-     * @var $ar ArticleRepository
+     * @var ArticleRepository
      */
     protected $ar;
 
