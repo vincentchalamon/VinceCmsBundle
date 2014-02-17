@@ -19,5 +19,5 @@
         </div>
     {% endif %}
 
-    <div class="contents">{{ article.content('contents')|raw }}</div>
+    <div class="contents">{{ article|content('contents') }}</div>
 {% endblock %}

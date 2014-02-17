@@ -3,14 +3,14 @@
 {% block body %}
     <h1>{{ block('title') }}</h1>
 
-    <div class="contents">{{ article.content('contents')|raw }}</div>
+    <div class="contents">{{ article|content('contents') }}</div>
 
     {% if results|length %}
         {% for result in results %}
             <div class="block">
                 <h2><a href="{{ path(result.routeName) }}" title="{{ result.title }}">{{ result.title }}</a></h2>
                 <div class="chapo">
-                    {{ result.summary|raw }}
+                    {{ result.summary }}
                     <a href="{{ path(result.routeName) }}" title="{{ 'text.more'|trans({}, 'VinceCms') }}" class="linked gradient">{{ 'text.more'|trans({}, 'VinceCms') }}</a>
                 </div>
                 <p class="infos">

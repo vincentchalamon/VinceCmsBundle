@@ -12,6 +12,7 @@ namespace Vince\Bundle\CmsBundle\Twig\Extension;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Vince\Bundle\CmsBundle\Entity\Article;
 use Vince\Bundle\CmsBundle\Entity\Menu;
 use Vince\Bundle\CmsBundle\Entity\Block;
 
@@ -56,6 +57,16 @@ class CmsExtension extends \Twig_Extension
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getFilters()
+    {
+        return array(
+            new \Twig_SimpleFilter('content', array($this, 'renderContents'), array('is_safe' => array('html')))
+        );
+    }
+
+    /**
      * Render a Menu
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
@@ -78,6 +89,21 @@ class CmsExtension extends \Twig_Extension
     }
 
     /**
+     * Render an Article content
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param Article $article Article object
+     * @param string  $name    Contents name
+     *
+     * @return null|string
+     */
+    public function renderContents(Article $article, $name)
+    {
+        return $article->getContent($name);
+    }
+
+    /**
      * Render a Block
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
@@ -89,7 +115,7 @@ class CmsExtension extends \Twig_Extension
     public function renderBlock($name)
     {
         /** @var Block $block */
-        $block = $this->repositories['menu']->findOneBy(array('name' => $name));
+        $block = $this->repositories['block']->findOneBy(array('name' => $name));
         if (!$block || (!$block->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
             return null;
         }

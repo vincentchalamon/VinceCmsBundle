@@ -12,7 +12,7 @@
             <item>
                 <title>{{ article.title }}</title>
                 <link>{{ url(article.routeName) }}</link>
-                <description>{{ article.summary|raw }}</description>
+                <description>{{ article.summary }}</description>
                 <pubDate>{{ article.startedAt.format(constant('DATE_RSS')) }}</pubDate>
             </item>
         {% endfor %}
