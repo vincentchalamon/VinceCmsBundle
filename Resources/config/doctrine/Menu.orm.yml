@@ -26,9 +26,9 @@ Vince\Bundle\CmsBundle\Entity\Menu:
             type: string
             length: 255
             nullable: true
-        isImage:
+        image:
             type: boolean
-            column: is_image
+            column: image
         startedAt:
             type: date
             nullable: true

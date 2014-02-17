@@ -194,7 +194,7 @@ abstract class Menu
      */
     public function isImageValid(ExecutionContext $context)
     {
-        if ($this->isImage && !$this->path) {
+        if ($this->isImage() && !$this->path) {
             $context->addViolationAt('path', 'This value should not be blank.');
         }
     }
