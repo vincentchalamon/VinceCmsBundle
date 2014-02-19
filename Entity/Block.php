@@ -62,7 +62,7 @@ abstract class Block
 
     public function __toString()
     {
-        return $this->getContents();
+        return $this->getContents() ?: '-';
     }
 
     /**

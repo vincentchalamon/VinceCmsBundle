@@ -55,7 +55,7 @@ abstract class Content
      */
     public function __toString()
     {
-        return $this->getContents();
+        return $this->getContents() ?: '-';
     }
 
     /**

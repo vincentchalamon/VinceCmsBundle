@@ -56,7 +56,7 @@ class Area
      */
     public function __toString()
     {
-        return $this->getTitle();
+        return $this->getTitle() ?: '-';
     }
 
     /**
