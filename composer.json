@@ -1,10 +1,14 @@
 {
     "name": "vince/cms-bundle",
     "type": "symfony-bundle",
-    "description": "Basic CMS features for Symfony 2.3",
-    "keywords": ["CMS", "Vince"],
-    "homepage": "https://github.com/vincentchalamon/VinceCmsBundle",
     "license": "MIT",
+    "description": "Basic CMS features for Symfony 2.3",
+    "version": "v1.0.0",
+    "keywords": ["CMS", "Vince"],
+    "homepage": "http://vincentchalamon.github.io/VinceCmsBundle/",
+    "autoload": {
+        "psr-0": { "Vince\\Bundle\\CmsBundle": "" }
+    },
     "authors": [
         {
             "name": "Vincent CHALAMON",
@@ -12,19 +16,19 @@
         }
     ],
     "require": {
-        "doctrine/doctrine-fixtures-bundle": "2.2.*@dev",
-        "gedmo/doctrine-extensions": "2.3.*@dev",
-        "liip/functional-test-bundle": "1.0.*@dev",
-        "jms/serializer-bundle": "0.13.*@dev",
-        "knplabs/knp-paginator-bundle": "2.4.*@dev"
+        "gedmo/doctrine-extensions": "v2.3.9",
+        "jms/serializer-bundle": "0.13.0",
+        "knplabs/knp-paginator-bundle": "2.4.0"
+    },
+    "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "v2.2.0",
+        "liip/functional-test-bundle": "1.0.0"
     },
     "suggest": {
-        "vince/cms-sonata-admin-bundle": "to manage VinceCms with Sonata Admin",
-        "friendsofsymfony/elastica-bundle": "to use elastisearch"
+        "vince/cms-sonata-admin-bundle": "Manage VinceCms with Sonata Admin",
+        "vince/type-bundle": "Expand forms",
+        "friendsofsymfony/elastica-bundle": "Use elastisearch"
     },
-    "autoload": {
-        "psr-0": { "Vince\\Bundle\\CmsBundle": "" }
-    },
-    "target-dir": "Vince/Bundle/CmsBundle",
-    "version": "v1.0.0"
+    "minimum-stability": "stable",
+    "target-dir": "Vince/Bundle/CmsBundle"
 }
