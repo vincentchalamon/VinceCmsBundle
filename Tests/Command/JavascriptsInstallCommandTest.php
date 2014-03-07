@@ -30,8 +30,8 @@ class JavascriptsInstallCommandTest extends CommandTestCase
 
         // Test command
         $output = $this->runCommand($client, 'vince:javascripts:install web vendor/jquery/jquery/jquery-1.10.2.min.js --symlink');
-        $this->assertContains('Installing JavaScripts using the symlink option.', $output);
-        $this->assertContains('Installing jquery-1.10.2.min.js JavaScript file into web/js.', $output);
+        $this->assertContains('Installing JavaScripts using the symlink option', $output);
+        $this->assertContains('Installing jquery-1.10.2.min.js JavaScript file into web/js', $output);
         $this->assertFileExists($client->getContainer()->getParameter('kernel.root_dir').'/../web/js/jquery-1.10.2.min.js');
     }
 }

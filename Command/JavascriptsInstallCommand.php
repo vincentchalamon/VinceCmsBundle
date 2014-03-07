@@ -52,13 +52,13 @@ class JavascriptsInstallCommand extends DoctrineCommand
         }
         $filesystem->chmod($target, 0777);
 
-        $output->writeln(sprintf('Installing JavaScripts using the <comment>%s</comment> option.', $input->getOption('symlink') ? 'symlink' : 'hard copy'));
+        $output->writeln(sprintf('Installing JavaScripts using the <comment>%s</comment> option', $input->getOption('symlink') ? 'symlink' : 'hard copy'));
 
         foreach ($input->getArgument('javascripts') as $javascript) {
             $filename    = pathinfo($javascript, PATHINFO_BASENAME);
             $source      = $origin.'/'.$javascript;
             $destination = $target.'/'.$filename;
-            $output->writeln(sprintf('Installing <comment>%s</comment> JavaScript file into <comment>%s</comment>.', $filename, $target));
+            $output->writeln(sprintf('Installing <comment>%s</comment> JavaScript file into <comment>%s</comment>', $filename, $target));
 
             // Remove existing file
             if (is_file($destination)) {
