@@ -423,7 +423,7 @@ abstract class Article
      *
      * @return Article
      */
-    public function setStartedAt(\DateTime $startedAt)
+    public function setStartedAt(\DateTime $startedAt = null)
     {
         $this->startedAt = $startedAt;
 
@@ -447,7 +447,7 @@ abstract class Article
      *
      * @return Article
      */
-    public function setEndedAt(\DateTime $endedAt)
+    public function setEndedAt(\DateTime $endedAt = null)
     {
         $this->endedAt = $endedAt;
 
