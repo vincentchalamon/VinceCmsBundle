@@ -5,6 +5,9 @@ Vince\Bundle\CmsBundle\Entity\Block:
             type: string
             length: 255
             unique: true
+        title:
+            type: string
+            length: 255
         contents:
             type: text
         startedAt:

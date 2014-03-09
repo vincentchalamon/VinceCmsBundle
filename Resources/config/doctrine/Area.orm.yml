@@ -22,6 +22,7 @@ Vince\Bundle\CmsBundle\Entity\Area:
         template:
             targetEntity: Vince\Bundle\CmsBundle\Entity\Template
             inversedBy: areas
+            cascade: [all]
             joinColumn:
                 name: template_id
                 referencedColumnName: id

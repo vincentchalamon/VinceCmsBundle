@@ -156,7 +156,7 @@ class Area
      *
      * @return boolean
      */
-    public function getRequired()
+    public function isRequired()
     {
         return $this->required;
     }

@@ -33,6 +33,11 @@ abstract class Block
     /**
      * @var string
      */
+    protected $title;
+
+    /**
+     * @var string
+     */
     protected $contents;
 
     /**
@@ -62,7 +67,7 @@ abstract class Block
 
     public function __toString()
     {
-        return $this->getContents() ?: '-';
+        return $this->getName();
     }
 
     /**
@@ -150,6 +155,30 @@ abstract class Block
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return Block
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 
     /**

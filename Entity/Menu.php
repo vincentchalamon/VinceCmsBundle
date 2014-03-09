@@ -133,6 +133,22 @@ abstract class Menu
     }
 
     /**
+     * Get title in admin list
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     * @return string
+     */
+    public function getAdminListTitle()
+    {
+        $prefix = '';
+        for ($i = 0; $i <= $this->getLvl(); $i++) {
+            $prefix .= '&nbsp;&nbsp;&nbsp;&nbsp;';
+        }
+
+        return $prefix.$this->getTitle();
+    }
+
+    /**
      * Get publication state
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>

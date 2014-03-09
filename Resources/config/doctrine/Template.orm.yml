@@ -17,3 +17,4 @@ Vince\Bundle\CmsBundle\Entity\Template:
         areas:
             targetEntity: Vince\Bundle\CmsBundle\Entity\Area
             mappedBy: template
+            cascade: [all]

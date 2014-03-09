@@ -12,14 +12,13 @@ namespace Vince\Bundle\CmsBundle\Component;
 
 use Doctrine\Common\Inflector\Inflector;
 use Doctrine\DBAL\Types\Type;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\Finder\Finder;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Symfony\Component\Validator\Validator;
-use Symfony\Component\Validator\ConstraintViolation;
 
 /**
  * Helps you to load your fixtures from yaml files
@@ -60,16 +59,9 @@ class YamlFixturesLoader
     /**
      * Manager
      *
-     * @var ObjectManager
+     * @var EntityManager
      */
     protected $manager;
-
-    /**
-     * Validator
-     *
-     * @var Validator
-     */
-    protected $validator;
 
     /**
      * Add yml fixtures file to load
@@ -91,7 +83,7 @@ class YamlFixturesLoader
         if (!is_file($filename)) {
             throw new FileNotFoundException(sprintf("File '%s' not found.", $filename));
         }
-        if (pathinfo($filename, PATHINFO_EXTENSION) != "yml") {
+        if (pathinfo($filename, PATHINFO_EXTENSION) != 'yml') {
             throw new \InvalidArgumentException(sprintf("Invalid extension for file '%s'.", $filename));
         }
 
@@ -127,6 +119,7 @@ class YamlFixturesLoader
         $finder = new Finder();
         $finder->files()->name('*.yml')->depth($recursive ? '>= 0' : '== 0')->in($path)->sortByName();
         foreach ($finder as $file) {
+            /** @var \SplFileInfo $file */
             $this->addFile($file->getRealpath());
         }
 
@@ -145,9 +138,6 @@ class YamlFixturesLoader
      * $loader->load($manager, function ($name, $entity){
      *     $entity->myFunction();
      * }, $this);
-     * $loader->load($manager, function ($name, $entity){
-     *     $entity->myFunction();
-     * }, $this, $this->container->get('validator'));
      * </code>
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
@@ -155,16 +145,12 @@ class YamlFixturesLoader
      * @param ObjectManager   $manager    Manager
      * @param callable        $callback   Callback
      * @param AbstractFixture $referencer Fixtures class for referencing entities
-     * @param Validator       $validator  Validator service to validate entities
      *
      * @throws \InvalidArgumentException Invalid class name
      */
-    public function load(ObjectManager $manager, \Closure $callback = null, AbstractFixture $referencer = null, Validator $validator = null)
+    public function load(ObjectManager $manager, \Closure $callback = null, AbstractFixture $referencer = null)
     {
         $this->manager = $manager;
-        if ($validator) {
-            $this->validator = $validator;
-        }
         if ($referencer) {
             $this->referencer = $referencer;
         }
@@ -176,24 +162,16 @@ class YamlFixturesLoader
                 foreach ($models as $class => $entities) {
                     if ($entities) {
                         foreach ($entities as $name => $entity) {
-                            $this->buildEntity($name, $this->getValidClassName($class), $entity);
+                            $this->getManager()->persist($this->buildEntity($name, $this->getValidClassName($class), $entity, $callback));
                         }
                     } else {
-                        throw new \InvalidArgumentException(sprintf('Class "%s" has no fixtures in file "%s".', $class, $file));
+                        throw new \InvalidArgumentException(sprintf("Class '%s' has no fixtures in file '%s'.", $class, $file));
                     }
                 }
             } else {
-                throw new \InvalidArgumentException(sprintf('File "%s" has no fixtures.', $file));
+                throw new \InvalidArgumentException(sprintf("File '%s' has no fixtures.", $file));
             }
         }
-
-        // Callback by entity
-        if ($callback) {
-            foreach ($this->entities as $name => $entity) {
-                $callback($name, $entity);
-            }
-        }
-        $this->getManager()->flush();
 
         // Add references
         if ($this->hasReferencer()) {
@@ -203,6 +181,9 @@ class YamlFixturesLoader
                 }
             }
         }
+
+        // Flush
+        $this->getManager()->flush();
     }
 
     /**
@@ -213,33 +194,37 @@ class YamlFixturesLoader
      * @param string   $name     Entity name for fixtures relations
      * @param string   $class    Entity class name
      * @param array    $values   Entity values indexed by columns name
-     * @param \Closure $callback Callback before validation
+     * @param \Closure $callback Callback
      *
      * @return object Entity
-     * @throws \Exception Invalid type for relation multiple
+     * @throws \InvalidArgumentException Invalid type for relation multiple
      */
     protected function buildEntity($name, $class, array $values, \Closure $callback = null)
     {
         if (!isset($this->metas[$class])) {
             $this->metas[$class] = $this->getManager()->getClassMetadata($class);
         }
+        /** @var ClassMetadata $meta */
+        $meta = $this->metas[$class];
 
         // Build new object
         $record = new $class();
         foreach ((array)$values as $column => $value) {
-            // Relation with ClassMetadata
-            if ($this->metas[$class]->hasAssociation($column)) {
-                $objectClass = $this->metas[$class]->getAssociationTargetClass($column);
-                $mapping     = $this->metas[$class]->getAssociationMapping($column);
+            // Association
+            if ($meta->hasAssociation($column)) {
+                $mapping     = $meta->getAssociationMapping($column);
+                $objectClass = $meta->getAssociationTargetClass($column);
                 if (!isset($this->metas[$objectClass])) {
                     $this->metas[$objectClass] = $this->getManager()->getClassMetadata($objectClass);
                 }
+                /** @var ClassMetadata $objectMeta */
+                $objectMeta = $this->metas[$objectClass];
 
-                // Multiple relation
-                if ($this->metas[$class]->isCollectionValuedAssociation($column)) {
+                // OneToMany/ManyToMany
+                if ($meta->isCollectionValuedAssociation($column)) {
                     // Values must be an array
                     if (!is_array($value)) {
-                        throw new \Exception(sprintf("You must specify an array for relation '%s'.", $column));
+                        throw new \InvalidArgumentException(sprintf("You must specify an array for association '%s' on entity '%s' for class '%s'.", $column, $name, $class));
                     }
 
                     // Create or retrieve entities
@@ -248,107 +233,90 @@ class YamlFixturesLoader
                         if (is_string($objectValue)) {
                             $object = $this->getEntity($objectClass, $objectValue);
                         } else {
-                            $callback = null;
+                            $object = $this->buildEntity($objectKey, $objectClass, $objectValue, $callback);
+
+                            // todo-vince Seems there is a bug on Doctrine2 cascade persist: need to call setter on bidirectional associations
                             if (isset($mapping['mappedBy'])) {
-                                $setter   = $this->buildMethod("set", $mapping['mappedBy']);
-                                $meta     = $this->metas[$objectClass];
-                                $callback = function ($object) use ($setter, $record, $meta, $mapping) {
-                                    if (is_callable(array($object, $setter))) {
-                                        call_user_func(array($object, $setter), $record);
-                                    } else {
-                                        $meta->getReflectionProperty($mapping['mappedBy'])->setValue($object, $record);
-                                    }
-                                };
-                            }
-                            $object = $this->buildEntity($objectKey, $objectClass, $objectValue, $callback, function ($object) use ($mapping, $record) {
-                                    // Set target object inversed relation value if needed, before validation
-                                    if (isset($mapping['mappedBy'])) {
-                                        if (is_callable(array($object, $setter))) {
-                                            call_user_func(array($object, $setter), $record);
-                                        } else {
-                                            $this->metas[$objectClass]->getReflectionProperty($mapping['mappedBy'])->setValue($object, $record);
-                                        }
-                                    }
+                                if (is_callable(array($object, 'set'.Inflector::classify($mapping['mappedBy'])))) {
+                                    call_user_func(array($object, 'set'.Inflector::classify($mapping['mappedBy'])), $record);
+                                } else {
+                                    $objectMeta->getReflectionProperty($mapping['mappedBy'])->setValue($object, $record);
                                 }
-                            );
+                            }
+
+                            // Need to persist sub-object
+                            $this->getManager()->persist($object);
                         }
 
                         // Set object value
-                        if (is_callable(array($record, $this->buildMethod("add", $this->metas[$objectClass]->getReflectionClass()->getShortName())))) {
-                            call_user_func(array($record, $this->buildMethod("add", $this->metas[$objectClass]->getReflectionClass()->getShortName())), $object);
+                        if (is_callable(array($record, 'add'.Inflector::classify($objectMeta->getReflectionClass()->getShortName())))) {
+                            call_user_func(array($record, 'add'.Inflector::classify($objectMeta->getReflectionClass()->getShortName())), $object);
+                        } elseif (is_callable(array($record, 'add'.Inflector::classify($column)))) {
+                            call_user_func(array($record, 'add'.Inflector::classify($column)), $object);
                         } else {
-                            $this->metas[$class]->getReflectionProperty($column)->getValue($record)->add($object);
+                            $meta->getReflectionProperty($column)->getValue($record)->add($object);
                         }
                     }
+
+                // ManyToOne/OneToOne
                 } else {
                     // Is entity already created ?
                     if (is_string($value)) {
                         $object = $this->getEntity($objectClass, $value);
                     } else {
                         $object = $this->buildEntity("$name-$column", $objectClass, $value);
+
+                        // Need to persist sub-object
+                        $this->getManager()->persist($object);
                     }
 
                     // Set object value
-                    if (is_callable(array($record, $this->buildMethod("set", $column)))) {
-                        call_user_func(array($record, $this->buildMethod("set", $column)), $object);
+                    if (is_callable(array($record, 'set'.Inflector::classify($column)))) {
+                        call_user_func(array($record, 'set'.Inflector::classify($column)), $object);
                     } else {
-                        $this->metas[$class]->getReflectionProperty($column)->setValue($record, $object);
+                        $meta->getReflectionProperty($column)->setValue($record, $object);
                     }
 
+                    // todo-vince Is this code necessary ?
                     // Set target object inversed relation value if needed
-                    if (isset($mapping['inversedBy'])) {
-                        if ($this->metas[$objectClass]->isSingleValuedAssociation($mapping['inversedBy'])) {
-                            if (is_callable(array($object, $this->buildMethod("set", $mapping['inversedBy'])))) {
-                                call_user_func(array($object, $this->buildMethod("set", $mapping['inversedBy'])), $record);
+                    /*if (isset($mapping['inversedBy'])) {
+                        if ($objectMeta->isSingleValuedAssociation($mapping['inversedBy'])) {
+                            if (is_callable(array($object, 'set'.Inflector::classify($mapping['inversedBy'])))) {
+                                call_user_func(array($object, 'set'.Inflector::classify($mapping['inversedBy'])), $record);
                             } else {
-                                $this->metas[$objectClass]->getReflectionProperty($mapping['inversedBy'])->setValue($object, $record);
+                                $objectMeta->getReflectionProperty($mapping['inversedBy'])->setValue($object, $record);
                             }
                         } else {
-                            if (is_callable(array($object, $this->buildMethod("add", $this->metas[$objectClass]->getReflectionClass()->getShortName())))) {
-                                call_user_func(array($object, $this->buildMethod("add", $this->metas[$objectClass]->getReflectionClass()->getShortName())), $record);
+                            if (is_callable(array($object, 'add'.Inflector::classify($objectMeta->getReflectionClass()->getShortName())))) {
+                                call_user_func(array($object, 'add'.Inflector::classify($objectMeta->getReflectionClass()->getShortName())), $record);
                             } else {
-                                $this->metas[$objectClass]->getReflectionProperty($mapping['inversedBy'])->getValue($object)->add($record);
+                                $objectMeta->getReflectionProperty($mapping['inversedBy'])->getValue($object)->add($record);
                             }
                         }
-                    }
+                    }*/
                 }
-                // Column with ClassMetadata
+
+            // Property
+            } elseif ($meta->hasField($column)) {
+                $type = Type::getType($meta->getTypeOfField($column));
+                if (strtolower($type) != 'array') {
+                    $value = $type->convertToPHPValue($value, $this->getManager()->getConnection()->getDatabasePlatform());
+                }
+                $meta->getReflectionProperty($column)->setValue($record, $value);
+
+            // Custom call
+            } elseif (is_callable(array($record, 'set'.Inflector::classify($column)))) {
+                call_user_func(array($record, 'set'.Inflector::classify($column)), $value);
             } else {
-                if ($this->metas[$class]->hasField($column)) {
-                    $type = Type::getType($this->metas[$class]->getTypeOfField($column));
-                    if (strtolower($type) != 'array') {
-                        $value = $type->convertToPHPValue($value, $this->getManager()->getConnection()->getDatabasePlatform());
-                    }
-                }
-                if (is_callable(array($record, $this->buildMethod("set", $column)))) {
-                    call_user_func(array($record, $this->buildMethod("set", $column)), $value);
-                } elseif ($this->metas[$class]->hasField($column)) {
-                    $this->metas[$class]->getReflectionProperty($column)->setValue($record, $value);
-                } else {
-                    throw new \InvalidArgumentException(sprintf("Unknown method '%s' on '%s' object (%s).", $this->buildMethod("set", $column), $name, $class));
-                }
+                throw new \InvalidArgumentException(sprintf("Unknown method 'set%s' on entity '%s' for class '%s'.", Inflector::classify($column), $name, $class));
             }
         }
 
+        // Callback
         if ($callback) {
-            $callback($record);
+            $callback($name, $record);
         }
 
-        if ($this->validator) {
-            $errors = $this->validator->validate($record);
-            foreach ($errors as $error) {
-                /** @var ConstraintViolation $error */
-                throw new \InvalidArgumentException(sprintf(<<<EOF
-Fail to validate field "%s" on entity "%s" for class "%s":
-%s
-EOF
-                    , $error->getPropertyPath()
-                    , $name
-                    , $class
-                    , $error->getMessage()));
-            }
-        }
-        $this->getManager()->persist($record);
         $this->entities[$class][$name] = $record;
 
         return $record;
@@ -373,21 +341,6 @@ EOF
             return $this->getManager()->merge($this->getReferencer()->getReference($name));
         }
         throw new \Exception(sprintf("No entity found for name '%s'.", $name));
-    }
-
-    /**
-     * Build method for adder or setter
-     *
-     * @author Vincent CHALAMON <vincentchalamon@gmail.com>
-     *
-     * @param string $method Method name
-     * @param string $class  Class name
-     *
-     * @return string Method
-     */
-    protected function buildMethod($method, $class)
-    {
-        return $method.Inflector::classify($class);
     }
 
     /**

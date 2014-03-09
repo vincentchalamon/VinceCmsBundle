@@ -44,6 +44,8 @@ Vince\Bundle\CmsBundle\Entity\Block:
     properties:
         name:
             - NotBlank: ~
+        title:
+            - NotBlank: ~
         contents:
             - NotBlank: ~
         startedAt:
@@ -81,6 +83,8 @@ Vince\Bundle\CmsBundle\Entity\Menu:
     properties:
         title:
             - NotBlank: ~
+        parent:
+            - NotNull: ~
         url:
             - Vince\Bundle\CmsBundle\Validator\Constraints\One:
                 - Regex: '/^\/[A-z\d\-_\/]*$/'
