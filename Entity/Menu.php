@@ -147,7 +147,8 @@ abstract class Menu
     public function getAdminListTitle()
     {
         $prefix = '';
-        for ($i = 0; $i < $this->getLvl(); $i++) {
+        $lvl    = $this->getLvl();
+        for ($i = 0; $i < $lvl; $i++) {
             $prefix .= '&nbsp;&nbsp;&nbsp;&nbsp;';
         }
 

@@ -15,7 +15,6 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\Finder\Finder;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -59,7 +58,7 @@ class YamlFixturesLoader
     /**
      * Manager
      *
-     * @var EntityManager
+     * @var ObjectManager
      */
     protected $manager;
 
@@ -276,24 +275,6 @@ class YamlFixturesLoader
                     } else {
                         $meta->getReflectionProperty($column)->setValue($record, $object);
                     }
-
-                    // todo-vince Is this code necessary ?
-                    // Set target object inversed relation value if needed
-                    /*if (isset($mapping['inversedBy'])) {
-                        if ($objectMeta->isSingleValuedAssociation($mapping['inversedBy'])) {
-                            if (is_callable(array($object, 'set'.Inflector::classify($mapping['inversedBy'])))) {
-                                call_user_func(array($object, 'set'.Inflector::classify($mapping['inversedBy'])), $record);
-                            } else {
-                                $objectMeta->getReflectionProperty($mapping['inversedBy'])->setValue($object, $record);
-                            }
-                        } else {
-                            if (is_callable(array($object, 'add'.Inflector::classify($objectMeta->getReflectionClass()->getShortName())))) {
-                                call_user_func(array($object, 'add'.Inflector::classify($objectMeta->getReflectionClass()->getShortName())), $record);
-                            } else {
-                                $objectMeta->getReflectionProperty($mapping['inversedBy'])->getValue($object)->add($record);
-                            }
-                        }
-                    }*/
                 }
 
             // Property
@@ -361,7 +342,7 @@ class YamlFixturesLoader
      * Get manager object
      *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
-     * @return EntityManager
+     * @return ObjectManager
      */
     protected function getManager()
     {
