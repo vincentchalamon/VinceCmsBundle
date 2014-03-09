@@ -12,6 +12,7 @@ namespace Vince\Bundle\CmsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\ExecutionContext;
 
 /**
@@ -55,6 +56,11 @@ abstract class Menu
      * @var string
      */
     protected $path;
+
+    /**
+     * @var UploadedFile
+     */
+    private $file;
 
     /**
      * @var \DateTime
@@ -141,7 +147,7 @@ abstract class Menu
     public function getAdminListTitle()
     {
         $prefix = '';
-        for ($i = 0; $i <= $this->getLvl(); $i++) {
+        for ($i = 0; $i < $this->getLvl(); $i++) {
             $prefix .= '&nbsp;&nbsp;&nbsp;&nbsp;';
         }
 
@@ -203,15 +209,15 @@ abstract class Menu
     }
 
     /**
-     * If Menu is image : check path
+     * If Menu is image: check file
      *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
      * @param ExecutionContext $context
      */
     public function isImageValid(ExecutionContext $context)
     {
-        if ($this->isImage() && !$this->path) {
-            $context->addViolationAt('path', 'This value should not be blank.');
+        if ($this->isImage() && is_null($this->getFile())) {
+            $context->addViolationAt('file', 'This value should not be blank.');
         }
     }
 
@@ -248,6 +254,51 @@ abstract class Menu
     public function getRoute()
     {
         return $this->getArticle() ? $this->getArticle()->getRoutePattern() : $this->getUrl();
+    }
+
+    /**
+     * Set file
+     *
+     * @param UploadedFile $file
+     *
+     * @return Menu
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get file
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+
+    /**
+     * Manages the copying of the file to the relevant place on the server
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param string $publicPath      Public path
+     * @param string $destinationPath Destination path
+     */
+    public function upload($publicPath, $destinationPath)
+    {
+        // Move takes the target directory and target filename as params
+        $this->getFile()->move($publicPath.$destinationPath, $this->getFile()->getClientOriginalName());
+
+        // Set the path property to the filename where you've saved the file
+        $this->path = $destinationPath.'/'.$this->getFile()->getClientOriginalName();
+
+        // Clean up the file property as you won't need it anymore
+        $this->setFile(null);
     }
     
     /**

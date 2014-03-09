@@ -93,7 +93,7 @@ Vince\Bundle\CmsBundle\Entity\Menu:
             - Choice:
                 choices: [_blank, _parent, _self, _top]
                 message: This value is not a valid target.
-        path:
+        file:
             - Image: ~
         startedAt:
             - Date: ~
