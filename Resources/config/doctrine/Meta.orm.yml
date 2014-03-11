@@ -13,12 +13,6 @@ Vince\Bundle\CmsBundle\Entity\Meta:
         name:
             type: string
             length: 255
-        slug:
-            type: string
-            length: 255
-            gedmo:
-                slug:
-                    fields: [name]
         type:
             type: string
             length: 255

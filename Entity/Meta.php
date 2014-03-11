@@ -35,11 +35,6 @@ class Meta
     /**
      * @var string
      */
-    protected $slug;
-
-    /**
-     * @var string
-     */
     protected $type;
 
     /**
@@ -186,28 +181,5 @@ class Meta
     public function getValidator()
     {
         return $this->validator;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return Meta
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-    
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug()
-    {
-        return $this->slug;
     }
 }
