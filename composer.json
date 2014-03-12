@@ -19,11 +19,9 @@
         "jms/serializer-bundle": "0.13.0",
         "knplabs/knp-paginator-bundle": "2.4.0"
     },
-    "require-dev": {
-        "doctrine/doctrine-fixtures-bundle": "v2.2.0",
-        "liip/functional-test-bundle": "1.0.0"
-    },
     "suggest": {
+    	"doctrine/doctrine-fixtures-bundle": "Load fixtures",
+        "liip/functional-test-bundle": "Additionnal features for testing",
         "vince/cms-sonata-admin-bundle": "Manage VinceCms with Sonata Admin",
         "vince/type-bundle": "Expand forms",
         "friendsofsymfony/elastica-bundle": "Use elastisearch"
