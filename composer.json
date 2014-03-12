@@ -3,7 +3,6 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "description": "Basic CMS features for Symfony 2.3",
-    "version": "v1.0.0",
     "keywords": ["CMS", "Vince"],
     "homepage": "http://vincentchalamon.github.io/VinceCmsBundle/",
     "autoload": {
