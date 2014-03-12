@@ -33,7 +33,7 @@ class VinceCmsExtension extends Extension
         
         $container->setParameter('vince.contact', $config['contact']);
 
-        foreach (array('article', 'block', 'menu') as $name) {
+        foreach (array('article', 'block', 'menu', 'articleMeta', 'contents') as $name) {
             $container->setParameter(sprintf('vince.class.%s', $name), $config[$name]['class']);
 
             // Build repository as service

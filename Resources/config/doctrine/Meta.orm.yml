@@ -17,10 +17,6 @@ Vince\Bundle\CmsBundle\Entity\Meta:
             type: string
             length: 255
             nullable: true
-        validator:
-            type: string
-            length: 255
-            nullable: true
         group:
             type: string
             length: 255

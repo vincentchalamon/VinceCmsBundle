@@ -40,11 +40,6 @@ class Meta
     /**
      * @var string
      */
-    protected $validator;
-
-    /**
-     * @var string
-     */
     protected $group;
 
     /**
@@ -158,28 +153,5 @@ class Meta
     public function getType()
     {
         return $this->type;
-    }
-
-    /**
-     * Set validator
-     *
-     * @param string $validator
-     * @return Meta
-     */
-    public function setValidator($validator)
-    {
-        $this->validator = $validator;
-    
-        return $this;
-    }
-
-    /**
-     * Get validator
-     *
-     * @return string 
-     */
-    public function getValidator()
-    {
-        return $this->validator;
     }
 }

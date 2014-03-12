@@ -10,6 +10,13 @@ Vince\Bundle\CmsBundle\Entity\Template:
         title:
             type: string
             length: 255
+        slug:
+            type: string
+            length: 255
+            unique: true
+            gedmo:
+                slug:
+                    fields: [title]
         path:
             type: string
             length: 255

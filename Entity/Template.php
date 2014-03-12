@@ -34,6 +34,11 @@ class Template
     /**
      * @var string
      */
+    protected $slug;
+
+    /**
+     * @var string
+     */
     protected $path;
 
     /**
@@ -93,6 +98,30 @@ class Template
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Article
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**
