@@ -180,4 +180,25 @@ class Template
     {
         return $this->areas;
     }
+
+    /**
+     * Get area by name
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param string $name Area name
+     *
+     * @return Area|null
+     */
+    public function getArea($name)
+    {
+        foreach ($this->areas as $area) {
+            /** @var Area $area */
+            if ($area->getName() == $name) {
+                return $area;
+            }
+        }
+
+        return null;
+    }
 }

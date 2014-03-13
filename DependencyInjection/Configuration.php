@@ -72,7 +72,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-                ->arrayNode('contents')
+                ->arrayNode('content')
                     ->isRequired()
                     ->children()
                         ->scalarNode('class')

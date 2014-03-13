@@ -166,23 +166,14 @@ class YamlFixturesLoader
                     } else {
                         throw new \InvalidArgumentException(sprintf("Class '%s' has no fixtures in file '%s'.", $class, $file));
                     }
+
+                    // Flush
+                    $this->getManager()->flush();
                 }
             } else {
                 throw new \InvalidArgumentException(sprintf("File '%s' has no fixtures.", $file));
             }
         }
-
-        // Add references
-        if ($this->hasReferencer()) {
-            foreach ($this->entities as $class => $entities) {
-                foreach ($entities as $name => $entity) {
-                    $this->getReferencer()->addReference($this->getValidClassName($class)."-$name", $entity);
-                }
-            }
-        }
-
-        // Flush
-        $this->getManager()->flush();
     }
 
     /**
@@ -298,7 +289,11 @@ class YamlFixturesLoader
             $callback($name, $record);
         }
 
+        // Add reference
         $this->entities[$class][$name] = $record;
+        if ($this->hasReferencer()) {
+            $this->getReferencer()->addReference($this->getValidClassName($class)."-$name", $record);
+        }
 
         return $record;
     }

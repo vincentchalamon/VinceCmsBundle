@@ -32,8 +32,14 @@ class VinceCmsExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
         
         $container->setParameter('vince.contact', $config['contact']);
+        $config['area']['class'] = 'Vince\Bundle\CmsBundle\Entity\Area';
+        $config['area']['repository'] = 'Doctrine\ORM\EntityRepository';
+        $config['meta']['class'] = 'Vince\Bundle\CmsBundle\Entity\Meta';
+        $config['meta']['repository'] = 'Doctrine\ORM\EntityRepository';
+        $config['template']['class'] = 'Vince\Bundle\CmsBundle\Entity\Template';
+        $config['template']['repository'] = 'Doctrine\ORM\EntityRepository';
 
-        foreach (array('article', 'block', 'menu', 'articleMeta', 'contents') as $name) {
+        foreach (array('area', 'article', 'articleMeta', 'block', 'content', 'menu', 'meta', 'template') as $name) {
             $container->setParameter(sprintf('vince.class.%s', $name), $config[$name]['class']);
 
             // Build repository as service
