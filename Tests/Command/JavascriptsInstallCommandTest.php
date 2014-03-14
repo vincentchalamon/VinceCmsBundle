@@ -8,14 +8,14 @@
  */
 namespace Vince\Bundle\CmsBundle\Tests\Command;
 
-use Vince\Bundle\CmsBundle\Component\Command\Test\CommandTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 /**
  * Test vince:javascripts:install command
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
-class JavascriptsInstallCommandTest extends CommandTestCase
+class JavascriptsInstallCommandTest extends WebTestCase
 {
 
     /**
@@ -29,7 +29,12 @@ class JavascriptsInstallCommandTest extends CommandTestCase
         $client = static::createClient();
 
         // Test command
-        $output = $this->runCommand($client, 'vince:javascripts:install web vendor/jquery/jquery/jquery-1.10.2.min.js --symlink');
+        $output = $this->runCommand('vince:javascripts:install', array(
+                'target' => 'web',
+                'javascripts' => array('vendor/jquery/jquery/jquery-1.10.2.min.js'),
+                '--symlink' => true
+            )
+        );
         $this->assertContains('Installing JavaScripts using the symlink option', $output);
         $this->assertContains('Installing jquery-1.10.2.min.js JavaScript file into web/js', $output);
         $this->assertFileExists($client->getContainer()->getParameter('kernel.root_dir').'/../web/js/jquery-1.10.2.min.js');
