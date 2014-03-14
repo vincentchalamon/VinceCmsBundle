@@ -1,0 +1,41 @@
+{% block meta %}
+    {% spaceless %}
+        <meta name="{{ name }}" content="{{ contents }}" />
+    {% endspaceless %}
+{% endblock %}
+
+{% block image_src_meta %}
+    {% spaceless %}
+        <link rel="{{ meta.meta.name }}" href="{{ meta.contents }}" />
+    {% endspaceless %}
+{% endblock %}
+
+{% block og_title_meta %}
+    {% spaceless %}
+        <meta property="{{ name }}" content="{{ contents }}" />
+    {% endspaceless %}
+{% endblock %}
+
+{% block og_type_meta %}
+    {% spaceless %}
+        {{ block('og_title_meta') }}
+    {% endspaceless %}
+{% endblock %}
+
+{% block og_url_meta %}
+    {% spaceless %}
+        {{ block('og_title_meta') }}
+    {% endspaceless %}
+{% endblock %}
+
+{% block og_description_meta %}
+    {% spaceless %}
+        {{ block('og_title_meta') }}
+    {% endspaceless %}
+{% endblock %}
+
+{% block og_image_meta %}
+    {% spaceless %}
+        {{ block('og_title_meta') }}
+    {% endspaceless %}
+{% endblock %}

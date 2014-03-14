@@ -10,9 +10,11 @@
  */
 namespace Vince\Bundle\CmsBundle\Twig\Extension;
 
+use Doctrine\Common\Util\Inflector;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Vince\Bundle\CmsBundle\Entity\Article;
+use Vince\Bundle\CmsBundle\Entity\ArticleMeta;
 use Vince\Bundle\CmsBundle\Entity\Menu;
 use Vince\Bundle\CmsBundle\Entity\Block;
 
@@ -51,6 +53,7 @@ class CmsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
+            'render_meta'  => new \Twig_Function_Method($this, 'renderMeta', array('is_safe' => array('html'))),
             'render_menu'  => new \Twig_Function_Method($this, 'renderMenu', array('is_safe' => array('html'))),
             'render_block' => new \Twig_Function_Method($this, 'renderBlock', array('is_safe' => array('html')))
         );
@@ -86,6 +89,35 @@ class CmsExtension extends \Twig_Extension
         }
 
         return $this->environment->render($view, array_merge(array('menu' => $menu), $parameters));
+    }
+
+    /**
+     * Render a meta
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param ArticleMeta $meta
+     *
+     * @return string
+     */
+    public function renderMeta(ArticleMeta $meta)
+    {
+        /** @var \Twig_Template $template */
+        $template  = $this->environment->loadTemplate('VinceCmsBundle::meta.html.twig');
+        $blockname = str_ireplace(array(':', '-'), array('_', '_'), Inflector::tableize($meta->getMeta()->getName())).'_meta';
+        if ($template->hasBlock($blockname)) {
+            return $template->renderBlock($blockname, array(
+                    'name'     => $meta->getMeta()->getName(),
+                    'contents' => $meta->getContents()
+                )
+            );
+        }
+
+        return $template->renderBlock('meta', array(
+                'name'     => $meta->getMeta()->getName(),
+                'contents' => $meta->getContents()
+            )
+        );
     }
 
     /**

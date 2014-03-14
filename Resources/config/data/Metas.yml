@@ -54,25 +54,6 @@ Vince\Bundle\CmsBundle\Entity\Meta:
         name: og:image
         group: OpenGraph
         #validate url
-    og-video:
-        title: Vidéo
-        name: og:video
-        group: OpenGraph
-        #validate url
-    og-video-width:
-        title: Largeur vidéo
-        name: og:video:width
-        group: OpenGraph
-        #validate integer
-    og-video-height:
-        title: Hauteur vidéo
-        name: og:video:height
-        group: OpenGraph
-        #validate integer
-    og-video-type:
-        title: Type vidéo
-        name: og:video:type
-        group: OpenGraph
 # Twitter
     twitter-card:
         title: Type
