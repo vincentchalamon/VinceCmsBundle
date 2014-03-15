@@ -71,8 +71,12 @@ class ContactTest extends WebTestCase
         $this->assertCount(0, $validator->validate($contact));
 
         // Test message
-        $message = (object)json_decode(@file_get_contents('http://json-lipsum.appspot.com/?amount=1001&what=words'));
-        $contact->setMessage($message->lipsum);
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $message    = '';
+        for ($i = 0; $i < 1001; $i++) {
+            $message.= $characters[rand(0, strlen($characters) - 1)];
+        }
+        $contact->setMessage($message);
         $errors = $validator->validate($contact);
         $this->assertCount(1, $errors);
         $this->assertEquals('message', $errors->get(0)->getPropertyPath());

@@ -1,0 +1,3 @@
+VinceCmsBundle:
+    resource: "@VinceCmsBundle/Resources/config/routing.yml"
+    prefix:   /

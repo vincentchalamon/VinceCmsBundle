@@ -32,8 +32,10 @@ class CmsEventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($article, $event->getArticle());
         $this->assertEquals(array('article' => $article), $event->getOptions());
         $this->assertEquals($article, $event->getOption('article'));
+
         $event->addOption('foo', 'bar');
         $this->assertEquals(array('article' => $article, 'foo' => 'bar'), $event->getOptions());
+
         $event->removeOption('foo');
         $this->assertEquals(array('article' => $article), $event->getOptions());
     }

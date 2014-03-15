@@ -7,7 +7,10 @@ cms_feed:
     defaults: { _controller: VinceCmsBundle:Default:feed, _format: atom }
     requirements:
         _format: atom|rss|xml|html
+        _method: GET
 
 cms_sitemap:
     pattern: /sitemap.xml
     defaults: { _controller: VinceCmsBundle:Default:sitemap, _format: xml }
+    requirements:
+        _method: GET

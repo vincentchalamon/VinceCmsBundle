@@ -1,0 +1,65 @@
+framework:
+    test: ~
+    translator: ~
+    default_locale: fr
+    secret: Hell yeah!
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+    form: ~
+    csrf_protection: ~
+    templating:
+        engines: ['twig']
+    profiler:
+        only_exceptions: false
+    session: ~
+
+swiftmailer:
+    disable_delivery: true
+
+doctrine:
+    dbal:
+        driver: pdo_mysql
+        host: 127.0.0.1
+        port: ~
+        dbname: vince-cms-test
+        user: root
+        password: ~
+        charset: UTF8
+        types:
+            json: Sonata\Doctrine\Types\JsonType
+    orm:
+        auto_generate_proxy_classes: true
+        auto_mapping: true
+        mappings:
+            tree:
+                type: annotation
+                alias: Gedmo
+                prefix: Gedmo\Tree\Entity
+                dir: "%kernel.root_dir%/../../../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
+
+security:
+    firewalls:
+        main:
+            http_basic: ~
+    providers:
+        in_memory:
+            memory:
+                users:
+                    user:
+                        password: pass
+                        roles: [ 'ROLE_USER' ]
+
+vince_cms:
+    contact:
+        noreply: noreply@example.com
+        recipient: contact@example.com
+    article:
+        class: My\Bundle\CmsBundle\Entity\Article
+    block:
+        class: My\Bundle\CmsBundle\Entity\Block
+    articleMeta:
+        class: My\Bundle\CmsBundle\Entity\ArticleMeta
+    content:
+        class: My\Bundle\CmsBundle\Entity\Content
+    menu:
+        class: My\Bundle\CmsBundle\Entity\Menu

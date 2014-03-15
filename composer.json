@@ -2,7 +2,7 @@
     "name": "vince/cms-bundle",
     "type": "symfony-bundle",
     "license": "MIT",
-    "description": "Basic CMS features for Symfony 2.3",
+    "description": "Basic CMS features for Symfony 2.3+",
     "keywords": ["CMS", "Vince"],
     "homepage": "http://vincentchalamon.github.io/VinceCmsBundle/",
     "autoload": {
@@ -14,13 +14,33 @@
             "email": "vincentchalamon@gmail.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "jquery/jquery",
+                "version": "1.10.2",
+                "dist": {
+                    "url": "http://code.jquery.com/jquery-1.10.2.min.js",
+                    "type": "file"
+                }
+            }
+        }
+    ],
+    "require-dev": {
+        "liip/functional-test-bundle": "1.0.0",
+        "jquery/jquery": "1.*"
+    },
     "require": {
         "php": ">=5.3.2",
-        "symfony/framework-bundle": "~2.1",
-        "liip/functional-test-bundle": "1.0.0",
+        "doctrine/orm": "~2.2,>=2.2.3",
+        "doctrine/doctrine-bundle": "~1.2",
+        "sensio/framework-extra-bundle": ">=2.3",
+        "symfony/symfony": ">=2.3",
         "gedmo/doctrine-extensions": "v2.3.9",
         "jms/serializer-bundle": "0.13.0",
         "knplabs/knp-paginator-bundle": "2.4.0",
+        "symfony/swiftmailer-bundle": "~2.3",
         "doctrine/doctrine-fixtures-bundle": "v2.2.0"
     },
     "suggest": {

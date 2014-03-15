@@ -69,7 +69,7 @@ class BlockTest extends \PHPUnit_Framework_TestCase
     public function testMethods()
     {
         // Test toString
-        $this->block->setContents('Example');
+        $this->block->setName('Example');
         $this->assertEquals('Example', $this->block->__toString());
     }
 }

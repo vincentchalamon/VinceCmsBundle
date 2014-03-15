@@ -17,6 +17,7 @@ use Vince\Bundle\CmsBundle\Entity\Article;
 use Vince\Bundle\CmsBundle\Event\CmsEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Default controller for CMS
@@ -46,11 +47,14 @@ class DefaultController extends Controller
      * Display feed with all published Articles ordered by start publication date
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param string $_format Request format
+     *
      * @return Response
      */
-    public function feedAction()
+    public function feedAction($_format)
     {
-        $format = $this->getRequest()->getRequestFormat() == 'xml' ? 'rss' : $this->getRequest()->getRequestFormat();
+        $format   = $_format == 'xml' ? 'rss' : $_format;
         $articles = $this->get('doctrine.orm.default_entity_manager')->getRepository($this->container->getParameter('vince.class.article'))->findAllPublishedOrdered();
 
         return $this->render(sprintf('VinceCmsBundle:Templates:feed.%s.twig', $format), array(
@@ -64,27 +68,30 @@ class DefaultController extends Controller
      * Show an article
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @param Request $request
+     *
      * @return JsonResponse|RedirectResponse|Response
      * @throws NotFoundHttpException
      * @throws \InvalidArgumentException
      */
-    public function showAction()
+    public function showAction(Request $request)
     {
         /** @var Article $article */
-        $article = $this->getDoctrine()->getRepository($this->container->getParameter('vince.class.article'))->find($this->getRequest()->attributes->get('_id'));
+        $article = $this->getDoctrine()->getRepository($this->container->getParameter('vince.class.article'))->find($request->attributes->get('_id'));
         if (!$article || (!$article->isPublished() && !$this->get('security.context')->isGranted('ROLE_ADMIN'))) {
             throw $this->createNotFoundException();
         }
         // Need to inject request as option because of scope limit on listeners
-        $options = $this->get('event_dispatcher')->dispatch('vince.cms.load', new CmsEvent($article, array('request' => $this->getRequest())))->getOptions();
+        $options = $this->get('event_dispatcher')->dispatch('vince.cms.load', new CmsEvent($article, array('request' => $request)))->getOptions();
         $options = $this->get('event_dispatcher')->dispatch(sprintf('vince.cms.%s.load', $article->getSlug()), new CmsEvent($article, $options))->getOptions();
-        if ($response = $this->get('vince.cms.form.handler')->process($this->getRequest(), $options)) {
+        if ($response = $this->get('vince.cms.form.handler')->process($request, $options)) {
             return $response;
         }
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             return new Response($this->get('jms_serializer')->serialize($options, 'json'), 400);
         }
 
-        return $this->render($article->getTemplate()->getPath(), $options)->setStatusCode($this->getRequest()->isMethod('post') ? 400 : 200);
+        return $this->render($article->getTemplate()->getPath(), $options)->setStatusCode($request->isMethod('post') ? 400 : 200);
     }
 }
