@@ -56,7 +56,7 @@ class Loader implements LoaderInterface
                         '_controller' => 'VinceCmsBundle:Default:show',
                         '_id' => $article->getId()
                     ), array(
-                        '_method' => array('GET', 'POST')
+                        '_method' => 'GET|POST'
                     )
                 )
             );
