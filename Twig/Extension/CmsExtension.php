@@ -132,7 +132,9 @@ class CmsExtension extends \Twig_Extension
      */
     public function renderContents(Article $article, $name)
     {
-        return $article->getContent($name)->getContents();
+        $content = $article->getContent($name);
+
+        return $content ? $content->getContents() : null;
     }
 
     /**
