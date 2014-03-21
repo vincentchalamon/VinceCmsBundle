@@ -14,7 +14,7 @@
                     <a href="{{ path(result.routeName) }}" title="{{ 'text.more'|trans({}, 'VinceCms') }}" class="linked gradient">{{ 'text.more'|trans({}, 'VinceCms') }}</a>
                 </div>
                 <p class="infos">
-                    <span class="date">{{ result.startedAt|localizeddate('long', 'none') }}</span>
+                    <span class="date">{{ result.startedAt|localizeddate('long', 'none')|capitalize }}</span>
                     {# todo-vince Comments #}
                     {#<a href="{{ path(article.routeName) }}#commentaires" title="{{ "{0} Aucun commentaire|{1} 1 commentaire|]1,Inf] %count% commentaires"|transchoice(article.activecomments.count) }}" class="comments">
                         {{ "{0} Aucun commentaire|{1} 1 commentaire|]1,Inf] %count% commentaires"|transchoice(post.activecomments.count) }}

@@ -4,7 +4,7 @@
     <h1>{{ block('title') }}</h1>
 
     <div class="infos">
-        {{ 'text.publication'|trans({'%date%': article.updatedAt|localizeddate('full', 'none')}, 'VinceCms') }}
+        {{ 'text.publication'|trans({'%date%': article.updatedAt|localizeddate('full', 'none')|capitalize}, 'VinceCms') }}
         {% if article.tags|length %}
             - {{ 'text.tags'|trans({}, 'VinceCms') }}:
             {% for i, tag in article.tags %}
