@@ -31,7 +31,6 @@ class VinceCmsExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
         
-        $container->setParameter('vince.contact', $config['contact']);
         $config['area']['class'] = 'Vince\Bundle\CmsBundle\Entity\Area';
         $config['area']['repository'] = 'Doctrine\ORM\EntityRepository';
         $config['meta']['class'] = 'Vince\Bundle\CmsBundle\Entity\Meta';

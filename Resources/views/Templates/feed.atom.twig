@@ -17,7 +17,7 @@
             <link href="{{ url(article.routeName) }}" />
             <id>{{ article.id }}</id>
             <updated>{{ article.updatedAt.format(constant('DATE_ATOM')) }}</updated>
-            <summary type="html">{{ article.summary }}</summary>
+            <summary type="html">{{ article.summary|raw }}</summary>
         </entry>
     {% endfor %}
 </feed>

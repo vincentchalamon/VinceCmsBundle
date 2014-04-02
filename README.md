@@ -37,7 +37,6 @@ Todo
             * Primary key
             * Adding association (example: author)
             * Declare class in vince_cms config : Article, Menu, Block
-        * Contact: noreply, recipient
         * Search:
             * Install elasticsearch with composer
             * Launch elasticsearch

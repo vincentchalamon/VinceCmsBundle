@@ -50,9 +50,6 @@ security:
                         roles: [ 'ROLE_USER' ]
 
 vince_cms:
-    contact:
-        noreply: noreply@example.com
-        recipient: contact@example.com
     article:
         class: My\Bundle\CmsBundle\Entity\Article
     block:

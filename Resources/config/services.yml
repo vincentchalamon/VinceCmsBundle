@@ -5,6 +5,13 @@ services:
             - [setChain, [@vince.processor.chain]]
             - [setRouter, [@router]]
 
+    vince.cms.loader:
+        class: Vince\Bundle\CmsBundle\Component\Routing\Loader
+        tags:
+            - { name: routing.loader }
+        calls:
+            - [setArticleRepository, [@vince.repository.article]]
+
     # Twig
     twig.extension.vince.cms:
         class: Vince\Bundle\CmsBundle\Twig\Extension\CmsExtension
@@ -47,13 +54,6 @@ services:
         calls:
             - [setAnnotationReader, [@annotation_reader]]
 
-    vince.cms.loader:
-        class: Vince\Bundle\CmsBundle\Component\Routing\Loader
-        tags:
-            - { name: routing.loader }
-        calls:
-            - [setArticleRepository, [@vince.repository.article]]
-
     # CMS loaders
     vince.cms.search.load.listener:
         class: Vince\Bundle\CmsBundle\Listener\SearchListener
@@ -61,13 +61,6 @@ services:
             - { name: kernel.event_listener, event: vince.cms.search.load, method: onLoad }
         calls:
             - [setArticleRepository, [@vince.repository.article]]
-
-    vince.cms.contact.load.listener:
-        class: Vince\Bundle\CmsBundle\Listener\ContactListener
-        tags:
-            - { name: kernel.event_listener, event: vince.cms.contact.load, method: onLoad }
-        calls:
-            - [setFormFactory, [@form.factory]]
 
     # CMS forms
     vince.processor.chain:
@@ -78,15 +71,3 @@ services:
         abstract: true
         calls:
             - [setFormFactory, [@form.factory]]
-
-    vince.processor.contact:
-        class: Vince\Bundle\CmsBundle\Component\Processor\ContactProcessor
-        parent: vince.processor
-        tags:
-            -  { name: vince.processor, alias: contact }
-        calls:
-            - [setMailer, [@mailer]]
-            - [setTranslator, [@translator]]
-            - [setTemplating, [@templating]]
-            - [setSession, [@session]]
-            - [setConfiguration, ["%vince.contact%"]]

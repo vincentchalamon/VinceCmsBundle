@@ -1,6 +1,7 @@
 parameters:
     vince.class.article: My\Bundle\CmsBundle\Entity\Article
 
+# todo-vince Create this configuration dynamically through DependencyInjection
 fos_elastica:
     clients:
         default: { host: localhost, port: 9200 }

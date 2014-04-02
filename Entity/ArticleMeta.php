@@ -18,6 +18,11 @@ namespace Vince\Bundle\CmsBundle\Entity;
 abstract class ArticleMeta
 {
     /**
+     * @var integer
+     */
+    protected $id;
+
+    /**
      * @var string
      */
     protected $contents;
@@ -41,6 +46,16 @@ abstract class ArticleMeta
     public function __toString()
     {
         return $this->getContents() ?: '-';
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

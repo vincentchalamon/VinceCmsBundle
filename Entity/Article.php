@@ -473,6 +473,7 @@ abstract class Article
      */
     public function addMeta(ArticleMeta $metas)
     {
+        $metas->setArticle($this);
         $this->metas[] = $metas;
 
         return $this;
@@ -507,7 +508,11 @@ abstract class Article
      */
     public function addContent(Content $contents)
     {
-        $this->contents[] = $contents;
+        if ($contents->getArea()->getTemplate()->getSlug() == $this->getTemplate()->getSlug()
+            && trim(strip_tags($contents->getContents()))) {
+            $contents->setArticle($this);
+            $this->contents[] = $contents;
+        }
 
         return $this;
     }
@@ -541,6 +546,7 @@ abstract class Article
      */
     public function addMenu(Menu $menus)
     {
+        $menus->setArticle($this);
         $this->menus[] = $menus;
 
         return $this;

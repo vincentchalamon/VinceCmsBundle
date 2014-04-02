@@ -94,6 +94,7 @@ class ArticleRepository extends EntityRepository
                     ->leftJoin('a.metas', 'm')->addSelect('m')
                     ->leftJoin('a.menus', 'me')->addSelect('me')
                     ->leftJoin('a.contents', 'co')->addSelect('co')
+                    ->leftJoin('co.area', 'ar')->addSelect('ar')
                     ->leftJoin('a.template', 't')->addSelect('t')
                     ->where(sprintf('a.%s = :id', $identifier))->setParameter('id', $id)
                     ->getQuery()->getOneOrNullResult();

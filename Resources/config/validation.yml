@@ -25,6 +25,8 @@ Vince\Bundle\CmsBundle\Entity\Article:
             - Date: ~
         endedAt:
             - Date: ~
+        summary:
+            - NotBlank: ~
         template:
             - NotNull: ~
 
@@ -52,20 +54,6 @@ Vince\Bundle\CmsBundle\Entity\Block:
             - Date: ~
         endedAt:
             - Date: ~
-
-Vince\Bundle\CmsBundle\Form\Data\Contact:
-    properties:
-        name:
-            - NotBlank: ~
-        email:
-            - NotBlank: ~
-            - Email:
-                checkMX: true
-                checkHost: true
-        message:
-            - NotBlank: ~
-            - Length:
-                max: 1000
 
 Vince\Bundle\CmsBundle\Entity\Content:
     properties:
