@@ -3,7 +3,7 @@ cms:
     type: cms
 
 cms_feed:
-    pattern: /rss._format
+    pattern: /rss.{_format}
     defaults: { _controller: VinceCmsBundle:Default:feed, _format: atom }
     requirements:
         _format: atom|rss|xml|html
