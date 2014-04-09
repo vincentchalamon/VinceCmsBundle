@@ -1,4 +1,11 @@
 services:
+    vince.cms.controller.exception:
+        class: Vince\Bundle\CmsBundle\Controller\ExceptionController
+        parent: twig.controller.exception
+        calls:
+            - [setArticleRepository, [@vince.repository.article]]
+            - [setEventDispatcher, [@event_dispatcher]]
+
     vince.cms.form.handler:
         class: Vince\Bundle\CmsBundle\Form\Handler\CmsFormHandler
         calls:

@@ -13,6 +13,7 @@ namespace Vince\Bundle\CmsBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -21,7 +22,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class VinceCmsExtension extends Extension
+class VinceCmsExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * {@inheritDoc}
@@ -50,5 +51,21 @@ class VinceCmsExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        // Configure Twig is activated
+        if (isset($bundles['TwigBundle']) && $container->hasExtension('twig')) {
+            $container->prependExtensionConfig('twig', array(
+                    'exception_controller' => 'vince.cms.controller.exception:showAction'
+                )
+            );
+        }
     }
 }

@@ -292,7 +292,13 @@ class YamlFixturesLoader
         // Add reference
         $this->entities[$class][$name] = $record;
         if ($this->hasReferencer()) {
-            $this->getReferencer()->addReference($this->getValidClassName($class)."-$name", $record);
+            $count     = 1;
+            $reference = $this->getValidClassName($class)."-$name";
+            while ($this->getReferencer()->hasReference($reference)) {
+                $reference = $this->getValidClassName($class)."-$name-$count";
+                $count++;
+            }
+            $this->getReferencer()->addReference($reference, $record);
         }
 
         return $record;
