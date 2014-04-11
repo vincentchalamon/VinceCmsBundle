@@ -21,7 +21,7 @@ use Symfony\Component\Validator\ExecutionContext;
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
-abstract class Article
+abstract class Article extends Publishable
 {
 
     /**
@@ -63,16 +63,6 @@ abstract class Article
      * @var string
      */
     protected $url;
-
-    /**
-     * @var \DateTime
-     */
-    protected $startedAt;
-
-    /**
-     * @var \DateTime
-     */
-    protected $endedAt;
 
     /**
      * @var Collection
@@ -134,27 +124,6 @@ abstract class Article
     }
 
     /**
-     * Get publication state
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     * @return string
-     */
-    public function getPublication()
-    {
-        if (is_null($this->getStartedAt()) && is_null($this->getEndedAt())) {
-            return 'Never published';
-        } elseif (!is_null($this->getStartedAt()) && $this->getStartedAt()->getTimestamp() <= time() && is_null($this->getEndedAt())) {
-            return 'Published';
-        } elseif (!is_null($this->getStartedAt()) && $this->getStartedAt()->getTimestamp() > time()) {
-            return 'Pre-published';
-        } elseif (!is_null($this->getStartedAt()) && $this->getStartedAt()->getTimestamp() < time() && !is_null($this->getEndedAt()) && $this->getEndedAt()->getTimestamp() < time()) {
-            return 'Post-published';
-        } elseif (!is_null($this->getStartedAt()) && $this->getStartedAt()->getTimestamp() <= time() && !is_null($this->getEndedAt()) && $this->getEndedAt()->getTimestamp() >= time()) {
-            return 'Published temp';
-        }
-    }
-
-    /**
      * Get Article content for Area
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
@@ -204,38 +173,6 @@ abstract class Article
             $this->endedAt   = null;
             $this->url       = '/';
         }
-    }
-
-    /**
-     * Check if publication is correct
-     *
-     * @author Vincent CHALAMON <vincentchalamon@gmail.com>
-     *
-     * @param ExecutionContext $context
-     */
-    public function isPublicationValid(ExecutionContext $context)
-    {
-        // No start publication date specified for the end publication date
-        if (!$this->getStartedAt() && $this->getEndedAt()) {
-            $context->addViolationAt('startedAt', 'Start publication date is required when setting end publication date.');
-        }
-        // Start publication date is equal or later than end publication date
-        if ($this->getEndedAt() && $this->getStartedAt() && $this->getStartedAt()->getTimestamp() >= $this->getEndedAt()->getTimestamp()) {
-            $context->addViolationAt('endedAt', 'End publication date must be later than start publication date.');
-        }
-    }
-
-    /**
-     * Check if Article is published
-     *
-     * @author Vincent CHALAMON <vincentchalamon@gmail.com>
-     * @return bool
-     */
-    public function isPublished()
-    {
-        return $this->getStartedAt()
-            && $this->getStartedAt()->getTimestamp() <= time()
-            && (!$this->getEndedAt() || $this->getEndedAt()->getTimestamp() >= time());
     }
 
     /**
@@ -414,54 +351,6 @@ abstract class Article
     public function getUrl()
     {
         return $this->url;
-    }
-
-    /**
-     * Set startedAt
-     *
-     * @param \DateTime $startedAt
-     *
-     * @return Article
-     */
-    public function setStartedAt(\DateTime $startedAt = null)
-    {
-        $this->startedAt = $startedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get startedAt
-     *
-     * @return \DateTime
-     */
-    public function getStartedAt()
-    {
-        return $this->startedAt;
-    }
-
-    /**
-     * Set endedAt
-     *
-     * @param \DateTime $endedAt
-     *
-     * @return Article
-     */
-    public function setEndedAt(\DateTime $endedAt = null)
-    {
-        $this->endedAt = $endedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get endedAt
-     *
-     * @return \DateTime
-     */
-    public function getEndedAt()
-    {
-        return $this->endedAt;
     }
 
     /**
