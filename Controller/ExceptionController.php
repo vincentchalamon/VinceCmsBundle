@@ -73,7 +73,7 @@ class ExceptionController extends Controller
      *
      * @throws \InvalidArgumentException When the exception template does not exist
      */
-    public function showAction(Request $request, FlattenException $exception, DebugLoggerInterface $logger = null, $_format = 'html')
+    public function indexAction(Request $request, FlattenException $exception, DebugLoggerInterface $logger = null, $_format = 'html')
     {
         $currentContent = $this->getAndCleanOutputBuffering($request->headers->get('X-Php-Ob-Level', -1));
         $code           = $exception->getStatusCode();

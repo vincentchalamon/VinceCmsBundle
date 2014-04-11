@@ -63,7 +63,7 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
         // Configure Twig is activated
         if (isset($bundles['TwigBundle']) && $container->hasExtension('twig')) {
             $container->prependExtensionConfig('twig', array(
-                    'exception_controller' => 'vince.cms.controller.exception:showAction'
+                    'exception_controller' => 'vince.cms.controller.exception:indexAction'
                 )
             );
         }
