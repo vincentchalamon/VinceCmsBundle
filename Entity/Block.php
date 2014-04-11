@@ -10,8 +10,6 @@
  */
 namespace Vince\Bundle\CmsBundle\Entity;
 
-use Symfony\Component\Validator\ExecutionContext;
-
 /**
  * This entity provides features to manage blocks
  *
