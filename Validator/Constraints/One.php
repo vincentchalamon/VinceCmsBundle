@@ -23,6 +23,12 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
  */
 class One extends Constraint
 {
+
+    /**
+     * Constraints
+     *
+     * @var array
+     */
     public $constraints = array();
 
     /**
@@ -47,11 +53,17 @@ class One extends Constraint
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDefaultOption()
     {
         return 'constraints';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getRequiredOptions()
     {
         return array('constraints');

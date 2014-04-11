@@ -13,6 +13,7 @@ use Vince\Bundle\CmsBundle\Entity\Article;
 use Vince\Bundle\CmsBundle\Entity\ArticleMeta;
 use Vince\Bundle\CmsBundle\Entity\Content;
 use Vince\Bundle\CmsBundle\Entity\Meta;
+use Vince\Bundle\CmsBundle\Entity\Template;
 
 /**
  * Test Article
@@ -126,8 +127,12 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetContent()
     {
+        $template = new Template();
+        $template->setSlug('test');
         $area = new Area();
         $area->setName('test');
+        $area->setTemplate($template);
+        $this->article->setTemplate($template);
         /** @var Content $content */
         $content = $this->getMockForAbstractClass('\Vince\Bundle\CmsBundle\Entity\Content');
         $content->setArea($area);

@@ -97,7 +97,7 @@ class YamlFixturesLoader
      * Add directory with yml files to load
      *
      * <code>
-     * $loader->addFile('/path/to/fixtures.yml');
+     * $loader->addDirectory('/path/to/fixtures');
      * $loader->addDirectory('/path/to/fixtures', false);
      * </code>
      *
@@ -157,21 +157,22 @@ class YamlFixturesLoader
         // Parse each file
         foreach ($this->files as $file) {
             $models = Yaml::parse($file);
-            if ($models) {
-                foreach ($models as $class => $entities) {
-                    if ($entities) {
-                        foreach ($entities as $name => $entity) {
-                            $this->getManager()->persist($this->buildEntity($name, $this->getValidClassName($class), $entity, $callback));
-                        }
-                    } else {
-                        throw new \InvalidArgumentException(sprintf("Class '%s' has no fixtures in file '%s'.", $class, $file));
-                    }
-
-                    // Flush
-                    $this->getManager()->flush();
-                }
-            } else {
+            if (!$models) {
                 throw new \InvalidArgumentException(sprintf("File '%s' has no fixtures.", $file));
+            }
+            foreach ($models as $class => $entities) {
+                if (!class_exists($class)) {
+                    throw new \InvalidArgumentException(sprintf("Class '%s' does not exist in file '%s'.", $class, $file));
+                }
+                if (!$entities) {
+                    throw new \InvalidArgumentException(sprintf("Class '%s' has no fixtures in file '%s'.", $class, $file));
+                }
+                foreach ($entities as $name => $entity) {
+                    $this->getManager()->persist($this->buildEntity($name, $this->getValidClassName($class), $entity, $callback));
+                }
+
+                // Flush
+                $this->getManager()->flush();
             }
         }
     }

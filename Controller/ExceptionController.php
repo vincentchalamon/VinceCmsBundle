@@ -43,26 +43,19 @@ class ExceptionController extends Controller
     protected $dispatcher;
 
     /**
-     * Set ArticleRepository
+     * Override constructor
      *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     *
-     * @param ArticleRepository $repository
-     */
-    public function setArticleRepository(ArticleRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
-    /**
-     * Set EventDispatcher
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     *
+     * @param \Twig_Environment        $twig
+     * @param bool                     $debug
+     * @param ArticleRepository        $repository
      * @param EventDispatcherInterface $dispatcher
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
      */
-    public function setEventDispatcher(EventDispatcherInterface $dispatcher)
+    public function __construct(\Twig_Environment $twig, $debug, ArticleRepository $repository, EventDispatcherInterface $dispatcher)
     {
+        parent::__construct($twig, $debug);
+        $this->repository = $repository;
         $this->dispatcher = $dispatcher;
     }
 

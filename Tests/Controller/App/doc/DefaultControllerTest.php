@@ -33,7 +33,7 @@ class DefaultControllerTest extends WebTestCase
         $client->request('POST', '/sitemap.xml');
         $this->assertEquals(405, $client->getResponse()->getStatusCode());
 
-        // File required
+        // Successful
         $client->request('GET', '/sitemap.xml');
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
@@ -48,45 +48,19 @@ class DefaultControllerTest extends WebTestCase
         $client = static::createClient();
 
         // Method not allowed
-        $client->request('POST', '/feed.xml');
+        $client->request('POST', '/rss.xml');
         $this->assertEquals(405, $client->getResponse()->getStatusCode());
 
-        // File required
-        $client->request('GET', '/feed.xml');
+        // Successful
+        $client->request('GET', '/rss.xml');
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $client->request('GET', '/feed.atom');
+        $client->request('GET', '/rss.atom');
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $client->request('GET', '/feed.rss');
+        $client->request('GET', '/rss.rss');
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $client->request('GET', '/feed.html');
+        $client->request('GET', '/rss.html');
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $client->request('GET', '/feed.json');
-        $this->assertTrue($client->getResponse()->isNotFound());
-    }
-
-    /**
-     * Test show
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     */
-    public function testShow()
-    {
-        $client = static::createClient();
-
-        // Method not allowed
-        $client->request('DELETE', '/');
-        $this->assertEquals(405, $client->getResponse()->getStatusCode());
-
-        // File required
-        $client->request('GET', '/feed.xml');
-        $this->assertTrue($client->getResponse()->isSuccessful());
-        $client->request('GET', '/feed.atom');
-        $this->assertTrue($client->getResponse()->isSuccessful());
-        $client->request('GET', '/feed.rss');
-        $this->assertTrue($client->getResponse()->isSuccessful());
-        $client->request('GET', '/feed.html');
-        $this->assertTrue($client->getResponse()->isSuccessful());
-        $client->request('GET', '/feed.json');
+        $client->request('GET', '/rss.json');
         $this->assertTrue($client->getResponse()->isNotFound());
     }
 }

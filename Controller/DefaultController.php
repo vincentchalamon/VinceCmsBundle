@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Default controller for CMS
- *DefaultController.php
+ *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
 class DefaultController extends Controller
