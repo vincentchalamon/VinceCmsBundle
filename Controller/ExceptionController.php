@@ -75,6 +75,9 @@ class ExceptionController extends Controller
      */
     public function indexAction(Request $request, FlattenException $exception, DebugLoggerInterface $logger = null, $_format = 'html')
     {
+        if ($this->debug) {
+            return $this->showAction($request, $exception, $logger, $_format);
+        }
         $currentContent = $this->getAndCleanOutputBuffering($request->headers->get('X-Php-Ob-Level', -1));
         $code           = $exception->getStatusCode();
         $template       = $this->findTemplate($request, $_format, $code, $this->debug);

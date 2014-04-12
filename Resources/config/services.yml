@@ -2,7 +2,7 @@ services:
     vince.cms.controller.exception:
         class: Vince\Bundle\CmsBundle\Controller\ExceptionController
         parent: twig.controller.exception
-        arguments: [@twig, %kernel.debug%, @vince.repository.article, @event_dispatcher]
+        arguments: [@vince.repository.article, @event_dispatcher]
 
     vince.cms.form.handler:
         class: Vince\Bundle\CmsBundle\Form\Handler\CmsFormHandler
