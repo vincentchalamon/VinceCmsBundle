@@ -29,6 +29,33 @@ abstract class Publishable
     protected $endedAt;
 
     /**
+     * Publish element
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     * @return Publishable
+     */
+    public function publish()
+    {
+        $this->setStartedAt(new \DateTime());
+        $this->setEndedAt(null);
+
+        return $this;
+    }
+
+    /**
+     * Unpublish element
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     * @return Publishable
+     */
+    public function unpublish()
+    {
+        $this->setStartedAt(null);
+
+        return $this;
+    }
+
+    /**
      * Get publication state
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
@@ -86,7 +113,7 @@ abstract class Publishable
      *
      * @param \DateTime $startedAt
      *
-     * @return Block
+     * @return Publishable
      */
     public function setStartedAt($startedAt)
     {
@@ -110,7 +137,7 @@ abstract class Publishable
      *
      * @param \DateTime $endedAt
      *
-     * @return Block
+     * @return Publishable
      */
     public function setEndedAt($endedAt)
     {

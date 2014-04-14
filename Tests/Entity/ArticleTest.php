@@ -64,6 +64,14 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         $this->article->setEndedAt(new \DateTime('tomorrow'));
         $this->assertEquals('Published temp', $this->article->getPublication());
         $this->assertTrue($this->article->isPublished());
+
+        $this->article->publish();
+        $this->assertEquals('Published', $this->article->getPublication());
+        $this->assertTrue($this->article->isPublished());
+
+        $this->article->unpublish();
+        $this->assertEquals('Never published', $this->article->getPublication());
+        $this->assertFalse($this->article->isPublished());
     }
 
     /**

@@ -35,7 +35,7 @@ class DefaultControllerTest extends WebTestCase
 
         // Successful
         $client->request('GET', '/sitemap.xml');
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($client->getResponse()->isOk());
     }
 
     /**
@@ -53,13 +53,13 @@ class DefaultControllerTest extends WebTestCase
 
         // Successful
         $client->request('GET', '/rss.xml');
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($client->getResponse()->isOk());
         $client->request('GET', '/rss.atom');
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($client->getResponse()->isOk());
         $client->request('GET', '/rss.rss');
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($client->getResponse()->isOk());
         $client->request('GET', '/rss.html');
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertTrue($client->getResponse()->isOk());
         $client->request('GET', '/rss.json');
         $this->assertTrue($client->getResponse()->isNotFound());
     }

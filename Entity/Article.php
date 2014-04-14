@@ -168,9 +168,7 @@ abstract class Article extends Publishable
     public function initHomepage()
     {
         if ($this->getSlug() == 'homepage') {
-            $this->startedAt = new \DateTime('now');
-            $this->endedAt   = null;
-            $this->url       = '/';
+            $this->publish()->setUrl('/');
         }
     }
 

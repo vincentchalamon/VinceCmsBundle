@@ -20,7 +20,7 @@ use Vince\Bundle\CmsBundle\Component\YamlFixturesLoader as Loader;
  * 
  * @author Vincent CHALAMON <vincentchalamon@gmail.com>
  */
-class FixturesData extends AbstractFixture implements OrderedFixtureInterface
+class CmsData extends AbstractFixture implements OrderedFixtureInterface
 {
     
     /**
