@@ -224,16 +224,16 @@ abstract class Menu extends Publishable
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      *
-     * @param string $publicPath      Public path
      * @param string $destinationPath Destination path
+     * @param string $publicPath      Public path
      */
-    public function upload($publicPath, $destinationPath)
+    public function upload($destinationPath, $publicPath)
     {
         // Move takes the target directory and target filename as params
-        $this->getFile()->move($publicPath.$destinationPath, $this->getFile()->getClientOriginalName());
+        $this->getFile()->move($destinationPath, $this->getFile()->getClientOriginalName());
 
         // Set the path property to the filename where you've saved the file
-        $this->path = $destinationPath.'/'.$this->getFile()->getClientOriginalName();
+        $this->path = rtrim(str_ireplace($publicPath, '', $destinationPath), '/').'/'.$this->getFile()->getClientOriginalName();
 
         // Clean up the file property as you won't need it anymore
         $this->setFile(null);
