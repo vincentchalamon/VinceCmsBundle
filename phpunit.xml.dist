@@ -12,7 +12,6 @@
     <testsuites>
         <testsuite name="VinceCmsBundle Test Suite">
             <directory suffix="Test.php">./Tests</directory>
-            <exclude>./Tests/Controller</exclude>
         </testsuite>
     </testsuites>
 
