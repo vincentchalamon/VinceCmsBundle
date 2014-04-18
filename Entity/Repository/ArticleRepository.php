@@ -13,12 +13,6 @@ namespace Vince\Bundle\CmsBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Vince\Bundle\CmsBundle\Entity\Article;
-use Elastica\Filter\BoolAnd;
-use Elastica\Filter\BoolOr;
-use Elastica\Filter\Missing;
-use Elastica\Filter\Range;
-use Elastica\Query;
-use Elastica\Query\QueryString;
 
 /**
  * This class provides features to find Articles.
@@ -27,48 +21,6 @@ use Elastica\Query\QueryString;
  */
 class ArticleRepository extends EntityRepository
 {
-
-    /**
-     * Search published Articles through Elasticsearch
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     *
-     * @param string $search Search
-     *
-     * @return Query|null
-     */
-    public function createSearchQuery($search)
-    {
-        // No search
-        if (!$search) {
-            return null;
-        }
-
-        // Build Or filter with Range & Missing (endedAt)
-        $filterOr  = new BoolOr();
-        $filterEnd = new Range('endedAt', array(
-            'gte' => date('Y-m-d')
-        ));
-        $filterMissing = new Missing('endedAt');
-        $filterOr->addFilter($filterEnd)->addFilter($filterMissing);
-
-        // Build And filter with Range (startedAt) & Or (endedAt)
-        $filterAnd   = new BoolAnd();
-        $filterStart = new Range('startedAt', array(
-            'lte' => date('Y-m-d')
-        ));
-        $filterAnd->addFilter($filterStart)->addFilter($filterOr);
-
-        // Build QueryString for final Query
-        $queryString = new QueryString($search);
-        $queryString->setFields(array('title', 'slug', 'tags', 'url', 'summary'));
-
-        // Build Query with filters
-        $query = new Query();
-        $query->setFilter($filterAnd)->setQuery($queryString);
-
-        return $query;
-    }
 
     /**
      * Find an Article from its identifier
