@@ -59,14 +59,6 @@ services:
         calls:
             - [setAnnotationReader, [@annotation_reader]]
 
-    # CMS loaders
-    vince.cms.search.load.listener:
-        class: Vince\Bundle\CmsBundle\Listener\SearchListener
-        tags:
-            - { name: kernel.event_listener, event: vince.cms.search.load, method: onLoad }
-        calls:
-            - [setArticleRepository, [@vince.repository.article]]
-
     # CMS forms
     vince.processor.chain:
         class: Vince\Bundle\CmsBundle\Component\Chain\Chain
