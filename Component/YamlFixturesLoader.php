@@ -275,13 +275,20 @@ class YamlFixturesLoader
                 if (strtolower($type) != 'array') {
                     $value = $type->convertToPHPValue($value, $this->getManager()->getConnection()->getDatabasePlatform());
                 }
-                $meta->getReflectionProperty($column)->setValue($record, $value);
+
+                // Set property value
+                if (is_callable(array($record, 'set'.Inflector::classify($column)))) {
+                    call_user_func(array($record, 'set'.Inflector::classify($column)), $value);
+                } else {
+                    $meta->getReflectionProperty($column)->setValue($record, $value);
+                }
 
             // Custom call
             } elseif (is_callable(array($record, 'set'.Inflector::classify($column)))) {
                 call_user_func(array($record, 'set'.Inflector::classify($column)), $value);
+
             } else {
-                throw new \InvalidArgumentException(sprintf("Unknown method 'set%s' on entity '%s' for class '%s'.", Inflector::classify($column), $name, $class));
+                throw new \InvalidArgumentException(sprintf("Undefined property or association %s on entity '%s' for class '%s'. Maybe you forgot to create custom setter 'set%s' ?", $column, $name, $class, Inflector::classify($column)));
             }
         }
 
