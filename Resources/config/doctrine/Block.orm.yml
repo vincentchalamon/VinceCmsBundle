@@ -11,11 +11,11 @@ Vince\Bundle\CmsBundle\Entity\Block:
         contents:
             type: text
         startedAt:
-            type: datetime
+            type: date
             nullable: true
             column: started_at
         endedAt:
-            type: datetime
+            type: date
             nullable: true
             column: ended_at
         createdAt:
