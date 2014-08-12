@@ -44,7 +44,7 @@ Vince\Bundle\CmsBundle\Entity\Article:
     manyToOne:
         template:
             targetEntity: Vince\Bundle\CmsBundle\Entity\Template
-            cascade: [all]
+            cascade: [persist]
             joinColumn:
                 name: template_id
                 referencedColumnName: id
