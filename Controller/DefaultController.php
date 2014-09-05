@@ -88,9 +88,6 @@ class DefaultController extends Controller
         if ($response = $this->get('vince.cms.form.handler')->process($request, $options)) {
             return $response;
         }
-        if ($request->isXmlHttpRequest()) {
-            return new Response($this->get('jms_serializer')->serialize($options, 'json'), 400);
-        }
 
         return $this->render($article->getTemplate()->getPath(), $options)->setStatusCode($request->isMethod('post') ? 400 : 200);
     }
