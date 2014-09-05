@@ -23,20 +23,33 @@ Search
     * Publié jusqu'à aujourd'hui : gilles
     * Publié temporairement : adrien
 
-Todo
-====
+## Todo
 
-* Documentation:
-    * Installation:
-        * Install bundle with composer
-        * Update AppKernel.php
-    * Configuration:
-        * Gedmo
-        * Create entities:
-            * Associations
-            * Primary key
-            * Adding association (example: author)
-            * Declare class in vince_cms config : Article, Menu, Block
-        * Search:
-            * Install elasticsearch with composer
-            * Launch elasticsearch
+[ ] Documentation
+[ ] Search
+[ ] PHPDoc
+
+## Documentation
+
+### Installation
+
+[ ] Install bundle with composer
+[ ] Update AppKernel
+
+### Configuration
+
+[ ] Override bundle
+[ ] Create entities: associations, primary keys
+[ ] Update config.yml: declare entities namespace in `vince_cms` section
+
+### Search
+
+[ ] Install elasticsearch with composer
+[ ] Launch elasticsearch
+
+
+
+[ ] Fixtures
+[ ] Contact
+[ ] Google Analytics tracking code
+[ ] Sitemap url

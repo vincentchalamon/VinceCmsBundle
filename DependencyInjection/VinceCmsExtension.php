@@ -67,5 +67,22 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
                 )
             );
         }
+
+        // Configure Doctrine if DoctrineBundle is activated
+        if (isset($bundles['DoctrineBundle']) && $container->hasExtension('doctrine')) {
+            $container->prependExtensionConfig('doctrine', array(
+                    'orm' => array(
+                        'mappings' => array(
+                            'tree' => array(
+                                'type'   => 'annotation',
+                                'alias'  => 'Gedmo',
+                                'prefix' => 'Gedmo\Tree\Entity',
+                                'dir'    => $container->getParameter('kernel.root_dir').'/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity'
+                            )
+                        )
+                    )
+                )
+            );
+        }
     }
 }
