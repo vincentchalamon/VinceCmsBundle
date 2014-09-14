@@ -62,7 +62,8 @@ class ArticleRepository extends EntityRepository
     {
         $builder = $this->createQueryBuilder('a');
 
-        return $builder->where($builder->expr()->notIn('a.slug', array('homepage', 'search')));
+        /** @todo-vince List slugs in Article entity as constant */
+        return $builder->where($builder->expr()->notIn('a.slug', array('homepage', 'search', 'error', 'error-404', 'error-500')));
     }
 
     /**

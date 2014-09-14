@@ -434,6 +434,17 @@ abstract class Menu extends Publishable
     }
 
     /**
+     * Check if menu is root level
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     * @return bool
+     */
+    public function isRoot()
+    {
+        return !$this->getLvl();
+    }
+
+    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt

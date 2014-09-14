@@ -107,6 +107,28 @@ abstract class Article extends Publishable
     }
 
     /**
+     * Check if Article is system (homepage, error)
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     * @return bool
+     */
+    public function isSystem()
+    {
+        return $this->isHomepage() || $this->getSlug() == 'error' || preg_match('/^error-\d{3}$/i', $this->getSlug());
+    }
+
+    /**
+     * Check if Article is homepage
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     * @return bool
+     */
+    public function isHomepage()
+    {
+        return $this->getSlug() == 'homepage';
+    }
+
+    /**
      * Get specific meta by its name
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
@@ -146,7 +168,7 @@ abstract class Article extends Publishable
      */
     public function getRouteName()
     {
-        return $this->getSlug() == 'homepage' ? $this->getSlug() : 'cms_'.$this->getSlug();
+        return $this->isHomepage() ? $this->getSlug() : 'cms_'.$this->getSlug();
     }
 
     /**
@@ -167,8 +189,11 @@ abstract class Article extends Publishable
      */
     public function initHomepage()
     {
-        if ($this->getSlug() == 'homepage') {
-            $this->publish()->setUrl('/');
+        if ($this->isSystem()) {
+            $this->publish();
+        }
+        if ($this->isHomepage()) {
+            $this->setUrl('/');
         }
     }
 
