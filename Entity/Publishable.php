@@ -8,7 +8,7 @@
  */
 namespace Vince\Bundle\CmsBundle\Entity;
 
-use Symfony\Component\Validator\ExecutionContext;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Publishable element
@@ -81,9 +81,9 @@ abstract class Publishable
      *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
      *
-     * @param ExecutionContext $context
+     * @param ExecutionContextInterface $context
      */
-    public function isPublicationValid(ExecutionContext $context)
+    public function isPublicationValid(ExecutionContextInterface $context)
     {
         // No start publication date specified for the end publication date
         if (!$this->getStartedAt() && $this->getEndedAt()) {

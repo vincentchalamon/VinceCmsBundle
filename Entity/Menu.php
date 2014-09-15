@@ -13,7 +13,7 @@ namespace Vince\Bundle\CmsBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Validator\ExecutionContext;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * This entity provides features to manage menu
@@ -149,9 +149,9 @@ abstract class Menu extends Publishable
      * Check if Menu has url or Article linked if not root
      *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
-     * @param ExecutionContext $context
+     * @param ExecutionContextInterface $context
      */
-    public function isTargetValid(ExecutionContext $context)
+    public function isTargetValid(ExecutionContextInterface $context)
     {
         // Menu is not root and has no url or Article linked
         if ($this->getParent() != $this && !$this->getUrl() && !$this->getArticle()) {
@@ -163,9 +163,9 @@ abstract class Menu extends Publishable
      * If Menu is image: check file
      *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
-     * @param ExecutionContext $context
+     * @param ExecutionContextInterface $context
      */
-    public function isImageValid(ExecutionContext $context)
+    public function isImageValid(ExecutionContextInterface $context)
     {
         if ($this->isImage() && is_null($this->getFile())) {
             $context->addViolationAt('file', 'This value should not be blank.');
