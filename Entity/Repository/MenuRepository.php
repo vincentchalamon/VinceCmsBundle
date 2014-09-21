@@ -35,8 +35,7 @@ class MenuRepository extends NestedTreeRepository
         // Find published Menu by its slug
         $builder = $this->createQueryBuilder('m')
                         ->where('m.slug = :slug')->setParameter('slug', $slug)
-                        ->andWhere('m.lvl = 0')
-                        ->setMaxResults(1);
+                        ->andWhere('m.lvl = 0');
         /** @var Menu $menu */
         $menu = $builder->andWhere($builder->expr()->andX(
             $builder->expr()->isNotNull('m.startedAt'),
@@ -45,7 +44,7 @@ class MenuRepository extends NestedTreeRepository
                 $builder->expr()->isNull('m.endedAt'),
                 $builder->expr()->gte('m.endedAt', ':now')
             )
-        ))->setParameter('now', new \DateTime())->getQuery()->getOneOrNullResult();
+        ))->setParameter('now', new \DateTime())->getQuery()->setMaxResults(1)->getOneOrNullResult();
 
         // Cannot find Menu
         if ($menu) {
