@@ -114,7 +114,7 @@ abstract class Article extends Publishable
      */
     public function isSystem()
     {
-        return $this->isHomepage() || $this->getSlug() == 'error' || preg_match('/^error-\d{3}$/i', $this->getSlug());
+        return $this->isHomepage() || substr($this->getSlug(), 0, 5) == 'error';
     }
 
     /**
@@ -168,7 +168,7 @@ abstract class Article extends Publishable
      */
     public function getRouteName()
     {
-        return $this->isHomepage() ? $this->getSlug() : 'cms_'.$this->getSlug();
+        return $this->isSystem() ? $this->getSlug() : 'cms_'.$this->getSlug();
     }
 
     /**
@@ -183,7 +183,7 @@ abstract class Article extends Publishable
     }
 
     /**
-     * Force publication for homepage
+     * Force publication for system
      *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
      */
