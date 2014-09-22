@@ -11,7 +11,7 @@
                 <h2><a href="{{ path(result.routeName) }}" title="{{ result.title }}">{{ result.title }}</a></h2>
                 <div class="chapo">
                     {{ result.summary|raw }}
-                    <a href="{{ path(result.routeName) }}" title="{{ 'text.more'|trans({}, 'VinceCms') }}" class="linked gradient">{{ 'text.more'|trans({}, 'VinceCms') }}</a>
+                    <a href="{{ path(result.routeName) }}" title="{{ 'More'|trans({}, 'VinceCms') }}" class="linked gradient">{{ 'More'|trans({}, 'VinceCms') }}</a>
                 </div>
                 <p class="infos">
                     <span class="date">{{ result.startedAt|localizeddate('long', 'none')|capitalize }}</span>
@@ -31,6 +31,6 @@
             </div>
         {% endfor %}
     {% else %}
-        <p class="empty">{{ 'text.search'|trans({}, 'VinceCms') }}</p>
+        <p class="empty">{{ 'Search'|trans({}, 'VinceCms') }}</p>
     {% endif %}
 {% endblock %}

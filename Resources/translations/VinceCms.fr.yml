@@ -4,10 +4,9 @@ Pre-published: Pré-publié
 Post-published: Post-publié
 Published temp: Publié temporairement
 
-text:
-    sitemap: Plan du site
-    send: Envoyer
-    publication: Publié le %date%
-    tags: Mots-clés
-    more: Lire la suite
-    search: Votre recherche n'a remonté aucun résultat.
+Sitemap: Plan du site
+More: Lire la suite
+Search: Votre recherche n'a remonté aucun résultat.
+Send: Envoyer
+"Published on %date%": Publié le %date%
+Tags: Mots-clés
