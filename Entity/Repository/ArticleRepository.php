@@ -12,6 +12,7 @@ namespace Vince\Bundle\CmsBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
+use Doctrine\ORM\Query\Expr\Join;
 use Vince\Bundle\CmsBundle\Entity\Article;
 
 /**
@@ -110,5 +111,34 @@ class ArticleRepository extends EntityRepository
                 )
             )
         )->setParameters(array('now' => new \DateTime()))->getQuery()->getResult();
+    }
+
+    /**
+     * Get all published Articles ordered by start publication date DESC
+     * And with index,follow meta
+     *
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
+     *
+     * @return array
+     */
+    public function findAllPublishedIndexableOrdered()
+    {
+        $builder = $this->createQueryBuilder('a')->orderBy('a.startedAt', 'DESC');
+        $builder->where(
+            $builder->expr()->andX(
+                $builder->expr()->isNotNull('a.startedAt'),
+                $builder->expr()->lte('a.startedAt', ':now'),
+                $builder->expr()->orX(
+                    $builder->expr()->isNull('a.endedAt'),
+                    $builder->expr()->gte('a.endedAt', ':now')
+                )
+            )
+        )->innerJoin('a.metas', 'm', Join::WITH, 'm.contents = :value');
+
+        return $builder->setParameters(array(
+                'now'   => new \DateTime(),
+                'value' => 'index,follow'
+            )
+        )->getQuery()->getResult();
     }
 }

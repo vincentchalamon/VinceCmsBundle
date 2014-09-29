@@ -35,7 +35,7 @@ class DefaultController extends Controller
      */
     public function sitemapAction()
     {
-        $articles = $this->get('doctrine.orm.default_entity_manager')->getRepository($this->container->getParameter('vince.class.article'))->findAllPublishedOrdered();
+        $articles = $this->get('vince.repository.article')->findAllPublishedIndexableOrdered();
 
         return $this->render('VinceCmsBundle:Templates:sitemap.xml.twig', array(
                 'articles' => $articles
@@ -55,7 +55,7 @@ class DefaultController extends Controller
     public function feedAction($_format)
     {
         $format   = $_format == 'xml' ? 'rss' : $_format;
-        $articles = $this->get('doctrine.orm.default_entity_manager')->getRepository($this->container->getParameter('vince.class.article'))->findAllPublishedOrdered();
+        $articles = $this->get('vince.repository.article')->findAllPublishedIndexableOrdered();
 
         return $this->render(sprintf('VinceCmsBundle:Templates:feed.%s.twig', $format), array(
                 'articles' => $articles,
