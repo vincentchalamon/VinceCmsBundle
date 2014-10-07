@@ -420,7 +420,7 @@ abstract class Article extends Publishable
     public function addContent(Content $contents)
     {
         if ($contents->getArea()->getTemplate()->getSlug() == $this->getTemplate()->getSlug()
-            && trim(strip_tags($contents->getContents()))) {
+            && trim(strip_tags($contents->getContents(), '<img><input><button><iframe>'))) {
             $contents->setArticle($this);
             $this->contents[] = $contents;
         }
