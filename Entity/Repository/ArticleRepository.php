@@ -45,6 +45,7 @@ class ArticleRepository extends EntityRepository
 
         return $this->createQueryBuilder('a')
                     ->leftJoin('a.metas', 'm')->addSelect('m')
+                    ->leftJoin('m.meta', 'meta')->addSelect('meta')
                     ->leftJoin('a.menus', 'me')->addSelect('me')
                     ->leftJoin('a.contents', 'co')->addSelect('co')
                     ->leftJoin('co.area', 'ar')->addSelect('ar')
