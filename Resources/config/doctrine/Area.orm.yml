@@ -16,6 +16,8 @@ Vince\Bundle\CmsBundle\Entity\Area:
         type:
             type: string
             length: 255
+        options:
+            type: array
         required:
             type: boolean
     manyToOne:

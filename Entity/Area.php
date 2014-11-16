@@ -39,6 +39,11 @@ class Area
     protected $type;
 
     /**
+     * @var array
+     */
+    protected $options = array();
+
+    /**
      * @var boolean
      */
     protected $required = false;
@@ -136,6 +141,30 @@ class Area
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set options
+     *
+     * @param array $options
+     *
+     * @return Area
+     */
+    public function setOptions(array $options = array())
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    /**
+     * Get options
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 
     /**

@@ -21,6 +21,7 @@ services:
     twig.extension.vince.cms:
         class: Vince\Bundle\CmsBundle\Twig\Extension\CmsExtension
         calls:
+            - [setVinceCmsConfiguration, [%vince.cms%]]
             - [setSecurityContext, [@security.context]]
             - [addRepository, ['menu', @vince.repository.menu]]
             - [addRepository, ['block', @vince.repository.block]]

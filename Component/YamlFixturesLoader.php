@@ -63,6 +63,21 @@ class YamlFixturesLoader
     protected $manager;
 
     /**
+     * Debug mode
+     *
+     * @var boolean
+     */
+    protected $debug;
+
+    /**
+     * @param bool $debug
+     */
+    public function __construct($debug = false)
+    {
+        $this->debug = $debug;
+    }
+
+    /**
      * Add yml fixtures file to load
      *
      * <code>
@@ -305,6 +320,9 @@ class YamlFixturesLoader
             while ($this->getReferencer()->hasReference($reference)) {
                 $reference = $this->getValidClassName($class)."-$name-$count";
                 $count++;
+            }
+            if ($this->debug) {
+                echo sprintf("    > Add reference: %s\r\n", $reference);
             }
             $this->getReferencer()->addReference($reference, $record);
         }

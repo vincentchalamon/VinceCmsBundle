@@ -31,19 +31,54 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-        
-        $config['area']['class'] = 'Vince\Bundle\CmsBundle\Entity\Area';
-        $config['area']['repository'] = 'Doctrine\ORM\EntityRepository';
-        $config['meta']['class'] = 'Vince\Bundle\CmsBundle\Entity\Meta';
-        $config['meta']['repository'] = 'Doctrine\ORM\EntityRepository';
-        $config['template']['class'] = 'Vince\Bundle\CmsBundle\Entity\Template';
-        $config['template']['repository'] = 'Doctrine\ORM\EntityRepository';
+
+        // Global parameters
+        $keys = array('tracking_code', 'domain', 'sitename', 'no_reply', 'contact');
+        foreach ($keys as $name) {
+            $container->setParameter(sprintf('vince.cms.%s', $name), $config[$name]);
+        }
+        $container->setParameter('vince.cms', array(
+                'tracking_code' => $config['tracking_code'],
+                'domain' => $config['domain'],
+                'sitename' => $config['sitename'],
+                'no_reply' => $config['no_reply'],
+                'contact' => $config['contact']
+            )
+        );
+        $bundles = $container->getParameter('kernel.bundles');
+
+        // Configure Twig is activated
+        if (isset($bundles['TwigBundle']) && $container->hasExtension('twig')) {
+            $container->prependExtensionConfig('twig', array(
+                    'exception_controller' => 'vince.cms.controller.exception:indexAction',
+                    'globals' => array(
+                        'vince' => array(
+                            'cms' => array(
+                                'tracking_code' => $container->getParameter('vince.cms.tracking_code'),
+                                'domain' => $container->getParameter('vince.cms.domain'),
+                                'sitename' => $container->getParameter('vince.cms.sitename'),
+                                'no_reply' => $container->getParameter('vince.cms.no_reply'),
+                                'contact' => $container->getParameter('vince.cms.contact')
+                            )
+                        )
+                    )
+                )
+            );
+        }
+
+        // Model parameters
+        $config['model']['area']['class'] = 'Vince\Bundle\CmsBundle\Entity\Area';
+        $config['model']['area']['repository'] = 'Doctrine\ORM\EntityRepository';
+        $config['model']['meta']['class'] = 'Vince\Bundle\CmsBundle\Entity\Meta';
+        $config['model']['meta']['repository'] = 'Doctrine\ORM\EntityRepository';
+        $config['model']['template']['class'] = 'Vince\Bundle\CmsBundle\Entity\Template';
+        $config['model']['template']['repository'] = 'Doctrine\ORM\EntityRepository';
 
         foreach (array('area', 'article', 'articleMeta', 'block', 'content', 'menu', 'meta', 'template') as $name) {
-            $container->setParameter(sprintf('vince.class.%s', $name), $config[$name]['class']);
+            $container->setParameter(sprintf('vince.class.%s', $name), $config['model'][$name]['class']);
 
             // Build repository as service
-            $repository = new Definition($config[$name]['repository'], array($config[$name]['class']));
+            $repository = new Definition($config['model'][$name]['repository'], array($config['model'][$name]['class']));
             $repository->setFactoryService('doctrine.orm.default_entity_manager');
             $repository->setFactoryMethod('getRepository');
             $container->setDefinition(sprintf('vince.repository.%s', $name), $repository);

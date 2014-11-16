@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:fb="https://www.facebook.com/2008/fbml">
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}{{ article.meta('title') }}{% endblock %}</title>
+        <title>{% block title %}{% if article is defined %}{{ article.meta('title') }}{% endif %}{% endblock %}</title>
         {% block metas %}
-            {% for meta in article.metas %}
-                {{ render_meta(meta) }}
-            {% endfor %}
+            {% if article is defined %}
+                {{ render_metas() }}
+            {% endif %}
         {% endblock %}
         {% block stylesheets %}{% endblock %}
         <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ path('cms_feed') }}" />
