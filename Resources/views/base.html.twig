@@ -5,7 +5,7 @@
         <title>{% block title %}{% if article is defined %}{{ article.meta('title') }}{% endif %}{% endblock %}</title>
         {% block metas %}
             {% if article is defined %}
-                {{ render_metas() }}
+                {{ render_metas(article) }}
             {% endif %}
         {% endblock %}
         {% block stylesheets %}{% endblock %}

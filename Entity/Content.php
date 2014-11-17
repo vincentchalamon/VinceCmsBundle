@@ -49,6 +49,18 @@ abstract class Content
     }
 
     /**
+     * Clone object for translation
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     */
+    public function __clone()
+    {
+        if (!is_null($this->id)) {
+            $this->id = null;
+        }
+    }
+
+    /**
      * Get id
      *
      * @return integer

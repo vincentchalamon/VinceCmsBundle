@@ -33,11 +33,12 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
         $config = $this->processConfiguration($configuration, $configs);
 
         // Global parameters
-        $keys = array('tracking_code', 'domain', 'sitename', 'no_reply', 'contact');
+        $keys = array('languages', 'tracking_code', 'domain', 'sitename', 'no_reply', 'contact');
         foreach ($keys as $name) {
             $container->setParameter(sprintf('vince.cms.%s', $name), $config[$name]);
         }
         $container->setParameter('vince.cms', array(
+                'languages' => $config['languages'],
                 'tracking_code' => $config['tracking_code'],
                 'domain' => $config['domain'],
                 'sitename' => $config['sitename'],
@@ -53,13 +54,7 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
                     'exception_controller' => 'vince.cms.controller.exception:indexAction',
                     'globals' => array(
                         'vince' => array(
-                            'cms' => array(
-                                'tracking_code' => $container->getParameter('vince.cms.tracking_code'),
-                                'domain' => $container->getParameter('vince.cms.domain'),
-                                'sitename' => $container->getParameter('vince.cms.sitename'),
-                                'no_reply' => $container->getParameter('vince.cms.no_reply'),
-                                'contact' => $container->getParameter('vince.cms.contact')
-                            )
+                            'cms' => $container->getParameter('vince.cms'),
                         )
                     )
                 )

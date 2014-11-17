@@ -2,6 +2,9 @@ Vince\Bundle\CmsBundle\Entity\Article:
     type: mappedSuperclass
     repositoryClass: Vince\Bundle\CmsBundle\Entity\Repository\ArticleRepository
     fields:
+        language:
+            type: string
+            length: 2
         title:
             type: string
             length: 255
@@ -54,4 +57,4 @@ Vince\Bundle\CmsBundle\Entity\Article:
         search_idx:
             columns: slug
     lifecycleCallbacks:
-        prePersist: [initHomepage]
+        prePersist: [initHomepage, initOriginal]

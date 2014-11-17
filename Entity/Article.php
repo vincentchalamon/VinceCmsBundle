@@ -11,7 +11,6 @@
 namespace Vince\Bundle\CmsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
 /**
  * This entity provides features to manage an Article.
@@ -27,6 +26,11 @@ abstract class Article extends Publishable
      * @var integer
      */
     protected $id;
+
+    /**
+     * @var string
+     */
+    protected $language;
 
     /**
      * @var string
@@ -64,24 +68,34 @@ abstract class Article extends Publishable
     protected $url;
 
     /**
-     * @var Collection
+     * @var ArrayCollection
      */
     protected $metas;
 
     /**
-     * @var Collection
+     * @var ArrayCollection
      */
     protected $contents;
 
     /**
-     * @var Collection
+     * @var ArrayCollection
      */
     protected $menus;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $translations;
 
     /**
      * @var Template
      */
     protected $template;
+
+    /**
+     * @var Article
+     */
+    protected $original;
 
     /**
      * Build Article
@@ -90,9 +104,38 @@ abstract class Article extends Publishable
      */
     public function __construct()
     {
-        $this->menus    = new ArrayCollection();
-        $this->metas    = new ArrayCollection();
+        $this->menus = new ArrayCollection();
+        $this->metas = new ArrayCollection();
         $this->contents = new ArrayCollection();
+        $this->translations = new ArrayCollection();
+    }
+
+    /**
+     * Clone object for translation
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     */
+    public function __clone()
+    {
+        if (!is_null($this->id)) {
+            $this->menus = new ArrayCollection();
+            $this->slug = null;
+            $this->createdAt = null;
+            $this->updatedAt = null;
+            $this->id = null;
+
+            $metas = new ArrayCollection();
+            $this->metas->map(function (ArticleMeta $articleMeta) use ($metas) {
+                $metas->add(clone $articleMeta);
+            });
+            $this->metas = $metas;
+
+            $contents = new ArrayCollection();
+            $this->contents->map(function (Content $content) use ($contents) {
+                $contents->add(clone $content);
+            });
+            $this->contents = $contents;
+        }
     }
 
     /**
@@ -198,6 +241,18 @@ abstract class Article extends Publishable
     }
 
     /**
+     * Init original
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     */
+    public function initOriginal()
+    {
+        if (!$this->original) {
+            $this->original = $this;
+        }
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -205,6 +260,30 @@ abstract class Article extends Publishable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set language
+     *
+     * @param string $language
+     *
+     * @return Article
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    /**
+     * Get language
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
     }
 
     /**
@@ -376,34 +455,34 @@ abstract class Article extends Publishable
     }
 
     /**
-     * Add metas
+     * Add meta
      *
-     * @param ArticleMeta $metas
+     * @param ArticleMeta $meta
      *
      * @return Article
      */
-    public function addMeta(ArticleMeta $metas)
+    public function addMeta(ArticleMeta $meta)
     {
-        $metas->setArticle($this);
-        $this->metas[] = $metas;
+        $meta->setArticle($this);
+        $this->metas[] = $meta;
 
         return $this;
     }
 
     /**
-     * Remove metas
+     * Remove meta
      *
-     * @param ArticleMeta $metas
+     * @param ArticleMeta $meta
      */
-    public function removeMeta(ArticleMeta $metas)
+    public function removeMeta(ArticleMeta $meta)
     {
-        $this->metas->removeElement($metas);
+        $this->metas->removeElement($meta);
     }
 
     /**
      * Get metas
      *
-     * @return Collection
+     * @return ArrayCollection
      */
     public function getMetas()
     {
@@ -413,35 +492,35 @@ abstract class Article extends Publishable
     /**
      * Add contents
      *
-     * @param Content $contents
+     * @param Content $content
      *
      * @return Article
      */
-    public function addContent(Content $contents)
+    public function addContent(Content $content)
     {
-        if ($contents->getArea()->getTemplate()->getSlug() == $this->getTemplate()->getSlug()
-            && trim(strip_tags($contents->getContents(), '<img><input><button><iframe>'))) {
-            $contents->setArticle($this);
-            $this->contents[] = $contents;
+        if ($content->getArea()->getTemplate()->getSlug() == $this->getTemplate()->getSlug()
+            && trim(strip_tags($content->getContents(), '<img><input><button><iframe>'))) {
+            $content->setArticle($this);
+            $this->contents[] = $content;
         }
 
         return $this;
     }
 
     /**
-     * Remove contents
+     * Remove content
      *
-     * @param Content $contents
+     * @param Content $content
      */
-    public function removeContent(Content $contents)
+    public function removeContent(Content $content)
     {
-        $this->contents->removeElement($contents);
+        $this->contents->removeElement($content);
     }
 
     /**
      * Get contents
      *
-     * @return Collection
+     * @return ArrayCollection
      */
     public function getContents()
     {
@@ -449,34 +528,34 @@ abstract class Article extends Publishable
     }
 
     /**
-     * Add menus
+     * Add menu
      *
-     * @param Menu $menus
+     * @param Menu $menu
      *
      * @return Article
      */
-    public function addMenu(Menu $menus)
+    public function addMenu(Menu $menu)
     {
-        $menus->setArticle($this);
-        $this->menus[] = $menus;
+        $menu->setArticle($this);
+        $this->menus[] = $menu;
 
         return $this;
     }
 
     /**
-     * Remove menus
+     * Remove menu
      *
-     * @param Menu $menus
+     * @param Menu $menu
      */
-    public function removeMenu(Menu $menus)
+    public function removeMenu(Menu $menu)
     {
-        $this->menus->removeElement($menus);
+        $this->menus->removeElement($menu);
     }
 
     /**
      * Get menus
      *
-     * @return Collection
+     * @return ArrayCollection
      */
     public function getMenus()
     {
@@ -505,5 +584,91 @@ abstract class Article extends Publishable
     public function getTemplate()
     {
         return $this->template;
+    }
+
+    /**
+     * Set original
+     *
+     * @param Article $original
+     *
+     * @return Article
+     */
+    public function setOriginal(Article $original)
+    {
+        $this->original = $original;
+
+        return $this;
+    }
+
+    /**
+     * Get original
+     *
+     * @return Article
+     */
+    public function getOriginal()
+    {
+        return $this->original;
+    }
+
+    /**
+     * Add translation
+     *
+     * @param Article $translation
+     *
+     * @return Article
+     */
+    public function addTranslation(Article $translation)
+    {
+        $this->translations[] = $translation;
+
+        return $this;
+    }
+
+    /**
+     * Remove translation
+     *
+     * @param Article $translation
+     */
+    public function removeTranslation(Article $translation)
+    {
+        $this->translations->removeElement($translation);
+    }
+
+    /**
+     * Get translations
+     *
+     * @return ArrayCollection
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * Check if current article has translation
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @param string $language
+     * @return bool
+     */
+    public function hasTranslation($language)
+    {
+        return $this->getTranslations()->exists(function ($key, Article $translation) use ($language) {
+            return $translation->getLanguage() == $language;
+        });
+    }
+
+    /**
+     * Get current article translation
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @param string $language
+     * @return Article|false
+     */
+    public function getTranslation($language)
+    {
+        return $this->getTranslations()->filter(function (Article $translation) use ($language) {
+            return $translation->getLanguage() == $language;
+        })->first();
     }
 }
