@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
-abstract class Publishable
+abstract class Publishable extends Translatable
 {
 
     /**

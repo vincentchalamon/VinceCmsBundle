@@ -5,6 +5,9 @@ Vince\Bundle\CmsBundle\Entity\Menu:
         tree:
             type: nested
     fields:
+        language:
+            type: string
+            length: 2
         title:
             type: string
             length: 255
@@ -69,3 +72,5 @@ Vince\Bundle\CmsBundle\Entity\Menu:
     indexes:
         search_idx:
             columns: slug
+    lifecycleCallbacks:
+        prePersist: [initOriginal]

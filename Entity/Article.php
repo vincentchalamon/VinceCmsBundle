@@ -21,16 +21,10 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 abstract class Article extends Publishable
 {
-
     /**
      * @var integer
      */
     protected $id;
-
-    /**
-     * @var string
-     */
-    protected $language;
 
     /**
      * @var string
@@ -83,19 +77,9 @@ abstract class Article extends Publishable
     protected $menus;
 
     /**
-     * @var ArrayCollection
-     */
-    protected $translations;
-
-    /**
      * @var Template
      */
     protected $template;
-
-    /**
-     * @var Article
-     */
-    protected $original;
 
     /**
      * Build Article
@@ -104,10 +88,10 @@ abstract class Article extends Publishable
      */
     public function __construct()
     {
+        parent::__construct();
         $this->menus = new ArrayCollection();
         $this->metas = new ArrayCollection();
         $this->contents = new ArrayCollection();
-        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -241,18 +225,6 @@ abstract class Article extends Publishable
     }
 
     /**
-     * Init original
-     *
-     * @author Vincent Chalamon <vincent@ylly.fr>
-     */
-    public function initOriginal()
-    {
-        if (!$this->original) {
-            $this->original = $this;
-        }
-    }
-
-    /**
      * Get id
      *
      * @return integer
@@ -260,30 +232,6 @@ abstract class Article extends Publishable
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set language
-     *
-     * @param string $language
-     *
-     * @return Article
-     */
-    public function setLanguage($language)
-    {
-        $this->language = $language;
-
-        return $this;
-    }
-
-    /**
-     * Get language
-     *
-     * @return string
-     */
-    public function getLanguage()
-    {
-        return $this->language;
     }
 
     /**
@@ -584,91 +532,5 @@ abstract class Article extends Publishable
     public function getTemplate()
     {
         return $this->template;
-    }
-
-    /**
-     * Set original
-     *
-     * @param Article $original
-     *
-     * @return Article
-     */
-    public function setOriginal(Article $original)
-    {
-        $this->original = $original;
-
-        return $this;
-    }
-
-    /**
-     * Get original
-     *
-     * @return Article
-     */
-    public function getOriginal()
-    {
-        return $this->original;
-    }
-
-    /**
-     * Add translation
-     *
-     * @param Article $translation
-     *
-     * @return Article
-     */
-    public function addTranslation(Article $translation)
-    {
-        $this->translations[] = $translation;
-
-        return $this;
-    }
-
-    /**
-     * Remove translation
-     *
-     * @param Article $translation
-     */
-    public function removeTranslation(Article $translation)
-    {
-        $this->translations->removeElement($translation);
-    }
-
-    /**
-     * Get translations
-     *
-     * @return ArrayCollection
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    /**
-     * Check if current article has translation
-     *
-     * @author Vincent Chalamon <vincent@ylly.fr>
-     * @param string $language
-     * @return bool
-     */
-    public function hasTranslation($language)
-    {
-        return $this->getTranslations()->exists(function ($key, Article $translation) use ($language) {
-            return $translation->getLanguage() == $language;
-        });
-    }
-
-    /**
-     * Get current article translation
-     *
-     * @author Vincent Chalamon <vincent@ylly.fr>
-     * @param string $language
-     * @return Article|false
-     */
-    public function getTranslation($language)
-    {
-        return $this->getTranslations()->filter(function (Article $translation) use ($language) {
-            return $translation->getLanguage() == $language;
-        })->first();
     }
 }

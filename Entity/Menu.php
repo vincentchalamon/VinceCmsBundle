@@ -118,6 +118,27 @@ abstract class Menu extends Publishable
     }
 
     /**
+     * Clone object for translation
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     */
+    public function __clone()
+    {
+        if (!is_null($this->id)) {
+            $this->children = new ArrayCollection();
+            $this->slug = null;
+            $this->createdAt = null;
+            $this->updatedAt = null;
+            $this->id = null;
+            $this->lft = null;
+            $this->rgt = null;
+            $this->root = null;
+            $this->parent = null;
+            $this->lvl = null;
+        }
+    }
+
+    /**
      * Get title
      * 
      * @author Vincent Chalamon <vincentchalamon@gmail.com>

@@ -1,6 +1,9 @@
 Vince\Bundle\CmsBundle\Entity\Block:
     type: mappedSuperclass
     fields:
+        language:
+            type: string
+            length: 2
         name:
             type: string
             length: 255
@@ -33,3 +36,5 @@ Vince\Bundle\CmsBundle\Entity\Block:
     indexes:
         search_idx:
             columns: name
+    lifecycleCallbacks:
+        prePersist: [initOriginal]

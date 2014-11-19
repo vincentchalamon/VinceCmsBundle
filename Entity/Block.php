@@ -17,7 +17,6 @@ namespace Vince\Bundle\CmsBundle\Entity;
  */
 abstract class Block extends Publishable
 {
-
     /**
      * @var integer
      */
