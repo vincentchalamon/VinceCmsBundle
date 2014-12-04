@@ -51,7 +51,7 @@ abstract class Content
     /**
      * Clone object for translation
      *
-     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
      */
     public function __clone()
     {

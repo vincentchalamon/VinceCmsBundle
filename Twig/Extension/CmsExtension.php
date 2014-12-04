@@ -229,7 +229,7 @@ class CmsExtension extends \Twig_Extension
     /**
      * Set Vince CMS configuration
      *
-     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
      * @param array $configuration Vince CMS configuration (vince.cms)
      */
     public function setVinceCmsConfiguration(array $configuration)

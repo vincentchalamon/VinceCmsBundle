@@ -138,7 +138,7 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Set locale
      *
-     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
      * @param  string $locale
      * @return Block
      */
@@ -152,7 +152,7 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Get locale
      *
-     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
      * @return string
      */
     public function getLocale()

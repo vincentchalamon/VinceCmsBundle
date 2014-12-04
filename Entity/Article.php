@@ -113,7 +113,7 @@ abstract class Article extends Publishable
     /**
      * Clone object for translation
      *
-     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
      */
     public function __clone()
     {
@@ -557,7 +557,7 @@ abstract class Article extends Publishable
     /**
      * Init original
      *
-     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
      */
     public function initOriginal()
     {
@@ -651,7 +651,7 @@ abstract class Article extends Publishable
     /**
      * Check if current Article element has translation
      *
-     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
      * @param  string $locale
      * @return bool
      */
@@ -665,7 +665,7 @@ abstract class Article extends Publishable
     /**
      * Get current Article element translation
      *
-     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @author Vincent Chalamon <vincentchalamon@gmail.com>
      * @param  string        $locale
      * @return Article|false
      */
