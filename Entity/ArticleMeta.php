@@ -77,20 +77,20 @@ abstract class ArticleMeta
     /**
      * Set contents
      *
-     * @param string $contents
+     * @param  string      $contents
      * @return ArticleMeta
      */
     public function setContents($contents)
     {
         $this->contents = $contents;
-    
+
         return $this;
     }
 
     /**
      * Get contents
      *
-     * @return string 
+     * @return string
      */
     public function getContents()
     {
@@ -100,13 +100,13 @@ abstract class ArticleMeta
     /**
      * Set article
      *
-     * @param Article $article
+     * @param  Article     $article
      * @return ArticleMeta
      */
     public function setArticle(Article $article)
     {
         $this->article = $article;
-    
+
         return $this;
     }
 
@@ -123,13 +123,13 @@ abstract class ArticleMeta
     /**
      * Set meta
      *
-     * @param Meta $meta
+     * @param  Meta        $meta
      * @return ArticleMeta
      */
     public function setMeta(Meta $meta)
     {
         $this->meta = $meta;
-    
+
         return $this;
     }
 

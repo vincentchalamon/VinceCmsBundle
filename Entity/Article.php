@@ -226,7 +226,7 @@ abstract class Article extends Publishable
      */
     public function getRoutePattern()
     {
-        return $this->getUrl() ? : '/'.$this->getSlug();
+        return $this->getUrl() ?: '/'.$this->getSlug();
     }
 
     /**
@@ -652,7 +652,7 @@ abstract class Article extends Publishable
      * Check if current Article element has translation
      *
      * @author Vincent Chalamon <vincent@ylly.fr>
-     * @param string $locale
+     * @param  string $locale
      * @return bool
      */
     public function hasTranslation($locale)
@@ -666,7 +666,7 @@ abstract class Article extends Publishable
      * Get current Article element translation
      *
      * @author Vincent Chalamon <vincent@ylly.fr>
-     * @param string $locale
+     * @param  string        $locale
      * @return Article|false
      */
     public function getTranslation($locale)

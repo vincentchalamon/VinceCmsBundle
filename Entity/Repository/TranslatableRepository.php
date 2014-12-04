@@ -41,9 +41,9 @@ class TranslatableRepository extends EntityRepository
     /**
      * Returns translated one (or null if not found) result for given locale
      *
-     * @param QueryBuilder $qb A Doctrine query builder instance
-     * @param string $locale A locale name
-     * @param string $hydrationMode A Doctrine results hydration mode
+     * @param QueryBuilder $qb            A Doctrine query builder instance
+     * @param string       $locale        A locale name
+     * @param string       $hydrationMode A Doctrine results hydration mode
      *
      * @return QueryBuilder
      */
@@ -55,9 +55,9 @@ class TranslatableRepository extends EntityRepository
     /**
      * Returns translated results for given locale
      *
-     * @param QueryBuilder $qb A Doctrine query builder instance
-     * @param string $locale A locale name
-     * @param int $hydrationMode A Doctrine results hydration mode
+     * @param QueryBuilder $qb            A Doctrine query builder instance
+     * @param string       $locale        A locale name
+     * @param int          $hydrationMode A Doctrine results hydration mode
      *
      * @return QueryBuilder
      */
@@ -69,8 +69,8 @@ class TranslatableRepository extends EntityRepository
     /**
      * Returns translated array results for given locale
      *
-     * @param QueryBuilder $qb A Doctrine query builder instance
-     * @param string $locale A locale name
+     * @param QueryBuilder $qb     A Doctrine query builder instance
+     * @param string       $locale A locale name
      *
      * @return QueryBuilder
      */
@@ -82,9 +82,9 @@ class TranslatableRepository extends EntityRepository
     /**
      * Returns translated single result for given locale
      *
-     * @param QueryBuilder $qb A Doctrine query builder instance
-     * @param string $locale A locale name
-     * @param string $hydrationMode A Doctrine results hydration mode
+     * @param QueryBuilder $qb            A Doctrine query builder instance
+     * @param string       $locale        A locale name
+     * @param string       $hydrationMode A Doctrine results hydration mode
      *
      * @return QueryBuilder
      */
@@ -96,8 +96,8 @@ class TranslatableRepository extends EntityRepository
     /**
      * Returns translated scalar result for given locale
      *
-     * @param QueryBuilder $qb A Doctrine query builder instance
-     * @param string $locale A locale name
+     * @param QueryBuilder $qb     A Doctrine query builder instance
+     * @param string       $locale A locale name
      *
      * @return QueryBuilder
      */
@@ -109,8 +109,8 @@ class TranslatableRepository extends EntityRepository
     /**
      * Returns translated single scalar result for given locale
      *
-     * @param QueryBuilder $qb A Doctrine query builder instance
-     * @param string $locale A locale name
+     * @param QueryBuilder $qb     A Doctrine query builder instance
+     * @param string       $locale A locale name
      *
      * @return QueryBuilder
      */
@@ -122,8 +122,8 @@ class TranslatableRepository extends EntityRepository
     /**
      * Returns translated Doctrine query instance
      *
-     * @param QueryBuilder $qb A Doctrine query builder instance
-     * @param string $locale A locale name
+     * @param QueryBuilder $qb     A Doctrine query builder instance
+     * @param string       $locale A locale name
      *
      * @return Query
      */

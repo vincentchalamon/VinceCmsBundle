@@ -21,12 +21,12 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class CompilerPass implements CompilerPassInterface
 {
-    
+
     protected $name;
-    
+
     /**
      * Register tagged services from name
-     * 
+     *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      * @param string $name Tag name
      */
@@ -37,7 +37,7 @@ class CompilerPass implements CompilerPassInterface
 
     /**
      * Register tagged services
-     * 
+     *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      * @param ContainerBuilder $container Container
      */
@@ -46,10 +46,10 @@ class CompilerPass implements CompilerPassInterface
         if (!$container->hasDefinition($this->name.'.chain')) {
             return;
         }
-        
+
         $definition = $container->getDefinition($this->name.'.chain');
         $taggedServices = $container->findTaggedServiceIds($this->name);
-        
+
         foreach ($taggedServices as $id => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
                 $definition->addMethodCall('add', array(new Reference($id), $attributes['alias']));

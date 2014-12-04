@@ -17,15 +17,15 @@ use Vince\Bundle\CmsBundle\Component\YamlFixturesLoader as Loader;
 
 /**
  * Load CMS default fixtures from yml
- * 
+ *
  * @author Vincent CHALAMON <vincentchalamon@gmail.com>
  */
 class CmsData extends AbstractFixture implements OrderedFixtureInterface
 {
-    
+
     /**
      * Load fixtures files
-     * 
+     *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
      * @param ObjectManager $manager
      */
@@ -35,7 +35,7 @@ class CmsData extends AbstractFixture implements OrderedFixtureInterface
         $loader->addFile(__DIR__.'/../../Resources/config/data/Metas.yml');
         $loader->load($manager, null, $this);
     }
-    
+
     public function getOrder()
     {
         return 1;

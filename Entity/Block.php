@@ -74,7 +74,7 @@ abstract class Block extends Publishable implements Translatable
      * Set locale
      *
      * @author Vincent Chalamon <vincent@ylly.fr>
-     * @param string $locale
+     * @param  string $locale
      * @return Block
      */
     public function setLocale($locale)
@@ -180,7 +180,7 @@ abstract class Block extends Publishable implements Translatable
     /**
      * Set type
      *
-     * @param string $type
+     * @param  string $type
      * @return Block
      */
     public function setType($type)

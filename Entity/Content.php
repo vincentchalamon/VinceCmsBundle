@@ -74,20 +74,20 @@ abstract class Content
     /**
      * Set contents
      *
-     * @param string $contents
+     * @param  string  $contents
      * @return Content
      */
     public function setContents($contents)
     {
         $this->contents = $contents;
-    
+
         return $this;
     }
 
     /**
      * Get contents
      *
-     * @return string 
+     * @return string
      */
     public function getContents()
     {
@@ -97,13 +97,13 @@ abstract class Content
     /**
      * Set article
      *
-     * @param Article $article
+     * @param  Article $article
      * @return Content
      */
     public function setArticle(Article $article = null)
     {
         $this->article = $article;
-    
+
         return $this;
     }
 
@@ -120,13 +120,13 @@ abstract class Content
     /**
      * Set area
      *
-     * @param Area $area
+     * @param  Area    $area
      * @return Content
      */
     public function setArea(Area $area = null)
     {
         $this->area = $area;
-    
+
         return $this;
     }
 

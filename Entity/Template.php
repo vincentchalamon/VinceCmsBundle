@@ -58,7 +58,7 @@ class Template
 
     /**
      * Render title
-     * 
+     *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      * @return string
      */
@@ -66,11 +66,11 @@ class Template
     {
         return $this->getTitle() ?: '-';
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -80,20 +80,20 @@ class Template
     /**
      * Set title
      *
-     * @param string $title
+     * @param  string   $title
      * @return Template
      */
     public function setTitle($title)
     {
         $this->title = $title;
-    
+
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -127,20 +127,20 @@ class Template
     /**
      * Set path
      *
-     * @param string $path
+     * @param  string   $path
      * @return Template
      */
     public function setPath($path)
     {
         $this->path = $path;
-    
+
         return $this;
     }
 
     /**
      * Get path
      *
-     * @return string 
+     * @return string
      */
     public function getPath()
     {
@@ -150,13 +150,13 @@ class Template
     /**
      * Add areas
      *
-     * @param Area $areas
+     * @param  Area     $areas
      * @return Template
      */
     public function addArea(Area $areas)
     {
         $this->areas[] = $areas;
-    
+
         return $this;
     }
 
@@ -174,7 +174,7 @@ class Template
      * Get areas
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     * @return Collection 
+     * @return Collection
      */
     public function getAreas()
     {

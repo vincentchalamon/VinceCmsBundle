@@ -88,8 +88,8 @@ class YamlFixturesLoader
      *
      * @param string $filename Yml filename
      *
-     * @return YamlFixturesLoader Loader
-     * @throws FileNotFoundException File doesn't exist
+     * @return YamlFixturesLoader        Loader
+     * @throws FileNotFoundException     File doesn't exist
      * @throws \InvalidArgumentException File isn't yml extension
      */
     public function addFile($filename)
@@ -121,7 +121,7 @@ class YamlFixturesLoader
      * @param string  $path      Path name with yml files
      * @param boolean $recursive Read path recursively
      *
-     * @return YamlFixturesLoader Loader
+     * @return YamlFixturesLoader    Loader
      * @throws FileNotFoundException File doesn't exist
      */
     public function addDirectory($path, $recursive = true)
@@ -146,10 +146,10 @@ class YamlFixturesLoader
      *
      * <code>
      * $loader->load($manager);
-     * $loader->load($manager, function ($name, $entity){
+     * $loader->load($manager, function ($name, $entity) {
      *     $entity->myFunction();
      * });
-     * $loader->load($manager, function ($name, $entity){
+     * $loader->load($manager, function ($name, $entity) {
      *     $entity->myFunction();
      * }, $this);
      * </code>
@@ -202,7 +202,7 @@ class YamlFixturesLoader
      * @param array    $values   Entity values indexed by columns name
      * @param \Closure $callback Callback
      *
-     * @return object Entity
+     * @return object                    Entity
      * @throws \InvalidArgumentException Invalid type for relation multiple
      */
     protected function buildEntity($name, $class, array $values, \Closure $callback = null)
@@ -215,7 +215,7 @@ class YamlFixturesLoader
 
         // Build new object
         $record = new $class();
-        foreach ((array)$values as $column => $value) {
+        foreach ((array) $values as $column => $value) {
             // Association
             if ($meta->hasAssociation($column)) {
                 $mapping     = $meta->getAssociationMapping($column);
@@ -338,7 +338,7 @@ class YamlFixturesLoader
      * @param string $class Class name
      * @param string $name  Entity name
      *
-     * @return object Entity
+     * @return object     Entity
      * @throws \Exception No entity found
      */
     protected function getEntity($class, $name)

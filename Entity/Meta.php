@@ -44,7 +44,7 @@ class Meta
 
     /**
      * Render title
-     * 
+     *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      * @return string
      */
@@ -56,7 +56,7 @@ class Meta
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -66,20 +66,20 @@ class Meta
     /**
      * Set title
      *
-     * @param string $title
+     * @param  string $title
      * @return Meta
      */
     public function setTitle($title)
     {
         $this->title = $title;
-    
+
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -89,20 +89,20 @@ class Meta
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return Meta
      */
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -112,7 +112,7 @@ class Meta
     /**
      * Set group
      *
-     * @param string $group
+     * @param  string $group
      * @return Meta
      */
     public function setGroup($group)
@@ -135,20 +135,20 @@ class Meta
     /**
      * Set type
      *
-     * @param string $type
+     * @param  string $type
      * @return Meta
      */
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {

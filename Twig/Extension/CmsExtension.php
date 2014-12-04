@@ -90,9 +90,9 @@ class CmsExtension extends \Twig_Extension
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      *
-     * @param string $slug Menu slug
-     * @param string $view View path
-     * @param array $parameters View parameters
+     * @param string $slug       Menu slug
+     * @param string $view       View path
+     * @param array  $parameters View parameters
      *
      * @return null|string
      */
@@ -162,7 +162,7 @@ class CmsExtension extends \Twig_Extension
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      *
      * @param Article $article Article object
-     * @param string $name Contents name
+     * @param string  $name    Contents name
      *
      * @return null|string
      */
@@ -206,7 +206,7 @@ class CmsExtension extends \Twig_Extension
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      *
-     * @param string $name Name
+     * @param string           $name       Name
      * @param EntityRepository $repository Repository
      */
     public function addRepository($name, EntityRepository $repository)

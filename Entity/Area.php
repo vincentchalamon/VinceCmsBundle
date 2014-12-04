@@ -52,10 +52,10 @@ class Area
      * @var Template
      */
     protected $template;
-    
+
     /**
      * Render title
-     * 
+     *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      * @return string
      */
@@ -67,7 +67,7 @@ class Area
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -77,20 +77,20 @@ class Area
     /**
      * Set title
      *
-     * @param string $title
+     * @param  string $title
      * @return Area
      */
     public function setTitle($title)
     {
         $this->title = $title;
-    
+
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -100,20 +100,20 @@ class Area
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return Area
      */
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -123,20 +123,20 @@ class Area
     /**
      * Set type
      *
-     * @param string $type
+     * @param  string $type
      * @return Area
      */
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -170,7 +170,7 @@ class Area
     /**
      * Set required
      *
-     * @param boolean $required
+     * @param  boolean $required
      * @return Area
      */
     public function setRequired($required)
@@ -193,13 +193,13 @@ class Area
     /**
      * Set template
      *
-     * @param Template $template
+     * @param  Template $template
      * @return Area
      */
     public function setTemplate(Template $template)
     {
         $this->template = $template;
-    
+
         return $this;
     }
 

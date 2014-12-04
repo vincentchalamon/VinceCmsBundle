@@ -126,7 +126,7 @@ abstract class Menu extends Publishable implements Translatable
 
     /**
      * Get title
-     * 
+     *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      * @return string
      */
@@ -139,7 +139,7 @@ abstract class Menu extends Publishable implements Translatable
      * Set locale
      *
      * @author Vincent Chalamon <vincent@ylly.fr>
-     * @param string $locale
+     * @param  string $locale
      * @return Block
      */
     public function setLocale($locale)
@@ -251,7 +251,6 @@ abstract class Menu extends Publishable implements Translatable
         return $this->file;
     }
 
-
     /**
      * Manages the copying of the file to the relevant place on the server
      *
@@ -275,7 +274,7 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -285,20 +284,20 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Set title
      *
-     * @param string $title
+     * @param  string $title
      * @return Menu
      */
     public function setTitle($title)
     {
         $this->title = $title;
-    
+
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -308,20 +307,20 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Set slug
      *
-     * @param string $slug
+     * @param  string $slug
      * @return Menu
      */
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
+
         return $this;
     }
 
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
@@ -331,20 +330,20 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Set url
      *
-     * @param string $url
+     * @param  string $url
      * @return Menu
      */
     public function setUrl($url)
     {
         $this->url = $url;
-    
+
         return $this;
     }
 
     /**
      * Get url
      *
-     * @return string 
+     * @return string
      */
     public function getUrl()
     {
@@ -354,13 +353,13 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Set image
      *
-     * @param boolean $image
+     * @param  boolean $image
      * @return Menu
      */
     public function setImage($image)
     {
         $this->image = $image;
-    
+
         return $this;
     }
 
@@ -377,20 +376,20 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Set lft
      *
-     * @param integer $lft
+     * @param  integer $lft
      * @return Menu
      */
     public function setLft($lft)
     {
         $this->lft = $lft;
-    
+
         return $this;
     }
 
     /**
      * Get lft
      *
-     * @return integer 
+     * @return integer
      */
     public function getLft()
     {
@@ -400,20 +399,20 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Set rgt
      *
-     * @param integer $rgt
+     * @param  integer $rgt
      * @return Menu
      */
     public function setRgt($rgt)
     {
         $this->rgt = $rgt;
-    
+
         return $this;
     }
 
     /**
      * Get rgt
      *
-     * @return integer 
+     * @return integer
      */
     public function getRgt()
     {
@@ -423,20 +422,20 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Set root
      *
-     * @param integer $root
+     * @param  integer $root
      * @return Menu
      */
     public function setRoot($root)
     {
         $this->root = $root;
-    
+
         return $this;
     }
 
     /**
      * Get root
      *
-     * @return integer 
+     * @return integer
      */
     public function getRoot()
     {
@@ -446,20 +445,20 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Set lvl
      *
-     * @param integer $lvl
+     * @param  integer $lvl
      * @return Menu
      */
     public function setLvl($lvl)
     {
         $this->lvl = $lvl;
-    
+
         return $this;
     }
 
     /**
      * Get lvl
      *
-     * @return integer 
+     * @return integer
      */
     public function getLvl()
     {
@@ -480,20 +479,20 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Set createdAt
      *
-     * @param \DateTime $createdAt
+     * @param  \DateTime $createdAt
      * @return Menu
      */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -503,20 +502,20 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Set updatedAt
      *
-     * @param \DateTime $updatedAt
+     * @param  \DateTime $updatedAt
      * @return Menu
      */
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
-    
+
         return $this;
     }
 
     /**
      * Get updatedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -526,13 +525,13 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Add children
      *
-     * @param Menu $children
+     * @param  Menu $children
      * @return Menu
      */
     public function addChildren(Menu $children)
     {
         $this->children[] = $children;
-    
+
         return $this;
     }
 
@@ -549,7 +548,7 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Get children
      *
-     * @return Collection 
+     * @return Collection
      */
     public function getChildren()
     {
@@ -559,13 +558,13 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Set parent
      *
-     * @param Menu $parent
+     * @param  Menu $parent
      * @return Menu
      */
     public function setParent(Menu $parent = null)
     {
         $this->parent = $parent;
-    
+
         return $this;
     }
 
@@ -582,14 +581,14 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Set article
      *
-     * @param Article $article
+     * @param  Article $article
      * @return Menu
      */
     public function setArticle(Article $article = null)
     {
         $this->article = $article;
         $this->url = null;
-    
+
         return $this;
     }
 
@@ -606,20 +605,20 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Set target
      *
-     * @param string $target
+     * @param  string $target
      * @return Menu
      */
     public function setTarget($target)
     {
         $this->target = $target;
-    
+
         return $this;
     }
 
     /**
      * Get target
      *
-     * @return string 
+     * @return string
      */
     public function getTarget()
     {
@@ -629,20 +628,20 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Set path
      *
-     * @param string $path
+     * @param  string $path
      * @return Menu
      */
     public function setPath($path = null)
     {
         $this->path = $path;
-    
+
         return $this;
     }
 
     /**
      * Get path
      *
-     * @return string 
+     * @return string
      */
     public function getPath()
     {
