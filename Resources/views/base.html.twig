@@ -36,11 +36,11 @@
     <body>
         {% block body %}
             {% block locales %}
-                {% if vince.cms.locales|length > 1 %}
+                {% if article is defined and vince.cms.locales|length > 1 %}
                     <ul class="locales">
-                        {% for locale in vince.cms.locales %}
+                        {% for locale in vince.cms.locales if article.original.hasTranslation(locale) %}
                             <li>
-                                <a href="" class="translatable{% if app.request.locale == locale %} active{% endif %}">
+                                <a href="{{ app.request.locale == locale ? '#' : path(article.original.getTranslation(locale).routeName) }}" class="translatable{% if app.request.locale == locale %} active{% endif %}">
                                     <i class="flag flag-{{ locale }}"></i>
                                 </a>
                             </li>
