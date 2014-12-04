@@ -57,6 +57,10 @@ abstract class ArticleMeta
     {
         if (!is_null($this->id)) {
             $this->id = null;
+            $this->article = null;
+            if ($this->getMeta()->getName() == 'language') {
+                $this->contents = null;
+            }
         }
     }
 

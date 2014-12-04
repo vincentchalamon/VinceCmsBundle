@@ -9,18 +9,25 @@
  * file that was distributed with this source code.
  */
 namespace Vince\Bundle\CmsBundle\Entity;
+use Gedmo\Translatable\Translatable;
 
 /**
  * This entity provides features to manage blocks
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
-abstract class Block extends Publishable
+abstract class Block extends Publishable implements Translatable
 {
     /**
      * @var integer
      */
     protected $id;
+
+    /**
+     * Used locale to override Translation listener's locale
+     * This is not a mapped field of entity metadata, just a simple property
+     */
+    protected $locale;
 
     /**
      * @var string
@@ -60,7 +67,32 @@ abstract class Block extends Publishable
      */
     public function __toString()
     {
-        return $this->getName();
+        return $this->getTitle();
+    }
+
+    /**
+     * Set locale
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @param string $locale
+     * @return Block
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
     }
 
     /**

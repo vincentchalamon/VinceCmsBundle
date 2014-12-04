@@ -60,6 +60,21 @@ services:
         calls:
             - [setAnnotationReader, [@annotation_reader]]
 
+    gedmo.listener.translatable:
+        class: Gedmo\Translatable\TranslatableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ @annotation_reader ] ]
+            - [ setTranslationFallback, [ true ] ]
+
+    # Translation repository
+    gedmo.repository.translation:
+         class: Doctrine\ORM\EntityRepository
+         arguments: [ Gedmo\Translatable\Entity\Translation ]
+         factory_service: doctrine.orm.default_entity_manager
+         factory_method: getRepository
+
     # CMS forms
     vince.processor.chain:
         class: Vince\Bundle\CmsBundle\Component\Chain\Chain

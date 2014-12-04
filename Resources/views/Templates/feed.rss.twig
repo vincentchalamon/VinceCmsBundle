@@ -4,7 +4,8 @@
         <title>My Website</title>
         <link>{{ url('homepage') }}</link>
         <description>Last posts</description>
-        <language>{{ app.request.locale }}</language>
+        {# todo-vince Useful ? #}
+        {#<language>{{ app.request.locale }}</language>#}
         {% if articles|length %}
             <lastBuildDate>{{ articles[0].startedAt.format(constant('DATE_RSS')) }}</lastBuildDate>
         {% endif %}

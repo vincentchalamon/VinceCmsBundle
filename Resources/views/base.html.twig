@@ -1,20 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}{% if article is defined %}{{ article.meta('title') }}{% endif %}{% endblock %}</title>
-        {% block metas %}
-            {% if article is defined %}
-                {{ render_metas(article) }}
-            {% endif %}
+        {% block head %}
+            <meta charset="UTF-8" />
+            <title>{% block title %}{% if article is defined %}{{ article.meta('title') }}{% endif %}{% endblock %}</title>
+            {% block metas %}
+                {% if article is defined %}
+                    {{ render_metas(article) }}
+                {% endif %}
+            {% endblock %}
+            {% block stylesheets %}{% endblock %}
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ path('cms_feed') }}" />
+            <link rel="sitemap" type="application/xml" title="{{ 'Sitemap'|trans({}, 'VinceCms') }}" href="{{ path('cms_sitemap') }}" />
+            <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         {% endblock %}
-        {% block stylesheets %}{% endblock %}
-        <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ path('cms_feed') }}" />
-        <link rel="sitemap" type="application/xml" title="{{ 'Sitemap'|trans({}, 'VinceCms') }}" href="{{ path('cms_sitemap') }}" />
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% if vince.cms.tracking_code is defined and vince.cms.tracking_code is not empty %}
+            {% block google_analytics %}
+                <script>
+                    var _gaq = _gaq || [];
+                    _gaq.push(['_setAccount', '{{ vince.cms.tracking_code }}']);
+                    _gaq.push(['_trackPageview']);
+                    (function () {
+                        var ga = document.createElement('script');
+                        ga.type = 'text/javascript';
+                        ga.async = true;
+                        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                        var s = document.getElementsByTagName('script')[0];
+                        s.parentNode.insertBefore(ga, s);
+                    })();
+                    {% block ga %}{% endblock %}
+                </script>
+            {% endblock %}
+        {% endif %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+            {% block locales %}
+                {% if vince.cms.locales|length > 1 %}
+                    <ul class="locales">
+                        {% for locale in vince.cms.locales %}
+                            <li>
+                                <a href="" class="translatable{% if app.request.locale == locale %} active{% endif %}">
+                                    <i class="flag flag-{{ locale }}"></i>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endblock %}
+        {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>

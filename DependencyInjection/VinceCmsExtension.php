@@ -32,23 +32,35 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        // Global parameters
-        $keys = array('languages', 'tracking_code', 'domain', 'sitename', 'no_reply', 'contact');
-        foreach ($keys as $name) {
-            $container->setParameter(sprintf('vince.cms.%s', $name), $config[$name]);
+        // Configure entities
+        $config['model']['area']['class'] = 'Vince\Bundle\CmsBundle\Entity\Area';
+        $config['model']['area']['repository'] = 'Doctrine\ORM\EntityRepository';
+        $config['model']['meta']['class'] = 'Vince\Bundle\CmsBundle\Entity\Meta';
+        $config['model']['meta']['repository'] = 'Doctrine\ORM\EntityRepository';
+        $config['model']['template']['class'] = 'Vince\Bundle\CmsBundle\Entity\Template';
+        $config['model']['template']['repository'] = 'Doctrine\ORM\EntityRepository';
+        foreach ($config['model'] as $name => $options) {
+            $container->setParameter(sprintf('vince.class.%s', $name), $options['class']);
+
+            // Build repository as service
+            $repository = new Definition($options['repository'], array($options['class']));
+            $repository->setFactoryService('doctrine.orm.default_entity_manager');
+            $repository->setFactoryMethod('getRepository');
+            $container->setDefinition(sprintf('vince.repository.%s', $name), $repository);
         }
-        $container->setParameter('vince.cms', array(
-                'languages' => $config['languages'],
-                'tracking_code' => $config['tracking_code'],
-                'domain' => $config['domain'],
-                'sitename' => $config['sitename'],
-                'no_reply' => $config['no_reply'],
-                'contact' => $config['contact']
-            )
-        );
-        $bundles = $container->getParameter('kernel.bundles');
+        unset($config['model']);
+
+        // Global parameters
+        if (!isset($config['defaultLocale'])) {
+            $config['defaultLocale'] = $config['locales'][0];
+        }
+        $container->setParameter('vince.cms', $config);
+        foreach ($config as $name => $value) {
+            $container->setParameter(sprintf('vince.cms.%s', $name), $value);
+        }
 
         // Configure Twig is activated
+        $bundles = $container->getParameter('kernel.bundles');
         if (isset($bundles['TwigBundle']) && $container->hasExtension('twig')) {
             $container->prependExtensionConfig('twig', array(
                     'exception_controller' => 'vince.cms.controller.exception:indexAction',
@@ -59,24 +71,6 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
                     )
                 )
             );
-        }
-
-        // Model parameters
-        $config['model']['area']['class'] = 'Vince\Bundle\CmsBundle\Entity\Area';
-        $config['model']['area']['repository'] = 'Doctrine\ORM\EntityRepository';
-        $config['model']['meta']['class'] = 'Vince\Bundle\CmsBundle\Entity\Meta';
-        $config['model']['meta']['repository'] = 'Doctrine\ORM\EntityRepository';
-        $config['model']['template']['class'] = 'Vince\Bundle\CmsBundle\Entity\Template';
-        $config['model']['template']['repository'] = 'Doctrine\ORM\EntityRepository';
-
-        foreach (array('area', 'article', 'articleMeta', 'block', 'content', 'menu', 'meta', 'template') as $name) {
-            $container->setParameter(sprintf('vince.class.%s', $name), $config['model'][$name]['class']);
-
-            // Build repository as service
-            $repository = new Definition($config['model'][$name]['repository'], array($config['model'][$name]['class']));
-            $repository->setFactoryService('doctrine.orm.default_entity_manager');
-            $repository->setFactoryMethod('getRepository');
-            $container->setDefinition(sprintf('vince.repository.%s', $name), $repository);
         }
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -108,6 +102,12 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
                                 'alias'  => 'Gedmo',
                                 'prefix' => 'Gedmo\Tree\Entity',
                                 'dir'    => $container->getParameter('kernel.root_dir').'/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity'
+                            ),
+                            'translatable' => array(
+                                'type'   => 'annotation',
+                                'alias'  => 'Gedmo',
+                                'prefix' => 'Gedmo\Translatable\Entity',
+                                'dir'    => $container->getParameter('kernel.root_dir').'/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity'
                             )
                         )
                     )

@@ -4,13 +4,14 @@ Vince\Bundle\CmsBundle\Entity\Menu:
     gedmo:
         tree:
             type: nested
+        translation:
+            locale: locale
     fields:
-        language:
-            type: string
-            length: 2
         title:
             type: string
             length: 255
+            gedmo:
+                - translatable
         slug:
             type: string
             length: 255
@@ -22,6 +23,8 @@ Vince\Bundle\CmsBundle\Entity\Menu:
             type: string
             length: 255
             nullable: true
+            gedmo:
+                - translatable
         target:
             type: string
             length: 255
@@ -29,6 +32,8 @@ Vince\Bundle\CmsBundle\Entity\Menu:
             type: string
             length: 255
             nullable: true
+            gedmo:
+                - translatable
         image:
             type: boolean
             column: image
@@ -69,8 +74,3 @@ Vince\Bundle\CmsBundle\Entity\Menu:
             gedmo:
                 timestampable:
                     on: update
-    indexes:
-        search_idx:
-            columns: slug
-    lifecycleCallbacks:
-        prePersist: [initOriginal]

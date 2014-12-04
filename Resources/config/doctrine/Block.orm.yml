@@ -1,9 +1,10 @@
 Vince\Bundle\CmsBundle\Entity\Block:
     type: mappedSuperclass
+    repositoryClass: Vince\Bundle\CmsBundle\Entity\Repository\TranslatableRepository
+    gedmo:
+        translation:
+            locale: locale
     fields:
-        language:
-            type: string
-            length: 2
         name:
             type: string
             length: 255
@@ -11,8 +12,12 @@ Vince\Bundle\CmsBundle\Entity\Block:
         title:
             type: string
             length: 255
+            gedmo:
+                - translatable
         contents:
             type: text
+            gedmo:
+                - translatable
         startedAt:
             type: date
             nullable: true
@@ -33,8 +38,3 @@ Vince\Bundle\CmsBundle\Entity\Block:
             gedmo:
                 timestampable:
                     on: create
-    indexes:
-        search_idx:
-            columns: name
-    lifecycleCallbacks:
-        prePersist: [initOriginal]

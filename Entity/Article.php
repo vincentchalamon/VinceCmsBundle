@@ -11,6 +11,7 @@
 namespace Vince\Bundle\CmsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use My\Bundle\CmsBundle\Entity\ArticleMeta;
 
 /**
  * This entity provides features to manage an Article.
@@ -82,16 +83,31 @@ abstract class Article extends Publishable
     protected $template;
 
     /**
+     * @var string
+     */
+    protected $locale;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $translations;
+
+    /**
+     * @var Article
+     */
+    protected $original;
+
+    /**
      * Build Article
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
      */
     public function __construct()
     {
-        parent::__construct();
         $this->menus = new ArrayCollection();
         $this->metas = new ArrayCollection();
         $this->contents = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -112,13 +128,17 @@ abstract class Article extends Publishable
             $this->metas->map(function (ArticleMeta $articleMeta) use ($metas) {
                 $metas->add(clone $articleMeta);
             });
-            $this->metas = $metas;
+            foreach ($metas as $articleMeta) {
+                $this->addMeta($articleMeta);
+            }
 
             $contents = new ArrayCollection();
             $this->contents->map(function (Content $content) use ($contents) {
                 $contents->add(clone $content);
             });
-            $this->contents = $contents;
+            foreach ($contents as $content) {
+                $this->addContent($content);
+            }
         }
     }
 
@@ -532,5 +552,127 @@ abstract class Article extends Publishable
     public function getTemplate()
     {
         return $this->template;
+    }
+
+    /**
+     * Init original
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     */
+    public function initOriginal()
+    {
+        if (!$this->original) {
+            $this->original = $this;
+        }
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     *
+     * @return Article
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Set original
+     *
+     * @param Article $original
+     *
+     * @return Article
+     */
+    public function setOriginal(Article $original)
+    {
+        $this->original = $original;
+
+        return $this;
+    }
+
+    /**
+     * Get original
+     *
+     * @return Article
+     */
+    public function getOriginal()
+    {
+        return $this->original;
+    }
+
+    /**
+     * Add translation
+     *
+     * @param Article $translation
+     *
+     * @return Article
+     */
+    public function addTranslation(Article $translation)
+    {
+        $this->translations[] = $translation;
+
+        return $this;
+    }
+
+    /**
+     * Remove translation
+     *
+     * @param Article $translation
+     */
+    public function removeTranslation(Article $translation)
+    {
+        $this->translations->removeElement($translation);
+    }
+
+    /**
+     * Get translations
+     *
+     * @return ArrayCollection
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    /**
+     * Check if current Article element has translation
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @param string $locale
+     * @return bool
+     */
+    public function hasTranslation($locale)
+    {
+        return $this->getTranslations()->exists(function ($key, Article $translation) use ($locale) {
+            return $translation->getLocale() == $locale;
+        });
+    }
+
+    /**
+     * Get current Article element translation
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @param string $locale
+     * @return Article|false
+     */
+    public function getTranslation($locale)
+    {
+        return $this->getTranslations()->filter(function (Article $translation) use ($locale) {
+            return $translation->getLocale() == $locale;
+        })->first();
     }
 }

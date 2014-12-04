@@ -2,7 +2,7 @@ Vince\Bundle\CmsBundle\Entity\Article:
     type: mappedSuperclass
     repositoryClass: Vince\Bundle\CmsBundle\Entity\Repository\ArticleRepository
     fields:
-        language:
+        locale:
             type: string
             length: 2
         title:
@@ -53,8 +53,5 @@ Vince\Bundle\CmsBundle\Entity\Article:
                 referencedColumnName: id
                 nullable: false
                 onDelete: CASCADE
-    indexes:
-        search_idx:
-            columns: slug
     lifecycleCallbacks:
         prePersist: [initHomepage, initOriginal]

@@ -12,6 +12,7 @@ namespace Vince\Bundle\CmsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Gedmo\Translatable\Translatable;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -20,12 +21,18 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
  */
-abstract class Menu extends Publishable
+abstract class Menu extends Publishable implements Translatable
 {
     /**
      * @var integer
      */
     protected $id;
+
+    /**
+     * Used locale to override Translation listener's locale
+     * This is not a mapped field of entity metadata, just a simple property
+     */
+    protected $locale;
 
     /**
      * @var string
@@ -118,27 +125,6 @@ abstract class Menu extends Publishable
     }
 
     /**
-     * Clone object for translation
-     *
-     * @author Vincent Chalamon <vincent@ylly.fr>
-     */
-    public function __clone()
-    {
-        if (!is_null($this->id)) {
-            $this->children = new ArrayCollection();
-            $this->slug = null;
-            $this->createdAt = null;
-            $this->updatedAt = null;
-            $this->id = null;
-            $this->lft = null;
-            $this->rgt = null;
-            $this->root = null;
-            $this->parent = null;
-            $this->lvl = null;
-        }
-    }
-
-    /**
      * Get title
      * 
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
@@ -147,6 +133,31 @@ abstract class Menu extends Publishable
     public function __toString()
     {
         return $this->getTitle() ?: '-';
+    }
+
+    /**
+     * Set locale
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @param string $locale
+     * @return Block
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
     }
 
     /**
@@ -212,6 +223,7 @@ abstract class Menu extends Publishable
      */
     public function getRoute()
     {
+        // todo-vince Beware of article i18n
         return $this->getArticle() ? $this->getArticle()->getRoutePattern() : $this->getUrl();
     }
 
@@ -259,7 +271,7 @@ abstract class Menu extends Publishable
         // Clean up the file property as you won't need it anymore
         $this->setFile(null);
     }
-    
+
     /**
      * Get id
      *

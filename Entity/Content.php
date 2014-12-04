@@ -57,6 +57,7 @@ abstract class Content
     {
         if (!is_null($this->id)) {
             $this->id = null;
+            $this->article = null;
         }
     }
 
