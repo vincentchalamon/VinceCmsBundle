@@ -1,10 +1,8 @@
-build
-coverage
 composer.lock
-composer.phar
 phpunit.xml
-Tests/Controller/App/cache/*
-!Tests/Controller/App/cache/.gitkeep
-Tests/Controller/App/web/*
-!Tests/Controller/App/web/.gitkeep
-vendor
+vendor/*
+Tests/App/cache/*
+!Tests/App/cache/.gitkeep
+Tests/App/web/*
+!Tests/App/web/.gitkeep
+build/*

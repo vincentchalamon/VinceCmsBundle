@@ -2,7 +2,7 @@
     "name": "vince/cms-bundle",
     "type": "symfony-bundle",
     "license": "MIT",
-    "description": "Basic CMS features for Symfony 2.3+",
+    "description": "Basic CMS features for Symfony 2.5+",
     "keywords": ["CMS", "Vince"],
     "homepage": "http://vincentchalamon.github.io/VinceCmsBundle/",
     "autoload": {
