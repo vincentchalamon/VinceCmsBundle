@@ -2,7 +2,7 @@
     {% for child in menu.children if child.isPublished %}
         <li>
             <a href="{% if child.isUrl %}{{ child.url }}{% else %}{{ path(child.article.routeName) }}{% endif %}"
-               title="{{ child }}"{% if child.isUrl %} target="{{ child.target }}"{% endif %}>
+               title="{{ child }}" target="{{ child.target }}">
                 {% if child.isImage %}
                     <img src="{{ asset(child.path) }}" alt="{{ child }}" title="{{ child }}" />
                 {% else %}

@@ -72,7 +72,7 @@ class CmsFormHandler
 
                 // Processor returns Form object
                 } elseif (is_object($return) && $return instanceof Form) {
-                    $options['form'] = $return;
+                    $options['form'] = $return->createView();
 
                     // Response is build in controller
                     return false;
