@@ -119,6 +119,9 @@ class CmsExtension extends \Twig_Extension
         if (!$menu || !$menu->getChildren()->count() || (!$menu->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
             return null;
         }
+        // todo-vince How to set locale on each children + refresh ?
+        $menu->setLocale($this->localeListener->getLocale());
+        $this->entityManager->refresh($menu);
 
         return $this->environment->render($view, array_merge(array('menu' => $menu), $parameters));
     }
