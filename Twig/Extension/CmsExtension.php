@@ -11,12 +11,14 @@
 namespace Vince\Bundle\CmsBundle\Twig\Extension;
 
 use Doctrine\Common\Util\Inflector;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Vince\Bundle\CmsBundle\Entity\Article;
 use Vince\Bundle\CmsBundle\Entity\ArticleMeta;
 use Vince\Bundle\CmsBundle\Entity\Menu;
 use Vince\Bundle\CmsBundle\Entity\Block;
+use Vince\Bundle\CmsBundle\Listener\LocaleListener;
 
 /**
  * Twig extension for CMS
@@ -53,6 +55,20 @@ class CmsExtension extends \Twig_Extension
      * @var array
      */
     protected $configuration;
+
+    /**
+     * Entity manager
+     *
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * Locale listener
+     *
+     * @var LocaleListener
+     */
+    protected $localeListener;
 
     /**
      * {@inheritdoc}
@@ -189,6 +205,8 @@ class CmsExtension extends \Twig_Extension
         if (!$block || (!$block->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
             return null;
         }
+        $block->setLocale($this->localeListener->getLocale());
+        $this->entityManager->refresh($block);
 
         return $block->getContents();
     }
@@ -235,6 +253,28 @@ class CmsExtension extends \Twig_Extension
     public function setVinceCmsConfiguration(array $configuration)
     {
         $this->configuration = $configuration;
+    }
+
+    /**
+     * Set entityManager
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @param EntityManager $entityManager
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * Set localeListener
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @param LocaleListener $localeListener
+     */
+    public function setLocaleListener(LocaleListener $localeListener)
+    {
+        $this->localeListener = $localeListener;
     }
 
     /**

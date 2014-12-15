@@ -17,11 +17,18 @@ services:
         calls:
             - [setArticleRepository, [@vince.repository.article]]
 
+    vince.cms.listener.locale:
+        class: Vince\Bundle\CmsBundle\Listener\LocaleListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
     # Twig
     twig.extension.vince.cms:
         class: Vince\Bundle\CmsBundle\Twig\Extension\CmsExtension
         calls:
+            - [setLocaleListener, [@vince.cms.listener.locale]]
             - [setVinceCmsConfiguration, [%vince.cms%]]
+            - [setEntityManager, [@doctrine.orm.default_entity_manager]]
             - [setSecurityContext, [@security.context]]
             - [addRepository, ['menu', @vince.repository.menu]]
             - [addRepository, ['block', @vince.repository.block]]
