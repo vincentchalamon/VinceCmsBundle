@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
     <channel>
-        <title>My Website</title>
+        <title>{{ vince_cms.sitename }}</title>
         <link>{{ url('homepage') }}</link>
-        <description>Last posts</description>
-        {# todo-vince Useful ? #}
-        {#<language>{{ app.request.locale }}</language>#}
         {% if articles|length %}
             <lastBuildDate>{{ articles[0].startedAt.format(constant('DATE_RSS')) }}</lastBuildDate>
         {% endif %}

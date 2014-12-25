@@ -40,34 +40,29 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
         $config['model']['template']['class'] = 'Vince\Bundle\CmsBundle\Entity\Template';
         $config['model']['template']['repository'] = 'Doctrine\ORM\EntityRepository';
         foreach ($config['model'] as $name => $options) {
-            $container->setParameter(sprintf('vince.class.%s', $name), $options['class']);
+            $container->setParameter(sprintf('vince_cms.class.%s', $name), $options['class']);
 
             // Build repository as service
             $repository = new Definition($options['repository'], array($options['class']));
             $repository->setFactoryService('doctrine.orm.default_entity_manager');
             $repository->setFactoryMethod('getRepository');
-            $container->setDefinition(sprintf('vince.repository.%s', $name), $repository);
+            $container->setDefinition(sprintf('vince_cms.repository.%s', $name), $repository);
         }
         unset($config['model']);
 
         // Global parameters
-        if (!isset($config['defaultLocale'])) {
-            $config['defaultLocale'] = $config['locales'][0];
-        }
-        $container->setParameter('vince.cms', $config);
+        $container->setParameter('vince_cms', $config);
         foreach ($config as $name => $value) {
-            $container->setParameter(sprintf('vince.cms.%s', $name), $value);
+            $container->setParameter(sprintf('vince_cms.%s', $name), $value);
         }
 
         // Configure Twig is activated
         $bundles = $container->getParameter('kernel.bundles');
         if (isset($bundles['TwigBundle']) && $container->hasExtension('twig')) {
             $container->prependExtensionConfig('twig', array(
-                    'exception_controller' => 'vince.cms.controller.exception:indexAction',
+                    'exception_controller' => 'vince_cms.controller.exception:indexAction',
                     'globals' => array(
-                        'vince' => array(
-                            'cms' => $container->getParameter('vince.cms'),
-                        )
+                        'vince_cms' => $container->getParameter('vince_cms'),
                     )
                 )
             );
@@ -84,14 +79,6 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
     {
         $bundles = $container->getParameter('kernel.bundles');
 
-        // Configure Twig is activated
-        if (isset($bundles['TwigBundle']) && $container->hasExtension('twig')) {
-            $container->prependExtensionConfig('twig', array(
-                    'exception_controller' => 'vince.cms.controller.exception:indexAction'
-                )
-            );
-        }
-
         // Configure Doctrine if DoctrineBundle is activated
         if (isset($bundles['DoctrineBundle']) && $container->hasExtension('doctrine')) {
             $container->prependExtensionConfig('doctrine', array(
@@ -102,12 +89,6 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
                                 'alias'  => 'Gedmo',
                                 'prefix' => 'Gedmo\Tree\Entity',
                                 'dir'    => $container->getParameter('kernel.root_dir').'/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity'
-                            ),
-                            'translatable' => array(
-                                'type'   => 'annotation',
-                                'alias'  => 'Gedmo',
-                                'prefix' => 'Gedmo\Translatable\Entity',
-                                'dir'    => $container->getParameter('kernel.root_dir').'/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity'
                             )
                         )
                     )

@@ -10,10 +10,15 @@
  */
 namespace Vince\Bundle\CmsBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * This entity provides features to manage contents
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
+ *
+ * @ORM\MappedSuperclass
  */
 abstract class Content
 {
@@ -24,16 +29,24 @@ abstract class Content
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank
      */
     protected $contents;
 
     /**
      * @var Article
+     *
+     * @Assert\NotNull
      */
     protected $article;
 
     /**
      * @var Area
+     *
+     * @Assert\NotNull
      */
     protected $area;
 
@@ -46,19 +59,6 @@ abstract class Content
     public function __toString()
     {
         return $this->getContents() ?: '-';
-    }
-
-    /**
-     * Clone object for translation
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     */
-    public function __clone()
-    {
-        if (!is_null($this->id)) {
-            $this->id = null;
-            $this->article = null;
-        }
     }
 
     /**

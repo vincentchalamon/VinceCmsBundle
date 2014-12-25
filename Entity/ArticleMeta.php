@@ -10,10 +10,15 @@
  */
 namespace Vince\Bundle\CmsBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * This entity provides features to manage Contents of an Article Meta.
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
+ *
+ * @ORM\MappedSuperclass
  */
 abstract class ArticleMeta
 {
@@ -24,16 +29,24 @@ abstract class ArticleMeta
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank
      */
     protected $contents;
 
     /**
      * @var Article
+     *
+     * @Assert\NotNull
      */
     protected $article;
 
     /**
      * @var Meta
+     *
+     * @Assert\NotNull
      */
     protected $meta;
 
@@ -46,22 +59,6 @@ abstract class ArticleMeta
     public function __toString()
     {
         return $this->getContents() ?: '-';
-    }
-
-    /**
-     * Clone object for translation
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     */
-    public function __clone()
-    {
-        if (!is_null($this->id)) {
-            $this->id = null;
-            $this->article = null;
-            if ($this->getMeta()->getName() == 'language') {
-                $this->contents = null;
-            }
-        }
     }
 
     /**

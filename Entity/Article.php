@@ -12,6 +12,10 @@ namespace Vince\Bundle\CmsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use My\Bundle\CmsBundle\Entity\ArticleMeta;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * This entity provides features to manage an Article.
@@ -19,6 +23,10 @@ use My\Bundle\CmsBundle\Entity\ArticleMeta;
  * It also have some Metas and additional features (url, publication...).
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
+ *
+ * @ORM\MappedSuperclass(repositoryClass="Vince\Bundle\CmsBundle\Entity\Repository\ArticleRepository")
+ * @ORM\HasLifecycleCallbacks
+ * @UniqueEntity(fields={"url"}, message="This url is already used.")
  */
 abstract class Article extends Publishable
 {
@@ -29,36 +37,62 @@ abstract class Article extends Publishable
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
      */
     protected $title;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255, unique=true)
+     *
+     * @Gedmo\Slug(fields={"title"})
      */
     protected $slug;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", name="created_at")
+     *
+     * @Gedmo\Timestampable(on="create")
      */
     protected $createdAt;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", name="updated_at")
+     *
+     * @Gedmo\Timestampable(on="update")
      */
     protected $updatedAt;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank
      */
     protected $summary;
 
     /**
      * @var array
+     *
+     * @ORM\Column(type="array")
      */
     protected $tags = array();
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
+     *
+     * @Assert\Regex("/^\/[A-z\d\-_\/]*$/")
      */
     protected $url;
 
@@ -79,23 +113,13 @@ abstract class Article extends Publishable
 
     /**
      * @var Template
+     *
+     * @ORM\ManyToOne(targetEntity="Vince\Bundle\CmsBundle\Entity\Template", cascade={"persist"})
+     * @ORM\JoinColumn(name="template_id", onDelete="CASCADE")
+     *
+     * @Assert\NotNull
      */
     protected $template;
-
-    /**
-     * @var string
-     */
-    protected $locale;
-
-    /**
-     * @var ArrayCollection
-     */
-    protected $translations;
-
-    /**
-     * @var Article
-     */
-    protected $original;
 
     /**
      * Build Article
@@ -107,39 +131,6 @@ abstract class Article extends Publishable
         $this->menus = new ArrayCollection();
         $this->metas = new ArrayCollection();
         $this->contents = new ArrayCollection();
-        $this->translations = new ArrayCollection();
-    }
-
-    /**
-     * Clone object for translation
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     */
-    public function __clone()
-    {
-        if (!is_null($this->id)) {
-            $this->menus = new ArrayCollection();
-            $this->slug = null;
-            $this->createdAt = null;
-            $this->updatedAt = null;
-            $this->id = null;
-
-            $metas = new ArrayCollection();
-            $this->metas->map(function (ArticleMeta $articleMeta) use ($metas) {
-                $metas->add(clone $articleMeta);
-            });
-            foreach ($metas as $articleMeta) {
-                $this->addMeta($articleMeta);
-            }
-
-            $contents = new ArrayCollection();
-            $this->contents->map(function (Content $content) use ($contents) {
-                $contents->add(clone $content);
-            });
-            foreach ($contents as $content) {
-                $this->addContent($content);
-            }
-        }
     }
 
     /**
@@ -233,6 +224,8 @@ abstract class Article extends Publishable
      * Force publication for system
      *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
+     *
+     * @ORM\PrePersist
      */
     public function initHomepage()
     {
@@ -552,127 +545,5 @@ abstract class Article extends Publishable
     public function getTemplate()
     {
         return $this->template;
-    }
-
-    /**
-     * Init original
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     */
-    public function initOriginal()
-    {
-        if (!$this->original) {
-            $this->original = $this;
-        }
-    }
-
-    /**
-     * Set locale
-     *
-     * @param string $locale
-     *
-     * @return Article
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get locale
-     *
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * Set original
-     *
-     * @param Article $original
-     *
-     * @return Article
-     */
-    public function setOriginal(Article $original)
-    {
-        $this->original = $original;
-
-        return $this;
-    }
-
-    /**
-     * Get original
-     *
-     * @return Article
-     */
-    public function getOriginal()
-    {
-        return $this->original;
-    }
-
-    /**
-     * Add translation
-     *
-     * @param Article $translation
-     *
-     * @return Article
-     */
-    public function addTranslation(Article $translation)
-    {
-        $this->translations[] = $translation;
-
-        return $this;
-    }
-
-    /**
-     * Remove translation
-     *
-     * @param Article $translation
-     */
-    public function removeTranslation(Article $translation)
-    {
-        $this->translations->removeElement($translation);
-    }
-
-    /**
-     * Get translations
-     *
-     * @return ArrayCollection
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    /**
-     * Check if current Article element has translation
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     * @param  string $locale
-     * @return bool
-     */
-    public function hasTranslation($locale)
-    {
-        return $this->getTranslations()->exists(function ($key, Article $translation) use ($locale) {
-            return $translation->getLocale() == $locale;
-        });
-    }
-
-    /**
-     * Get current Article element translation
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     * @param  string        $locale
-     * @return Article|false
-     */
-    public function getTranslation($locale)
-    {
-        return $this->getTranslations()->filter(function (Article $translation) use ($locale) {
-            return $translation->getLocale() == $locale;
-        })->first();
     }
 }

@@ -9,22 +9,34 @@
 namespace Vince\Bundle\CmsBundle\Entity;
 
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Publishable element
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
+ *
+ * @ORM\MappedSuperclass
  */
 abstract class Publishable
 {
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(type="date", name="started_at", nullable=true)
+     *
+     * @Assert\Date
      */
     protected $startedAt;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(type="date", name="ended_at", nullable=true)
+     *
+     * @Assert\Date
      */
     protected $endedAt;
 
@@ -82,6 +94,8 @@ abstract class Publishable
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
      *
      * @param ExecutionContextInterface $context
+     *
+     * @Assert\Callback
      */
     public function isPublicationValid(ExecutionContextInterface $context)
     {

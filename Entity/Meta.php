@@ -10,35 +10,57 @@
  */
 namespace Vince\Bundle\CmsBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * This entity provides features to manage a Meta.
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="meta")
  */
 class Meta
 {
     /**
      * @var integer
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
      */
     protected $title;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
      */
     protected $name;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $type;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255, name="meta_group", nullable=true)
      */
     protected $group;
 

@@ -35,7 +35,7 @@ class DefaultController extends Controller
      */
     public function sitemapAction()
     {
-        $articles = $this->get('vince.repository.article')->findAllPublishedIndexableOrdered();
+        $articles = $this->get('vince_cms.repository.article')->findAllPublishedIndexableOrdered();
 
         return $this->render('VinceCmsBundle:Templates:sitemap.xml.twig', array(
                 'articles' => $articles
@@ -55,7 +55,7 @@ class DefaultController extends Controller
     public function feedAction($_format)
     {
         $format   = $_format == 'xml' ? 'rss' : $_format;
-        $articles = $this->get('vince.repository.article')->findAllPublishedIndexableOrdered();
+        $articles = $this->get('vince_cms.repository.article')->findAllPublishedIndexableOrdered();
 
         return $this->render(sprintf('VinceCmsBundle:Templates:feed.%s.twig', $format), array(
                 'articles' => $articles,
@@ -78,14 +78,14 @@ class DefaultController extends Controller
     public function showAction(Request $request)
     {
         /** @var Article $article */
-        $article = $this->getDoctrine()->getRepository($this->container->getParameter('vince.class.article'))->find($request->attributes->get('_id'));
+        $article = $this->getDoctrine()->getRepository($this->container->getParameter('vince_cms.class.article'))->find($request->attributes->get('_id'));
         if (!$article || (!$article->isPublished() && !$this->get('security.context')->isGranted('ROLE_ADMIN'))) {
             throw $this->createNotFoundException();
         }
         // Need to inject request as option because of scope limit on listeners
-        $options = $this->get('event_dispatcher')->dispatch('vince.cms.load', new CmsEvent($article, array('request' => $request)))->getOptions();
-        $options = $this->get('event_dispatcher')->dispatch(sprintf('vince.cms.%s.load', $article->getSlug()), new CmsEvent($article, $options))->getOptions();
-        if ($response = $this->get('vince.cms.form.handler')->process($request, $options)) {
+        $options = $this->get('event_dispatcher')->dispatch('vince_cms.event.load', new CmsEvent($article, array('request' => $request)))->getOptions();
+        $options = $this->get('event_dispatcher')->dispatch(sprintf('vince_cms.event.load.%s', $article->getSlug()), new CmsEvent($article, $options))->getOptions();
+        if ($response = $this->get('vince_cms.form.handler')->process($request, $options)) {
             return $response;
         }
 

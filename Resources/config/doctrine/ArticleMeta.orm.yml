@@ -1,5 +1,0 @@
-Vince\Bundle\CmsBundle\Entity\ArticleMeta:
-    type: mappedSuperclass
-    fields:
-        contents:
-            type: text

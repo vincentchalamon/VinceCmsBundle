@@ -10,46 +10,77 @@
  */
 namespace Vince\Bundle\CmsBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * This entity provides features to manage an Area.
  * An Area is a part of a Template, and can be recognized by its name.
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="area")
  */
 class Area
 {
     /**
      * @var integer
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
      */
     protected $title;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
      */
     protected $name;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
      */
     protected $type;
 
     /**
      * @var array
+     *
+     * @ORM\Column(type="array")
      */
     protected $options = array();
 
     /**
      * @var boolean
+     *
+     * @ORM\Column(type="boolean")
      */
     protected $required = false;
 
     /**
      * @var Template
+     *
+     * @ORM\ManyToOne(targetEntity="Vince\Bundle\CmsBundle\Entity\Template", inversedBy="areas", cascade={"all"})
+     * @ORM\JoinColumn(name="template_id")
+     *
+     * @Assert\NotBlank
      */
     protected $template;
 

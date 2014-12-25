@@ -1,37 +1,31 @@
 services:
-    vince.cms.controller.exception:
+    vince_cms.controller.exception:
         class: Vince\Bundle\CmsBundle\Controller\ExceptionController
         parent: twig.controller.exception
-        arguments: [@vince.repository.article, @event_dispatcher]
+        arguments: [@vince_cms.repository.article, @event_dispatcher]
 
-    vince.cms.form.handler:
+    vince_cms.form.handler:
         class: Vince\Bundle\CmsBundle\Form\Handler\CmsFormHandler
         calls:
-            - [setChain, [@vince.processor.chain]]
+            - [setChain, [@vince_cms.processor.chain]]
             - [setRouter, [@router]]
 
-    vince.cms.loader:
+    vince_cms.loader:
         class: Vince\Bundle\CmsBundle\Component\Routing\Loader
         tags:
             - { name: routing.loader }
         calls:
-            - [setArticleRepository, [@vince.repository.article]]
-
-    vince.cms.listener.locale:
-        class: Vince\Bundle\CmsBundle\Listener\LocaleListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+            - [setArticleRepository, [@vince_cms.repository.article]]
 
     # Twig
-    twig.extension.vince.cms:
+    vince_cms.twig.extension:
         class: Vince\Bundle\CmsBundle\Twig\Extension\CmsExtension
         calls:
-            - [setLocaleListener, [@vince.cms.listener.locale]]
-            - [setVinceCmsConfiguration, [%vince.cms%]]
+            - [setVinceCmsConfiguration, [%vince_cms%]]
             - [setEntityManager, [@doctrine.orm.default_entity_manager]]
             - [setSecurityContext, [@security.context]]
-            - [addRepository, ['menu', @vince.repository.menu]]
-            - [addRepository, ['block', @vince.repository.block]]
+            - [addRepository, ['menu', @vince_cms.repository.menu]]
+            - [addRepository, ['block', @vince_cms.repository.block]]
         tags:
             - { name: twig.extension }
 
@@ -67,26 +61,11 @@ services:
         calls:
             - [setAnnotationReader, [@annotation_reader]]
 
-    gedmo.listener.translatable:
-        class: Gedmo\Translatable\TranslatableListener
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
-        calls:
-            - [ setAnnotationReader, [ @annotation_reader ] ]
-            - [ setTranslationFallback, [ true ] ]
-
-    # Translation repository
-    gedmo.repository.translation:
-         class: Doctrine\ORM\EntityRepository
-         arguments: [ Gedmo\Translatable\Entity\Translation ]
-         factory_service: doctrine.orm.default_entity_manager
-         factory_method: getRepository
-
     # CMS forms
-    vince.processor.chain:
+    vince_cms.processor.chain:
         class: Vince\Bundle\CmsBundle\Component\Chain\Chain
 
-    vince.processor:
+    vince_cms.processor:
         class: Vince\Bundle\CmsBundle\Component\Processor\Processor
         abstract: true
         calls:

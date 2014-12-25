@@ -94,8 +94,8 @@ class ExceptionController extends Controller
             $article = $this->repository->findOneBy(array('slug' => 'error'));
         }
         if ($article) {
-            $options  = $this->dispatcher->dispatch('vince.cms.load', new CmsEvent($article, $options))->getOptions();
-            $options  = $this->dispatcher->dispatch(sprintf('vince.cms.%s.load', $article->getSlug()), new CmsEvent($article, $options))->getOptions();
+            $options  = $this->dispatcher->dispatch('vince_cms.event.load', new CmsEvent($article, $options))->getOptions();
+            $options  = $this->dispatcher->dispatch(sprintf('vince_cms.event.load.%s', $article->getSlug()), new CmsEvent($article, $options))->getOptions();
             $template = $article->getTemplate()->getPath();
         }
 

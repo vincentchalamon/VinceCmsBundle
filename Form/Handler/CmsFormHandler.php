@@ -62,7 +62,7 @@ class CmsFormHandler
         if ($request->isMethod('post')) {
             $parameters = array_keys($request->request->all());
             if (!$this->chain->has($parameters[0])) {
-                throw new \InvalidArgumentException(sprintf('You must implement a vince.processor tagged service for form %s.', $parameters[0]));
+                throw new \InvalidArgumentException(sprintf('You must implement a vince_cms.processor tagged service for form %s.', $parameters[0]));
             } else {
                 $return = $this->chain->get($parameters[0])->setOptions($options)->process($request);
 

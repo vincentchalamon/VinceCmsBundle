@@ -12,16 +12,22 @@ namespace Vince\Bundle\CmsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Gedmo\Translatable\Translatable;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Vince\Bundle\CmsBundle\Validator\Constraints\One;
 
 /**
  * This entity provides features to manage menu
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
+ *
+ * @ORM\MappedSuperclass(repositoryClass="Vince\Bundle\CmsBundle\Entity\Repository\MenuRepository")
+ * @Gedmo\Tree(type="nested")
  */
-abstract class Menu extends Publishable implements Translatable
+abstract class Menu extends Publishable
 {
     /**
      * @var integer
@@ -29,73 +35,106 @@ abstract class Menu extends Publishable implements Translatable
     protected $id;
 
     /**
-     * Used locale to override Translation listener's locale
-     * This is not a mapped field of entity metadata, just a simple property
-     */
-    protected $locale;
-
-    /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
      */
     protected $title;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Gedmo\Slug(fields={"title"})
      */
     protected $slug;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @One(constraints={@Assert\Regex("/^\/[A-z\d\-_\/]*$/"), @Assert\Url})
      */
     protected $url;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\Choice(choices={"_blank", "_parent", "_self", "_top"}, message="This value is not a valid target.")
      */
     protected $target = '_self';
 
     /**
      * @var boolean
+     *
+     * @ORM\Column(type="boolean")
      */
     protected $image = false;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $path;
 
     /**
      * @var UploadedFile
+     *
+     * @Assert\Image
      */
     private $file;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(type="integer")
+     * @Gedmo\TreeLeft
      */
     protected $lft;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(type="integer")
+     * @Gedmo\TreeRight
      */
     protected $rgt;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(type="integer")
+     * @Gedmo\TreeRoot
      */
     protected $root;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(type="integer")
+     * @Gedmo\TreeLevel
      */
     protected $lvl;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", name="created_at")
+     * @Gedmo\Timestampable(on="create")
      */
     protected $createdAt;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", name="updated_at")
+     * @Gedmo\Timestampable(on="update")
      */
     protected $updatedAt;
 
@@ -106,6 +145,8 @@ abstract class Menu extends Publishable implements Translatable
 
     /**
      * @var Menu
+     *
+     * @Assert\NotNull
      */
     protected $parent;
 
@@ -136,31 +177,6 @@ abstract class Menu extends Publishable implements Translatable
     }
 
     /**
-     * Set locale
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     * @param  string $locale
-     * @return Block
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get locale
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
      * Get title in admin list
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
@@ -180,6 +196,8 @@ abstract class Menu extends Publishable implements Translatable
     /**
      * Check if Menu has url or Article linked if not root
      *
+     * @Assert\Callback
+     *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
      * @param ExecutionContextInterface $context
      */
@@ -193,6 +211,8 @@ abstract class Menu extends Publishable implements Translatable
 
     /**
      * If Menu is image: check file
+     *
+     * @Assert\Callback
      *
      * @author Vincent CHALAMON <vincentchalamon@gmail.com>
      * @param ExecutionContextInterface $context
@@ -223,7 +243,6 @@ abstract class Menu extends Publishable implements Translatable
      */
     public function getRoute()
     {
-        // todo-vince Beware of article i18n
         return $this->getArticle() ? $this->getArticle()->getRoutePattern() : $this->getUrl();
     }
 

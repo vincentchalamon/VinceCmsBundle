@@ -54,7 +54,6 @@ class Loader implements LoaderInterface
             $article = $row[0];
             $routing->add($article->getRouteName(), new Route($article->getRoutePattern(), array(
                         '_controller' => 'VinceCmsBundle:Default:show',
-                        '_locale' => $article->getLocale(),
                         '_id' => $article->getId()
                     ), array(
                         '_method' => 'GET|POST'

@@ -18,7 +18,6 @@ use Vince\Bundle\CmsBundle\Entity\Article;
 use Vince\Bundle\CmsBundle\Entity\ArticleMeta;
 use Vince\Bundle\CmsBundle\Entity\Menu;
 use Vince\Bundle\CmsBundle\Entity\Block;
-use Vince\Bundle\CmsBundle\Listener\LocaleListener;
 
 /**
  * Twig extension for CMS
@@ -64,18 +63,11 @@ class CmsExtension extends \Twig_Extension
     protected $entityManager;
 
     /**
-     * Locale listener
-     *
-     * @var LocaleListener
-     */
-    protected $localeListener;
-
-    /**
      * {@inheritdoc}
      */
     public function getGlobals()
     {
-        return array('vince' => array('cms' => $this->configuration));
+        return array('vince_cms' => $this->configuration);
     }
 
     /**
@@ -119,9 +111,6 @@ class CmsExtension extends \Twig_Extension
         if (!$menu || !$menu->getChildren()->count() || (!$menu->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
             return null;
         }
-        // todo-vince How to set locale on each children + refresh ?
-        $menu->setLocale($this->localeListener->getLocale());
-        $this->entityManager->refresh($menu);
 
         return $this->environment->render($view, array_merge(array('menu' => $menu), $parameters));
     }
@@ -208,8 +197,6 @@ class CmsExtension extends \Twig_Extension
         if (!$block || (!$block->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
             return null;
         }
-        $block->setLocale($this->localeListener->getLocale());
-        $this->entityManager->refresh($block);
 
         return $block->getContents();
     }
@@ -267,17 +254,6 @@ class CmsExtension extends \Twig_Extension
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
-    }
-
-    /**
-     * Set localeListener
-     *
-     * @author Vincent Chalamon <vincent@ylly.fr>
-     * @param LocaleListener $localeListener
-     */
-    public function setLocaleListener(LocaleListener $localeListener)
-    {
-        $this->localeListener = $localeListener;
     }
 
     /**

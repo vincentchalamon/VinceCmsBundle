@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <title>My Website</title>
-    <subtitle>Last posts</subtitle>
+    <title>{{ vince_cms.sitename }}</title>
     <link href="{{ url('homepage') }}" />
     {% if articles|length %}
         <updated>{{ articles[0].updatedAt.format(constant('DATE_ATOM')) }}</updated>
     {% endif %}
     <author>
-        <name>John DOE</name>
-        <email>johndoe@example.com</email>
+        <name>{{ vince_cms.sitename }}</name>
+        <email>{{ vince_cms.contact }}</email>
     </author>
-    <id>{{ feedId }}</id>
     {% for article in articles %}
         <entry>
             <title>{{ article.title }}</title>

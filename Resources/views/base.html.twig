@@ -14,11 +14,11 @@
             <link rel="sitemap" type="application/xml" title="{{ 'Sitemap'|trans({}, 'VinceCms') }}" href="{{ path('cms_sitemap') }}" />
             <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         {% endblock %}
-        {% if vince.cms.tracking_code is defined and vince.cms.tracking_code is not empty %}
+        {% if vince_cms.tracking_code is defined and vince_cms.tracking_code is not empty %}
             {% block google_analytics %}
                 <script>
                     var _gaq = _gaq || [];
-                    _gaq.push(['_setAccount', '{{ vince.cms.tracking_code }}']);
+                    _gaq.push(['_setAccount', '{{ vince_cms.tracking_code }}']);
                     _gaq.push(['_trackPageview']);
                     (function () {
                         var ga = document.createElement('script');
@@ -34,21 +34,7 @@
         {% endif %}
     </head>
     <body>
-        {% block body %}
-            {% block locales %}
-                {% if article is defined and vince.cms.locales|length > 1 %}
-                    <ul class="locales">
-                        {% for locale in vince.cms.locales if article.original.hasTranslation(locale) and app.request.locale != locale %}
-                            <li>
-                                <a href="{{ path(article.original.getTranslation(locale).routeName) }}" class="translatable{% if app.request.locale == locale %} active{% endif %}">
-                                    <i class="flag flag-{{ locale }}"></i>
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endblock %}
-        {% endblock %}
+        {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>

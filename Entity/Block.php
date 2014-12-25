@@ -9,14 +9,19 @@
  * file that was distributed with this source code.
  */
 namespace Vince\Bundle\CmsBundle\Entity;
-use Gedmo\Translatable\Translatable;
+
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * This entity provides features to manage blocks
  *
  * @author Vincent Chalamon <vincentchalamon@gmail.com>
+ *
+ * @ORM\MappedSuperclass
  */
-abstract class Block extends Publishable implements Translatable
+abstract class Block extends Publishable
 {
     /**
      * @var integer
@@ -24,23 +29,29 @@ abstract class Block extends Publishable implements Translatable
     protected $id;
 
     /**
-     * Used locale to override Translation listener's locale
-     * This is not a mapped field of entity metadata, just a simple property
-     */
-    protected $locale;
-
-    /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255, unique=true)
+     *
+     * @Assert\NotBlank
      */
     protected $name;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
      */
     protected $title;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank
      */
     protected $contents;
 
@@ -51,11 +62,19 @@ abstract class Block extends Publishable implements Translatable
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", name="created_at")
+     *
+     * @Gedmo\Timestampable(on="create")
      */
     protected $createdAt;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(type="datetime", name="updated_at")
+     *
+     * @Gedmo\Timestampable(on="update")
      */
     protected $updatedAt;
 
@@ -68,31 +87,6 @@ abstract class Block extends Publishable implements Translatable
     public function __toString()
     {
         return $this->getTitle();
-    }
-
-    /**
-     * Set locale
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     * @param  string $locale
-     * @return Block
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get locale
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
     }
 
     /**

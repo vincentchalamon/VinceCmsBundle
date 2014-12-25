@@ -1,5 +1,0 @@
-Vince\Bundle\CmsBundle\Entity\Content:
-    type: mappedSuperclass
-    fields:
-        contents:
-            type: text
