@@ -3,7 +3,7 @@
     <head>
         {% block head %}
             <meta charset="UTF-8" />
-            <title>{% block title %}{% if article is defined %}{{ article.meta('title') }}{% endif %}{% endblock %}</title>
+            <title>{% block title %}{% if article is defined %}{{ article.title }}{% endif %}{% endblock %}</title>
             {% block metas %}
                 {% if article is defined %}
                     {{ render_metas(article) }}
