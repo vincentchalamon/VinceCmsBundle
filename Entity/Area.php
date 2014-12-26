@@ -78,7 +78,7 @@ class Area
      * @var Template
      *
      * @ORM\ManyToOne(targetEntity="Vince\Bundle\CmsBundle\Entity\Template", inversedBy="areas", cascade={"all"})
-     * @ORM\JoinColumn(name="template_id")
+     * @ORM\JoinColumn(name="template_id", nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotBlank
      */

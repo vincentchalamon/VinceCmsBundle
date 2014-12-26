@@ -109,7 +109,7 @@ abstract class Menu extends Publishable
     /**
      * @var integer
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Gedmo\TreeRoot
      */
     protected $root;

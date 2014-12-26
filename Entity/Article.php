@@ -115,7 +115,7 @@ abstract class Article extends Publishable
      * @var Template
      *
      * @ORM\ManyToOne(targetEntity="Vince\Bundle\CmsBundle\Entity\Template", cascade={"persist"})
-     * @ORM\JoinColumn(name="template_id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="template_id", nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotNull
      */
