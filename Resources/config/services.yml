@@ -22,7 +22,6 @@ services:
         class: Vince\Bundle\CmsBundle\Twig\Extension\CmsExtension
         calls:
             - [setVinceCmsConfiguration, [%vince_cms%]]
-            - [setEntityManager, [@doctrine.orm.default_entity_manager]]
             - [setSecurityContext, [@security.context]]
             - [addRepository, ['menu', @vince_cms.repository.menu]]
             - [addRepository, ['block', @vince_cms.repository.block]]

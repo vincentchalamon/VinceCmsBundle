@@ -22,7 +22,6 @@ use Vince\Bundle\CmsBundle\Component\YamlFixturesLoader as Loader;
  */
 class CmsData extends AbstractFixture implements OrderedFixtureInterface
 {
-
     /**
      * Load fixtures files
      *

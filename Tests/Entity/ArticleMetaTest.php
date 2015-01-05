@@ -17,7 +17,6 @@ use Vince\Bundle\CmsBundle\Entity\ArticleMeta;
  */
 class ArticleMetaTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Test methods
      *

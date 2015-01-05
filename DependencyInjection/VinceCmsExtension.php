@@ -63,7 +63,7 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
                     'exception_controller' => 'vince_cms.controller.exception:indexAction',
                     'globals' => array(
                         'vince_cms' => $container->getParameter('vince_cms'),
-                    )
+                    ),
                 )
             );
         }
@@ -88,10 +88,10 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
                                 'type'   => 'annotation',
                                 'alias'  => 'Gedmo',
                                 'prefix' => 'Gedmo\Tree\Entity',
-                                'dir'    => $container->getParameter('kernel.root_dir').'/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity'
-                            )
-                        )
-                    )
+                                'dir'    => $container->getParameter('kernel.root_dir').'/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity',
+                            ),
+                        ),
+                    ),
                 )
             );
         }

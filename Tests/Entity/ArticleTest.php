@@ -22,7 +22,6 @@ use Vince\Bundle\CmsBundle\Entity\Template;
  */
 class ArticleTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Article
      *

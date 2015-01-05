@@ -27,7 +27,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ExceptionController extends Controller
 {
-
     /**
      * Article repository
      *
@@ -87,7 +86,7 @@ class ExceptionController extends Controller
             'exception'      => $exception,
             'logger'         => $logger,
             'currentContent' => $currentContent,
-            'request'        => $request
+            'request'        => $request,
         );
         /** @var Article $article */
         if (!$article = $this->repository->findOneBy(array('slug' => sprintf('error-%s', $code)))) {

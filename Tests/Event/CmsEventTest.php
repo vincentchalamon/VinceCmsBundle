@@ -18,7 +18,6 @@ use Vince\Bundle\CmsBundle\Event\CmsEvent;
  */
 class CmsEventTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Test object methods
      *

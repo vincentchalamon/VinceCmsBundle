@@ -20,7 +20,6 @@ use Symfony\Component\Validator\ConstraintViolationList;
  */
 class MetaTest extends WebTestCase
 {
-
     /**
      * {@inheritdoc}
      */

@@ -21,7 +21,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 abstract class Publishable
 {
-
     /**
      * @var \DateTime
      *

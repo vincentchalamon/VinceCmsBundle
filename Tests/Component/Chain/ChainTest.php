@@ -17,7 +17,6 @@ use Vince\Bundle\CmsBundle\Component\Chain\Chain;
  */
 class ChainTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Test methods
      *

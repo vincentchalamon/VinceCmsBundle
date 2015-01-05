@@ -16,7 +16,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class VinceCmsBundle extends Bundle
 {
-
     /**
      * {@inheritdoc}
      */

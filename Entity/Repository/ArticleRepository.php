@@ -22,7 +22,6 @@ use Vince\Bundle\CmsBundle\Entity\Article;
  */
 class ArticleRepository extends EntityRepository
 {
-
     /**
      * Find an Article from its identifier
      *
@@ -139,7 +138,7 @@ class ArticleRepository extends EntityRepository
 
         return $builder->setParameters(array(
                 'now'   => new \DateTime(),
-                'value' => 'index,follow'
+                'value' => 'index,follow',
             )
         )->getQuery()->getResult();
     }

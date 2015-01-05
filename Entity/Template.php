@@ -222,6 +222,6 @@ class Template
             }
         }
 
-        return null;
+        return;
     }
 }

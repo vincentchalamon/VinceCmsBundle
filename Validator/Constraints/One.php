@@ -23,7 +23,6 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
  */
 class One extends Constraint
 {
-
     /**
      * Constraints
      *

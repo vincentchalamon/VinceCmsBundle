@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 abstract class Processor
 {
-
     /**
      * Factory
      *

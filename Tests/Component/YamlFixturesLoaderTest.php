@@ -17,7 +17,6 @@ use Vince\Bundle\CmsBundle\Component\YamlFixturesLoader;
  */
 class YamlFixturesLoaderTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Loader
      *

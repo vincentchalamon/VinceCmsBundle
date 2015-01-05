@@ -16,7 +16,6 @@ use Symfony\Component\Config\Loader\LoaderInterface;
  */
 class AppKernel extends Kernel
 {
-
     /**
      * {@inheritdoc}
      */
@@ -30,7 +29,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Vince\Bundle\CmsBundle\VinceCmsBundle()
+            new Vince\Bundle\CmsBundle\VinceCmsBundle(),
         );
 
         return $bundles;

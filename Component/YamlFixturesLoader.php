@@ -26,7 +26,6 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
  */
 class YamlFixturesLoader
 {
-
     /**
      * Files to load
      *
@@ -301,7 +300,6 @@ class YamlFixturesLoader
             // Custom call
             } elseif (is_callable(array($record, 'set'.Inflector::classify($column)))) {
                 call_user_func(array($record, 'set'.Inflector::classify($column)), $value);
-
             } else {
                 throw new \InvalidArgumentException(sprintf("Undefined property or association %s on entity '%s' for class '%s'. Maybe you forgot to create custom setter 'set%s' ?", $column, $name, $class, Inflector::classify($column)));
             }

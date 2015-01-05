@@ -21,7 +21,6 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class CompilerPass implements CompilerPassInterface
 {
-
     protected $name;
 
     /**
@@ -56,5 +55,4 @@ class CompilerPass implements CompilerPassInterface
             }
         }
     }
-
 }

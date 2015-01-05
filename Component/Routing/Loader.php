@@ -24,7 +24,6 @@ use Vince\Bundle\CmsBundle\Entity\Repository\ArticleRepository;
  */
 class Loader implements LoaderInterface
 {
-
     /**
      * Is loader loaded
      *
@@ -54,9 +53,9 @@ class Loader implements LoaderInterface
             $article = $row[0];
             $routing->add($article->getRouteName(), new Route($article->getRoutePattern(), array(
                         '_controller' => 'VinceCmsBundle:Default:show',
-                        '_id' => $article->getId()
+                        '_id' => $article->getId(),
                     ), array(
-                        '_method' => 'GET|POST'
+                        '_method' => 'GET|POST',
                     )
                 )
             );

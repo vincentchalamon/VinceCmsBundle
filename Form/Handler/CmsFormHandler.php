@@ -24,7 +24,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class CmsFormHandler
 {
-
     /**
      * Chain
      *

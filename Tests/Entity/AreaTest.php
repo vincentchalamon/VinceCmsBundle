@@ -21,7 +21,6 @@ use Vince\Bundle\CmsBundle\Entity\Template;
  */
 class AreaTest extends WebTestCase
 {
-
     /**
      * {@inheritdoc}
      */

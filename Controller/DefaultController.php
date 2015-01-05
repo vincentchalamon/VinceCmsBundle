@@ -26,7 +26,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class DefaultController extends Controller
 {
-
     /**
      * Generate sitemap
      *
@@ -38,7 +37,7 @@ class DefaultController extends Controller
         $articles = $this->get('vince_cms.repository.article')->findAllPublishedIndexableOrdered();
 
         return $this->render('VinceCmsBundle:Templates:sitemap.xml.twig', array(
-                'articles' => $articles
+                'articles' => $articles,
             )
         );
     }
@@ -59,7 +58,7 @@ class DefaultController extends Controller
 
         return $this->render(sprintf('VinceCmsBundle:Templates:feed.%s.twig', $format), array(
                 'articles' => $articles,
-                'id'       => sha1($this->get('router')->generate('cms_feed', array('_format' => $format), true))
+                'id'       => sha1($this->get('router')->generate('cms_feed', array('_format' => $format), true)),
             )
         );
     }

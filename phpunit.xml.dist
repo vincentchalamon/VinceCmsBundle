@@ -31,3 +31,4 @@
         <server name="KERNEL_DIR" value="./Tests/App"/>
     </php>
 </phpunit>
+

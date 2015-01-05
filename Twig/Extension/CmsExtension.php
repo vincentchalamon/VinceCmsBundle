@@ -11,7 +11,6 @@
 namespace Vince\Bundle\CmsBundle\Twig\Extension;
 
 use Doctrine\Common\Util\Inflector;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Vince\Bundle\CmsBundle\Entity\Article;
@@ -26,7 +25,6 @@ use Vince\Bundle\CmsBundle\Entity\Block;
  */
 class CmsExtension extends \Twig_Extension
 {
-
     /**
      * Repositories
      *
@@ -56,13 +54,6 @@ class CmsExtension extends \Twig_Extension
     protected $configuration;
 
     /**
-     * Entity manager
-     *
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
      * {@inheritdoc}
      */
     public function getGlobals()
@@ -79,7 +70,7 @@ class CmsExtension extends \Twig_Extension
             'render_metas' => new \Twig_Function_Method($this, 'renderMetas', array('is_safe' => array('html'))),
             'render_meta'  => new \Twig_Function_Method($this, 'renderMeta', array('is_safe' => array('html'))),
             'render_menu'  => new \Twig_Function_Method($this, 'renderMenu', array('is_safe' => array('html'))),
-            'render_block' => new \Twig_Function_Method($this, 'renderBlock', array('is_safe' => array('html')))
+            'render_block' => new \Twig_Function_Method($this, 'renderBlock', array('is_safe' => array('html'))),
         );
     }
 
@@ -89,7 +80,7 @@ class CmsExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('content', array($this, 'renderContents'), array('is_safe' => array('html')))
+            new \Twig_SimpleFilter('content', array($this, 'renderContents'), array('is_safe' => array('html'))),
         );
     }
 
@@ -109,7 +100,7 @@ class CmsExtension extends \Twig_Extension
         /** @var Menu $menu */
         $menu = $this->repositories['menu']->findOneBy(array('slug' => $slug, 'lvl' => 0));
         if (!$menu || !$menu->getChildren()->count() || (!$menu->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
-            return null;
+            return;
         }
 
         return $this->environment->render($view, array_merge(array('menu' => $menu), $parameters));
@@ -128,18 +119,18 @@ class CmsExtension extends \Twig_Extension
     {
         /** @var \Twig_Template $template */
         $template = $this->environment->loadTemplate('VinceCmsBundle::meta.html.twig');
-        $blockname = str_ireplace(array(':', '-'), array('_', '_'), Inflector::tableize($meta->getMeta()->getName())) . '_meta';
+        $blockname = str_ireplace(array(':', '-'), array('_', '_'), Inflector::tableize($meta->getMeta()->getName())).'_meta';
         if ($template->hasBlock($blockname)) {
             return $template->renderBlock($blockname, array(
                     'name' => $meta->getMeta()->getName(),
-                    'contents' => $meta->getContents()
+                    'contents' => $meta->getContents(),
                 )
             );
         }
 
         return $template->renderBlock('meta', array(
                 'name' => $meta->getMeta()->getName(),
-                'contents' => $meta->getContents()
+                'contents' => $meta->getContents(),
             )
         );
     }
@@ -158,7 +149,7 @@ class CmsExtension extends \Twig_Extension
         $html = '';
         foreach ($article->getMetas() as $meta) {
             /** @var ArticleMeta $meta */
-            $html.= $this->renderMeta($meta);
+            $html .= $this->renderMeta($meta);
         }
 
         return $html;
@@ -195,7 +186,7 @@ class CmsExtension extends \Twig_Extension
         /** @var Block $block */
         $block = $this->repositories['block']->findOneBy(array('name' => $name));
         if (!$block || (!$block->isPublished() && !$this->security->isGranted('ROLE_ADMIN'))) {
-            return null;
+            return;
         }
 
         return $block->getContents();
@@ -243,17 +234,6 @@ class CmsExtension extends \Twig_Extension
     public function setVinceCmsConfiguration(array $configuration)
     {
         $this->configuration = $configuration;
-    }
-
-    /**
-     * Set entityManager
-     *
-     * @author Vincent Chalamon <vincent@ylly.fr>
-     * @param EntityManager $entityManager
-     */
-    public function setEntityManager(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
     }
 
     /**

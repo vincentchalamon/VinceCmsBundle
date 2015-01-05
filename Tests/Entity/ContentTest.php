@@ -17,7 +17,6 @@ use Vince\Bundle\CmsBundle\Entity\Content;
  */
 class ContentTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Test methods
      *

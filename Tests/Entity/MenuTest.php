@@ -18,7 +18,6 @@ use Vince\Bundle\CmsBundle\Entity\Menu;
  */
 class MenuTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Menu
      *

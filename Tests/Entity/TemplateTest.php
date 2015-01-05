@@ -20,7 +20,6 @@ use Vince\Bundle\CmsBundle\Entity\Template;
  */
 class TemplateTest extends WebTestCase
 {
-
     /**
      * {@inheritdoc}
      */

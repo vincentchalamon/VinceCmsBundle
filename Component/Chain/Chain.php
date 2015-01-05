@@ -17,7 +17,6 @@ namespace Vince\Bundle\CmsBundle\Component\Chain;
  */
 class Chain
 {
-
     /**
      * Services
      *
@@ -60,5 +59,4 @@ class Chain
     {
         return isset($this->services[$alias]);
     }
-
 }

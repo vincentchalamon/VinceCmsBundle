@@ -22,7 +22,6 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class OneValidator extends ConstraintValidator
 {
-
     /**
      * {@inheritDoc}
      */

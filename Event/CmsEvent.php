@@ -21,7 +21,6 @@ use Vince\Bundle\CmsBundle\Entity\Article;
  */
 class CmsEvent extends Event
 {
-
     /**
      * Options
      *

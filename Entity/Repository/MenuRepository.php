@@ -20,7 +20,6 @@ use Vince\Bundle\CmsBundle\Entity\Menu;
  */
 class MenuRepository extends NestedTreeRepository
 {
-
     /**
      * Find a published Menu by its slug
      *
@@ -48,7 +47,7 @@ class MenuRepository extends NestedTreeRepository
 
         // Cannot find Menu
         if ($menu) {
-            return null;
+            return;
         }
 
         // Build tree from Menu

@@ -17,7 +17,6 @@ use Vince\Bundle\CmsBundle\Entity\Block;
  */
 class BlockTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Block
      *
