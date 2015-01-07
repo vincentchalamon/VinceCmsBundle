@@ -1,8 +1,8 @@
+build
 composer.lock
-phpunit.xml
-vendor/*
+composer.phar
+vendor
 Tests/App/cache/*
 !Tests/App/cache/.gitkeep
 Tests/App/web/*
 !Tests/App/web/.gitkeep
-build/*
