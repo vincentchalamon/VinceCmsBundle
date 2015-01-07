@@ -56,7 +56,7 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
             $container->setParameter(sprintf('vince_cms.%s', $name), $value);
         }
 
-        // Configure Twig is activated
+        // Configure Twig if activated
         $bundles = $container->getParameter('kernel.bundles');
         if (isset($bundles['TwigBundle']) && $container->hasExtension('twig')) {
             $container->prependExtensionConfig('twig', array(
@@ -78,9 +78,10 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
     public function prepend(ContainerBuilder $container)
     {
         $bundles = $container->getParameter('kernel.bundles');
+        $env     = $container->getParameter('kernel.environment');
 
         // Configure Doctrine if DoctrineBundle is activated
-        if (isset($bundles['DoctrineBundle']) && $container->hasExtension('doctrine')) {
+        if (isset($bundles['DoctrineBundle']) && $container->hasExtension('doctrine') && $env != 'test') {
             $container->prependExtensionConfig('doctrine', array(
                     'orm' => array(
                         'mappings' => array(
@@ -91,6 +92,17 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
                                 'dir'    => $container->getParameter('kernel.root_dir').'/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity',
                             ),
                         ),
+                    ),
+                )
+            );
+        }
+
+        // Enable annotation validation
+        if (isset($bundles['FrameworkBundle']) && $container->hasExtension('framework')) {
+            $container->prependExtensionConfig('framework', array(
+                    'validation' => array(
+                        'enabled' => true,
+                        'enable_annotations' => true,
                     ),
                 )
             );

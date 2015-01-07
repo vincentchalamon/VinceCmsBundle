@@ -34,34 +34,6 @@ class MenuTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test publication
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     */
-    public function testPublication()
-    {
-        $this->assertEquals('Never published', $this->menu->getPublication());
-        $this->assertFalse($this->menu->isPublished());
-
-        $this->menu->setStartedAt(new \DateTime());
-        $this->assertEquals('Published', $this->menu->getPublication());
-        $this->assertTrue($this->menu->isPublished());
-
-        $this->menu->setStartedAt(new \DateTime('tomorrow'));
-        $this->assertEquals('Pre-published', $this->menu->getPublication());
-        $this->assertFalse($this->menu->isPublished());
-
-        $this->menu->setStartedAt(new \DateTime('yesterday'));
-        $this->menu->setEndedAt(new \DateTime('yesterday'));
-        $this->assertEquals('Post-published', $this->menu->getPublication());
-        $this->assertFalse($this->menu->isPublished());
-
-        $this->menu->setEndedAt(new \DateTime('tomorrow'));
-        $this->assertEquals('Published temp', $this->menu->getPublication());
-        $this->assertTrue($this->menu->isPublished());
-    }
-
-    /**
      * Test methods
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>

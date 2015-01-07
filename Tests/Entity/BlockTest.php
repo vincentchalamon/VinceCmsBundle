@@ -33,34 +33,6 @@ class BlockTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test publication
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     */
-    public function testPublication()
-    {
-        $this->assertEquals('Never published', $this->block->getPublication());
-        $this->assertFalse($this->block->isPublished());
-
-        $this->block->setStartedAt(new \DateTime());
-        $this->assertEquals('Published', $this->block->getPublication());
-        $this->assertTrue($this->block->isPublished());
-
-        $this->block->setStartedAt(new \DateTime('tomorrow'));
-        $this->assertEquals('Pre-published', $this->block->getPublication());
-        $this->assertFalse($this->block->isPublished());
-
-        $this->block->setStartedAt(new \DateTime('yesterday'));
-        $this->block->setEndedAt(new \DateTime('yesterday'));
-        $this->assertEquals('Post-published', $this->block->getPublication());
-        $this->assertFalse($this->block->isPublished());
-
-        $this->block->setEndedAt(new \DateTime('tomorrow'));
-        $this->assertEquals('Published temp', $this->block->getPublication());
-        $this->assertTrue($this->block->isPublished());
-    }
-
-    /**
      * Test methods
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
@@ -68,7 +40,7 @@ class BlockTest extends \PHPUnit_Framework_TestCase
     public function testMethods()
     {
         // Test toString
-        $this->block->setName('Example');
+        $this->block->setTitle('Example');
         $this->assertEquals('Example', $this->block->__toString());
     }
 }

@@ -10,7 +10,7 @@ namespace Vince\Bundle\CmsBundle\Tests\Entity;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Vince\Bundle\CmsBundle\Entity\Area;
-use Symfony\Component\Validator\Validator;
+use Symfony\Component\Validator\Validator\RecursiveValidator;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Vince\Bundle\CmsBundle\Entity\Template;
 
@@ -38,7 +38,7 @@ class AreaTest extends WebTestCase
     public function testValidation()
     {
         /**
-         * @var Validator               $validator
+         * @var RecursiveValidator      $validator
          * @var ConstraintViolationList $errors
          */
         $object    = new Area();

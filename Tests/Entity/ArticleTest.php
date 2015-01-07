@@ -38,42 +38,6 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test publication
-     *
-     * @author Vincent Chalamon <vincentchalamon@gmail.com>
-     */
-    public function testPublication()
-    {
-        $this->assertEquals('Never published', $this->article->getPublication());
-        $this->assertFalse($this->article->isPublished());
-
-        $this->article->setStartedAt(new \DateTime());
-        $this->assertEquals('Published', $this->article->getPublication());
-        $this->assertTrue($this->article->isPublished());
-
-        $this->article->setStartedAt(new \DateTime('tomorrow'));
-        $this->assertEquals('Pre-published', $this->article->getPublication());
-        $this->assertFalse($this->article->isPublished());
-
-        $this->article->setStartedAt(new \DateTime('yesterday'));
-        $this->article->setEndedAt(new \DateTime('yesterday'));
-        $this->assertEquals('Post-published', $this->article->getPublication());
-        $this->assertFalse($this->article->isPublished());
-
-        $this->article->setEndedAt(new \DateTime('tomorrow'));
-        $this->assertEquals('Published temp', $this->article->getPublication());
-        $this->assertTrue($this->article->isPublished());
-
-        $this->article->publish();
-        $this->assertEquals('Published', $this->article->getPublication());
-        $this->assertTrue($this->article->isPublished());
-
-        $this->article->unpublish();
-        $this->assertEquals('Never published', $this->article->getPublication());
-        $this->assertFalse($this->article->isPublished());
-    }
-
-    /**
      * Test homepage initialize
      *
      * @author Vincent Chalamon <vincentchalamon@gmail.com>
