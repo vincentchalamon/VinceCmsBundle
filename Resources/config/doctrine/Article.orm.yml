@@ -11,6 +11,7 @@ Vince\Bundle\CmsBundle\Entity\Article:
             unique: true
             gedmo:
                 slug:
+                    updatable: false
                     fields: [title]
         createdAt:
             type: datetime
