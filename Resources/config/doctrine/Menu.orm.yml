@@ -14,6 +14,7 @@ Vince\Bundle\CmsBundle\Entity\Menu:
             unique: true
             gedmo:
                 slug:
+                    updatable: false
                     fields: [title]
         url:
             type: string
