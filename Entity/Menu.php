@@ -47,7 +47,7 @@ abstract class Menu extends Publishable
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Gedmo\Slug(fields={"title"})
+     * @Gedmo\Slug(fields={"title"}, updatable=false)
      */
     protected $slug;
 

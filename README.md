@@ -8,3 +8,64 @@ VinceCmsBundle
 [![Coverage Status](https://coveralls.io/repos/vincentchalamon/VinceCmsBundle/badge.png)](https://coveralls.io/r/vincentchalamon/VinceCmsBundle)
 
 Basic CMS features for Symfony 2.5
+
+## TODO
+
+- [ ] I18n
+- [ ] Cache APC
+- [ ] Cache doctrine
+- [ ] Cache HTTP
+- [ ] Documentation (README + PHPDoc + GitHub pages)
+- [ ] Search configuration (Symfony + ElasticSearch)
+- [ ] Search pager: KnpPaginatorBundle
+- [ ] Search ajax pager
+
+Documentation
+=============
+
+### Installation
+
+- [ ] Install bundle with composer
+- [ ] Update AppKernel
+<!-- [ ] Install ElasticSearch with composer-->
+<!-- [ ] Launch ElasticSearch-->
+
+### Configuration
+
+- [ ] Create override bundle (MyCmsBundle)
+- [ ] Create override entities: Article, ArticleMeta, Block, Content, Menu
+- [ ] Update config.yml: domain, sitename, tracking_code, model, no_reply, contact
+
+### Fixtures
+
+- [ ] Create fixtures in YML
+- [ ] Create templates
+- [ ] Create articles
+- [ ] Create menus
+- [ ] Create blocks
+
+### CMS injection
+
+- [ ] Inject objects (& forms) in template (listeners)
+- [ ] Process forms (processors)
+
+### Advanced
+
+- [ ] Override controllers
+- [ ] Catch mail on dev (MailCatcher)
+- [ ] PHPDoc
+
+Search
+======
+
+* Ne dois pas remonter :
+    * Système : homepage, accueil, search, rechercher, error
+    * Non publié : vincent
+    * Pré publié : jordan
+    * Pré publié temp : samuel
+    * Dépublié : franck
+* Doit remonter :
+    * Publié : yannick
+    * Publié aujourd'hui : benoit
+    * Publié jusqu'à aujourd'hui : gilles
+    * Publié temporairement : adrien

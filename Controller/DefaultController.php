@@ -81,9 +81,11 @@ class DefaultController extends Controller
         if (!$article || (!$article->isPublished() && !$this->get('security.context')->isGranted('ROLE_ADMIN'))) {
             throw $this->createNotFoundException();
         }
+
         // Need to inject request as option because of scope limit on listeners
         $options = $this->get('event_dispatcher')->dispatch('vince_cms.event.load', new CmsEvent($article, array('request' => $request)))->getOptions();
         $options = $this->get('event_dispatcher')->dispatch(sprintf('vince_cms.event.load.%s', $article->getSlug()), new CmsEvent($article, $options))->getOptions();
+        $options = $this->get('event_dispatcher')->dispatch(sprintf('vince_cms.event.load.template.%s', $article->getTemplate()->getSlug()), new CmsEvent($article, $options))->getOptions();
         if ($response = $this->get('vince_cms.form.handler')->process($request, $options)) {
             return $response;
         }

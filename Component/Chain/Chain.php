@@ -59,4 +59,15 @@ class Chain
     {
         return isset($this->services[$alias]);
     }
+
+    /**
+     * Get all tagged services
+     *
+     * @author Vincent Chalamon <vincent@ylly.fr>
+     * @return array
+     */
+    public function all()
+    {
+        return $this->services;
+    }
 }

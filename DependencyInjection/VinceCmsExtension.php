@@ -60,7 +60,6 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
         $bundles = $container->getParameter('kernel.bundles');
         if (isset($bundles['TwigBundle']) && $container->hasExtension('twig')) {
             $container->prependExtensionConfig('twig', array(
-                    'exception_controller' => 'vince_cms.controller.exception:indexAction',
                     'globals' => array(
                         'vince_cms' => $container->getParameter('vince_cms'),
                     ),
@@ -79,6 +78,15 @@ class VinceCmsExtension extends Extension implements PrependExtensionInterface
     {
         $bundles = $container->getParameter('kernel.bundles');
         $env     = $container->getParameter('kernel.environment');
+
+        // Configure Twig is activated
+        $bundles = $container->getParameter('kernel.bundles');
+        if (isset($bundles['TwigBundle']) && $container->hasExtension('twig')) {
+            $container->prependExtensionConfig('twig', array(
+                    'exception_controller' => 'vince_cms.controller.exception:indexAction',
+                )
+            );
+        }
 
         // Configure Doctrine if DoctrineBundle is activated
         if (isset($bundles['DoctrineBundle']) && $container->hasExtension('doctrine') && $env != 'test') {

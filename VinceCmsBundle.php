@@ -10,9 +10,9 @@
  */
 namespace Vince\Bundle\CmsBundle;
 
-use Vince\Bundle\CmsBundle\Component\CompilerPass\CompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Vince\Bundle\CmsBundle\DependencyInjection\Compiler\CompilerPass;
 
 class VinceCmsBundle extends Bundle
 {
