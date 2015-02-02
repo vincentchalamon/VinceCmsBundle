@@ -34,7 +34,6 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('tracking_code')->defaultNull()->end()
                 ->scalarNode('no_reply')->defaultValue('no-reply@sandbox.com')->end()
                 ->arrayNode('contact')
-                    ->addDefaultsIfNotSet(array('contact@sandbox.com'))
                     ->prototype('scalar')->end()
                     ->beforeNormalization()
                         ->ifString()
